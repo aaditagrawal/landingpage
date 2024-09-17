@@ -7,19 +7,6 @@ const links = [
 
 const linksContainer = document.getElementById("links-container");
 
-// Add CSS for mobile center alignment
-const style = document.createElement("style");
-style.textContent = `
-  @media (max-width: 768px) {
-    #links-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
-`;
-document.head.appendChild(style);
-
 links.forEach((link) => {
   const linkElement = document.createElement("a");
   linkElement.href = link.href;
