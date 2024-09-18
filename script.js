@@ -2,7 +2,7 @@ const links = [
   { name: "photo", href: "https://photos.aadit.cc" },
   { name: "design", href: "#" },
   { name: "cine", href: "https://www.youtube.com/@theaaditagrawal" },
-  { name: "git", href: "https://git.aadit.cc" },
+  { name: "git", href: "https://git.aadit.cc/aadit" },
 ];
 
 const linksContainer = document.getElementById("links-container");
