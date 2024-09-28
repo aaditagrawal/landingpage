@@ -88,3 +88,8 @@ footer {
     white-space: nowrap;
     border-width: 0;
 }
+
+#oneko {
+    pointer-events: none;
+    z-index: 9999;
+}
