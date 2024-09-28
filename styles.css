@@ -89,6 +89,7 @@ footer {
     border-width: 0;
 }
 
+/* CSS Override for Oneko CATS. Cats. That's what the internet is for. */
 #oneko {
     pointer-events: none;
     z-index: 9999;
