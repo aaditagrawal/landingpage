@@ -1,6 +1,6 @@
 const links = [
   { name: "photo", href: "https://photos.aadit.cc" },
-  { name: "design", href: "#" },
+  { name: "design", href: "https://design.aadit.cc" },
   { name: "cine", href: "https://www.youtube.com/@theaaditagrawal" },
   { name: "git", href: "https://git.aadit.cc/aadit" },
 ];
