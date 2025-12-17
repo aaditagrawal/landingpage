@@ -1,8 +1,10 @@
 const links = [
-  { name: "photo", href: "https://photos.aadit.cc" },
-  { name: "design", href: "https://design.aadit.cc" },
-  { name: "cine", href: "https://www.youtube.com/@theaaditagrawal" },
-  { name: "git (personal)", href: "https://git.aadit.cc/aadit" },
+  { name: "blog", href: "https://blog.aadit.cc", icon: "book" },
+  { name: "photo", href: "https://photos.aadit.cc", icon: "camera" },
+  { name: "design", href: "https://design.aadit.cc", icon: "paintbrush" },
+  { name: "cine", href: "https://www.youtube.com/@theaaditagrawal", icon: "film" },
+  { name: "git (personal)", href: "https://git.aadit.cc/aadit", icon: "code" },
+  { name: "coolstuff", href: "https://coolstuff.work", icon: "heart" },
 ];
 
 const linksContainer = document.getElementById("links-container");
@@ -16,7 +18,72 @@ links.forEach((link) => {
 
   const linkIndicator = document.createElement("span");
   linkIndicator.className = "link-indicator";
-  linkIndicator.textContent = "-";
+  
+  // Create SVG icon based on link type
+  const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  iconSvg.setAttribute("class", "link-icon");
+  iconSvg.setAttribute("viewBox", "0 0 24 24");
+  iconSvg.setAttribute("width", "24");
+  iconSvg.setAttribute("height", "24");
+  iconSvg.setAttribute("fill", "none");
+  iconSvg.setAttribute("stroke", "currentColor");
+  iconSvg.setAttribute("stroke-width", "2");
+  iconSvg.setAttribute("stroke-linecap", "round");
+  iconSvg.setAttribute("stroke-linejoin", "round");
+  
+  let iconPaths = [];
+  
+  // Set different icons based on link type
+  switch(link.icon) {
+    case "book":
+      iconPaths = [
+        "M4 19.5A2.5 2.5 0 0 1 6.5 17H20",
+        "M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+      ];
+      break;
+    case "camera":
+      iconPaths = [
+        "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z",
+        "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+      ];
+      break;
+    case "paintbrush":
+      iconPaths = [
+        "M12 2l7 7-7 7-7-7 7-7z",
+        "M12 9l3 3-7 7-3-3 7-7z",
+        "M5 19l2 2"
+      ];
+      break;
+    case "film":
+      iconPaths = [
+        "M4 4h16v16H4z",
+        "M4 8h16",
+        "M4 12h16",
+        "M4 16h16",
+        "M8 4v16",
+        "M16 4v16"
+      ];
+      break;
+    case "code":
+      iconPaths = [
+        "M16 18l6-6-6-6",
+        "M8 6l-6 6 6 6"
+      ];
+      break;
+    case "heart":
+      iconPaths = [
+        "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+      ];
+      break;
+  }
+  
+  iconPaths.forEach(pathData => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", pathData);
+    iconSvg.appendChild(path);
+  });
+  
+  linkIndicator.appendChild(iconSvg);
 
   const linkText = document.createElement("span");
   linkText.textContent = link.name;
@@ -68,11 +135,11 @@ links.forEach((link) => {
   linkElement.appendChild(svgElement);
 
   linkElement.addEventListener("mouseenter", () => {
-    linkIndicator.textContent = ">";
+    linkIndicator.style.transform = "translateX(4px)";
   });
 
   linkElement.addEventListener("mouseleave", () => {
-    linkIndicator.textContent = "-";
+    linkIndicator.style.transform = "translateX(0)";
   });
 
   linksContainer.appendChild(linkElement);
