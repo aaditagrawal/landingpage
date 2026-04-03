@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Man Who Built His Machines — The Industrial Gazette</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: #e8e4d8;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #1a1a1a;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .newspaper {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #faf8f0;
+    padding: 48px 56px;
+    border: 1px solid #c8c0aa;
+    box-shadow: 2px 3px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* Masthead */
+  .masthead {
+    text-align: center;
+    border-top: 3px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 18px 0 14px;
+    margin-bottom: 4px;
+  }
+
+  .masthead h1 {
+    font-family: "Didot", "Bodoni 72", Georgia, "Times New Roman", serif;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .masthead-meta {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #555;
+    padding: 8px 0 16px;
+    border-bottom: 3px solid #1a1a1a;
+    margin-bottom: 28px;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  /* Headline */
+  .headline {
+    font-family: "Didot", "Bodoni 72", Georgia, "Times New Roman", serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    font-style: italic;
+    text-align: center;
+    color: #3a3a3a;
+    line-height: 1.4;
+    margin-bottom: 14px;
+  }
+
+  .byline {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #bbb;
+  }
+
+  /* Body columns */
+  .body-text {
+    column-count: 2;
+    column-gap: 36px;
+    column-rule: 1px solid #c0b89a;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  .body-text p {
+    margin-bottom: 14px;
+    text-indent: 0;
+  }
+
+  .body-text p + p {
+    text-indent: 1.5em;
+  }
+
+  /* Drop cap */
+  .body-text p.lede::first-letter {
+    font-family: "Didot", "Bodoni 72", Georgia, serif;
+    float: left;
+    font-size: 72px;
+    line-height: 0.8;
+    padding-right: 8px;
+    padding-top: 6px;
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+
+  .body-text p.lede {
+    text-indent: 0 !important;
+  }
+
+  /* Section headers */
+  .section-header {
+    font-family: "Didot", "Bodoni 72", Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    margin-top: 22px;
+    margin-bottom: 10px;
+    text-indent: 0 !important;
+    break-after: avoid;
+  }
+
+  .section-header + p {
+    text-indent: 0 !important;
+  }
+
+  /* Image placeholder */
+  .photo-placeholder {
+    float: right;
+    width: 200px;
+    margin: 0 0 12px 20px;
+    break-inside: avoid;
+  }
+
+  .photo-placeholder img {
+    border: 1px solid #c0b89a;
+  }
+
+  .photo-caption {
+    font-size: 12px;
+    font-style: italic;
+    color: #555;
+    line-height: 1.4;
+    margin-top: 6px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #c0b89a;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    column-span: all;
+    text-align: center;
+    padding: 22px 60px;
+    margin: 24px 0;
+    border-top: 2px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a;
+    break-inside: avoid;
+  }
+
+  .pull-quote blockquote {
+    font-family: "Didot", "Bodoni 72", Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.5;
+    color: #2a2a2a;
+  }
+
+  .pull-quote .attribution {
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #777;
+    margin-top: 8px;
+  }
+
+  /* Secondary photo */
+  .photo-secondary {
+    column-span: all;
+    margin: 24px 0 16px;
+    break-inside: avoid;
+  }
+
+  .photo-secondary .photo-caption {
+    margin-top: 6px;
+  }
+
+  /* End mark */
+  .end-mark {
+    column-span: all;
+    text-align: center;
+    font-size: 18px;
+    color: #999;
+    margin-top: 16px;
+    letter-spacing: 8px;
+  }
+
+  @media print {
+    body {
+      background: white;
+      padding: 0;
+    }
+    .newspaper {
+      box-shadow: none;
+      border: none;
+      padding: 24px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .newspaper {
+      padding: 24px 20px;
+    }
+    .masthead h1 {
+      font-size: 28px;
+      letter-spacing: 3px;
+    }
+    .headline {
+      font-size: 26px;
+    }
+    .body-text {
+      column-count: 1;
+    }
+    .photo-placeholder {
+      float: none;
+      width: 100%;
+      margin: 16px 0;
+    }
+    .pull-quote {
+      padding: 18px 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<article class="newspaper">
+
+  <header class="masthead">
+    <h1>The Industrial Gazette</h1>
+  </header>
+
+  <div class="masthead-meta">
+    Dehradun, Friday, June 14, 2024 &ensp;|&ensp; Vol. XLII No. 167  </div>
+
+  <h2 class="headline">The Man Who Built His Machines</h2>
+
+  <p class="subtitle">In a Dehradun workshop, Pritpal Singh Mehrok has spent six decades grinding metal to two-micron precision.</p>
+
+  <div class="byline">By Aadit Agrawal &ensp;|&ensp; June 14, 2024</div>
+
+  <div class="body-text">
+
+    <p class="lede">In 1981, Pritpal Singh Mehrok packed five tapping attachments into a bag and walked through the industrial lanes of Ghaziabad, knocking on doors. He had no factory. He had no capital to speak of. What he had was twelve years of training at Hindustan Machine Tools and a quiet conviction that his son should never have to look for a job.</p>
+
+    <p>Forty-three years later, Mehrok still works in the same industrial plot he set up in Dehradun with the money from those first sales. The grinding machines he designed and built with his own hands in the mid-1980s are still running. They hold tolerances of two microns.</p>
+
+    <p>"I started making tapping attachments that are used on radial drill machines," Mehrok recalled, sitting in his workshop on a warm June afternoon. "In the beginning, I made five. I put them in a bag and sold them in Ghaziabad. When I got the amount, I started buying materials and producing them furthermore."</p>
+
+    <p>The story of how a trainee machinist from Punjab built a precision workshop in Dehradun that remains unmatched within a hundred kilometres is, in many ways, a story about Indian manufacturing itself; about what happens when institutional knowledge meets individual stubbornness.</p>
+
+    <div class="photo-placeholder">
+      <img src="../article/DSC06329.jpg" alt="Pritpal Singh Mehrok" style="width:100%; height:auto; display:block;">
+      <p class="photo-caption">Pritpal Singh Mehrok outside his workshop in Dehradun's industrial area. <span style="font-size:10px; color:#888;">Photo: Aadit Agrawal</span></p>
+    </div>
+
+    <h3 class="section-header">Learning the Trade</h3>
+
+    <p>Mehrok's career began in 1962, when he completed his Machinery trade qualification. The following year, he joined HMT Punjab as a trainee. The training was broad at first: turning, fitting, machining. Then he was sent to HMT's facility at Jalahalli in Bangalore, where he spent six months specialising in grinding. Cylindrical grinding. Surface grinding. Internal grinding. It became his life's work.</p>
+
+    <p>He spent twelve years at HMT. When a former general manager named Mr. Iyer left to start his own factory, he asked HMT Punjab to send him someone who could run a production shop. D.K. Chakraborty, then in charge at HMT Punjab, recommended Mehrok.</p>
+
+    <p>"Mr. Iyer required you, so you can go there," Chakraborty told him.</p>
+
+    <p>Mehrok joined the new company in 1974. Over eight years, he helped grow production from eighty thousand to eighty lakh rupees. Then, in 1981, he quit. He wanted to build something his son could inherit.</p>
+
+    <h3 class="section-header">Five in a Bag</h3>
+
+    <p>The early years were lean. Mehrok had been earning a salary; he did not come from money. He started small, manufacturing tapping attachments and selling them to workshops across north India. Slowly, orders came in. He bought one machine, then two. He secured a plot in the industrial area in Dehradun.</p>
+
+    <p>Within a few years, he was supplying Jyothi Limited in Baroda, Indo-Japan Limited in Punjab, and Trizipath Tractor Private Limited. His annual sales climbed from fifty thousand rupees to fifteen lakh. He employed eight workers: a miller, a fitter, a grinder.</p>
+
+    <p>But Mehrok wanted grinding machines he could not afford to buy. So he built them.</p>
+
+    <p>In 1985, he designed and manufactured a cylindrical grinding machine. In 1987, he built an internal grinding machine. Both are still in use. The cylindrical grinder achieves accuracy within two microns. When asked how they have lasted nearly four decades, Mehrok simply said, "It has been designed by me."</p>
+
+    <p>There is no CNC equipment in Mehrok's workshop. Everything is conventional. He started in 1981, and the culture of machining has changed around him; he is the first to say he knows nothing of modern CNC technology. But within his domain of conventional precision, he is unmatched. No comparable workshop exists within a hundred kilometres.</p>
+
+    <div class="pull-quote">
+      <blockquote>"Talent is given by God. You can't get it from any teacher, professor. My advice is, follow your talent into your profession."</blockquote>
+      <p class="attribution">Pritpal Singh Mehrok</p>
+    </div>
+
+    <h3 class="section-header">When Japan Stopped Exporting</h3>
+
+    <p>The early 1990s tested small manufacturers across India. Liberalisation brought new competition and rising material costs. The price of steel jumped. But for Mehrok, the Narasimha Rao years also brought opportunity.</p>
+
+    <p>When the rupee weakened against the dollar, Japanese imports of machine components dried up. Companies that had relied on Japanese parts suddenly needed a domestic supplier.</p>
+
+    <p>"We are not getting equipment from Japan," they told Mehrok. "You make it for us."</p>
+
+    <p>They gave him a Japanese sample. He reverse-engineered it. "I copied it here," he said, with no pretence of false modesty. "By copying, it is absolutely like this." Bulk orders followed. His financial position stabilised.</p>
+
+    <h3 class="section-header">Three Points of Precision</h3>
+
+    <p>Mehrok's engineering philosophy fits on the back of a visiting card. When you make any component, he says, three things matter: the right angle must be true, the centreline must be accurate, and the part must be perfectly round.</p>
+
+    <p>He does all his own machine repairs. Reconditioning, part replacement, restoring equipment to working order. He learned to do this during his training days at HMT and never stopped.</p>
+
+    <p>"Even during training time, I was doing the repair," he said. "Machine ko koi bhi part change karna, repair karna, dobara chalu karna. I do it all myself."</p>
+
+    <h3 class="section-header">Talent Is Given by God</h3>
+
+    <p>Mehrok has worked in precision engineering for sixty years. He does not frame this as sacrifice.</p>
+
+    <p>"Talent is given by God," he said, switching between Hindi and English as he does naturally. "You can't get it from any teacher, professor. My advice is, follow your talent into your profession."</p>
+
+    <p>He paused. "I never considered it a burden. I enjoy while doing work. Whatever job I made, I fully enjoyed it."</p>
+
+    <p>His advice to young engineers is plain: when choosing a profession, do not look at what others are doing. Look at what your own mind tells you. That is your real talent.</p>
+
+    <p>Outside, the grinding machines he built forty years ago were still running.</p>
+
+    <div class="photo-secondary">
+      <img src="../article/DSC06335.jpg" alt="Pritpal Singh Mehrok at the dairy beside his shop" style="width:100%; height:auto; display:block; border:1px solid #c0b89a;">
+      <p class="photo-caption">At the age of 84, Mr. Mehrok finds spending time with his friends at the dairy right beside his machining shop to be his favorite part of the day. <span style="font-size:10px; color:#888;">Photo: Aadit Agrawal</span></p>
+    </div>
+
+    <div class="end-mark">&bull; &bull; &bull;</div>
+  </div>
+
+</article>
+
+</body>
+</html>
