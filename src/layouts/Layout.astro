@@ -22,13 +22,13 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<ClientRouter />
-		
+
 		<!-- Resource Hints -->
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		
+
 		<!-- Font Preload -->
 		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" as="style" />
 		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
@@ -77,7 +77,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 							</a>
 						</div>
 					</div>
-					
+
 					<nav class="nav-links vertical" transition:name="nav">
 						<a href="/" class:list={["nav-link", "font-mono", { active: isHome }]}>/about</a>
 						<a href="/experience" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/experience') }]}>/experience</a>
@@ -113,7 +113,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		--accent: #F55411;
 		--accent-subtle: rgba(245, 84, 17, 0.15);
 		--interactive: #5B9BF6;
-		
+
 		/* Spacing */
 		--space-2xs: 2px;
 		--space-xs: 4px;
@@ -143,6 +143,11 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
+	}
+
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation-duration: 100ms;
 	}
 
 	html {
@@ -270,7 +275,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		/* Hide scrollbar */
 		scrollbar-width: none;
 	}
-	
+
 	.left-panel::-webkit-scrollbar {
 		display: none;
 	}
@@ -283,7 +288,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		display: flex;
 		flex-direction: column;
 	}
-	
+
 	.right-panel::-webkit-scrollbar {
 		display: none;
 	}
@@ -296,7 +301,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 			height: auto;
 			overflow-y: visible;
 		}
-		
+
 		.right-panel {
 			height: auto;
 			overflow-y: visible;
