@@ -1,0 +1,68 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Aadit Agrawal | Systems Engineer">
+    <section id="about" class="section">
+        <div class="section-header">
+            <h2 class="label-text">ABOUT</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="about-content">
+            <p>
+                Hello! I'm a 3rd year undergrad at Manipal Institute of Technology.
+            </p>
+
+            <p>
+                I like building software and tinkering with hardware to make it happen! Just excited to build cool stuff.
+            </p>
+
+            <p>
+                I've worked across various domains including cybersecurity, consumer applications, AI, and DevOps. I like to learn new things by diving in and implementing them myself. :)
+            </p>
+
+            <p>
+                Enthusiastic about OSS and building libre software. I have learnt lots from the community and contribute back where I can!
+            </p>
+
+            <div class="status-callout">
+                Currently looking for <strong>Summer 2026</strong> and <strong>Winter 2026</strong> internships.
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        max-width: 650px;
+    }
+
+    .about-content p {
+        margin: 0;
+    }
+
+    .status-callout {
+        margin-top: var(--space-md);
+        padding: var(--space-md);
+        background: var(--surface);
+        border: 1px solid var(--border-visible);
+        border-left: 3px solid var(--accent);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        font-size: 15px;
+        color: var(--text-display);
+    }
+
+    .status-callout strong {
+        font-weight: 600;
+        color: var(--accent);
+    }
+</style>

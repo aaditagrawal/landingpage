@@ -1,0 +1,28 @@
+{
+  "name": "tmp-astro",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
+    "format": "oxfmt --write \"**/*.{js,mjs,cjs,ts,tsx,jsx}\" --ignore-path .gitignore --no-error-on-unmatched-pattern",
+    "format:check": "oxfmt --check \"**/*.{js,mjs,cjs,ts,tsx,jsx}\" --ignore-path .gitignore --no-error-on-unmatched-pattern",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^6.1.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "oxfmt": "^0.43.0",
+    "oxlint": "^1.58.0",
+    "typescript": "^6.0.2"
+  }
+}

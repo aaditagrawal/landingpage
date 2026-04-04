@@ -1,0 +1,414 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Projects | Aadit Agrawal">
+    <section id="projects" class="section">
+        <div class="section-header">
+            <h2 class="label-text">FEATURED SYSTEMS</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="project-list">
+            <article class="project-card">
+                <div class="project-meta">
+                    <span class="label-text">FULL-STACK PLATFORM</span>
+                    <div class="tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag tag-highlight">5K+ DAU</span>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>
+                        <a
+                            href="https://fc2.coolstuff.work"
+                            class="project-title">The TIK Menu & Campus Suite</a
+                        >
+                    </h3>
+                    <p>
+                        A zero-cost campus platform serving
+                        5,000+ Daily Active Users and processing over 150K
+                        monthly requests. Architected as a resilient
+                        offline-friendly Progressive Web App (PWA) backed by a
+                        REST API, dynamic XLSX parsing algorithms, and
+                        fast Cloudflare R2 edge storage. Blog about the
+                        architecture: <a
+                            href="https://blog.aadit.cc/posts/building-a-food-court-menu/"
+                            class="link-subtle"
+                        >
+                            click here.
+                        </a>
+
+                     Unified multiple campus utilities like <a
+                        href="https://cd.coolstuff.work"
+                        class="link-subtle">Crowdsourced Directories</a
+                    > and mess menus into a single ecosystem.
+
+                    </p>
+                </div>
+            </article>
+        </div>
+
+        <article class="project-card">
+            <div class="project-meta">
+                <span class="label-text">INFRASTRUCTURE / DEVOPS</span>
+                <div class="tags">
+                    <span class="tag">Linux</span>
+                    <span class="tag">Docker</span>
+                    <span class="tag">CI/CD</span>
+                    <span class="tag">GPU</span>
+                </div>
+            </div>
+            <div class="project-content">
+                <h3>
+                    <a href="https://cloud.aadit.cc" class="project-title"
+                        >Production Homelab Environment</a
+                    >
+                </h3>
+                <p>
+                    A robust, self-hosted private cloud maintaining 98% uptime
+                    over 4 years. Acts as a sandbox for full-stack deployments
+                    running 70+ orchestrated services (Forgejo, Ghost CMS).
+                    Managed via IaC with telemetry through Grafana and
+                    Loki. Integrated Blackwell-GPU acceleration to offload 95%
+                    of compute from CPUs for real-time (30fps) security camera
+                    object detection. Configured to withstand live DDoS (50K+
+                    req/min) through fail2ban configurations and network
+                    routing.
+                </p>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-meta">
+                <span class="label-text">DESKTOP / SYSTEMS / WASM</span>
+                <div class="tags">
+                    <span class="tag">Electrobun</span>
+                    <span class="tag">Rust</span>
+                    <span class="tag">WASM</span>
+                </div>
+            </div>
+            <div class="project-content">
+                <h3>
+                    <a href="https://typst.coolstuff.work" class="project-title"
+                        >Typsmthng Native & Web</a
+                    >
+                </h3>
+                <p>
+                    Developed an editor interface for the Typst
+                    system spanning both web and desktop. The core engine
+                    utilizes WebAssembly (WASM) to compile code in-browser for
+                    immediate live previews. The web-client was further ported
+                    to an experimental, cross-platform native desktop
+                    application utilizing Tauri (Rust).
+                </p>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <div class="project-meta">
+                <span class="label-text">DATA PIPELINES / UI</span>
+                <div class="tags">
+                    <span class="tag">React</span>
+                    <span class="tag">Radix UI</span>
+                    <span class="tag">Data Viz</span>
+                </div>
+            </div>
+            <div class="project-content">
+                <h3>
+                    <a href="https://coolstuff.work" class="project-title"
+                        >Coolstuff.work Utilities</a
+                    >
+                </h3>
+                <p>
+                    A versatile suite of 10+ developer and campus tools focusing
+                    on complex data transformation and UI. Flagship tools
+                    include <a
+                        href="https://courses.coolstuff.work"
+                        class="link-subtle">MIT Courses Search</a
+                    >, building interactive physics-based network graph
+                    visualizations for over 500+ nodes using scraped course
+                    data, and <a
+                        href="https://or.coolstuff.work"
+                        class="link-subtle">OR-Free</a
+                    >, a real-time data ingestion tracker mapping free AI model
+                    availability across APIs.
+                </p>
+            </div>
+        </article>
+    </section>
+
+<section id="ai-cli" class="section">
+    <div class="section-header">
+        <h2 class="label-text">CLI AND EMBEDDED EDGE</h2>
+        <div class="line"></div>
+    </div>
+        <a
+            href="https://git.aadit.cc/aadit/transcript-cli"
+            class="archive-card"
+        >
+            <h3>transcript-cli</h3>
+            <p>
+                GPU-accelerated video transcript extraction CLI running edge
+                inference models (Whisper) locally. Optimized for cross-platform
+                ARM64/AMD64 deployments.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/LLM-Prompt-Injection-Demo-TUI"
+            class="archive-card"
+        >
+            <h3>LLM Prompt Injection Demo TUI</h3>
+            <p>
+                A Python TUI demonstrating prompt injections using
+                terminal emulator boundaries and console UI
+                frameworks.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/slopmeter"
+            class="archive-card"
+        >
+            <h3>slopmeter <span>[Fork]</span></h3>
+            <p>
+                A lightweight command-line tracking utility querying API
+                telemetry to display LLM token usage directly within developer
+                shells.
+            </p>
+        </a>
+
+        <a href="https://git.aadit.cc/aadit/tetris-cli" class="archive-card">
+            <h3>tetris-cli</h3>
+            <p>
+                A terminal-native implementation of Tetris built by strictly
+                managing standard I/O streams and implementing efficient console
+                loop rendering algorithms.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/docling-serve"
+            class="archive-card"
+        >
+            <h3>docling-serve <span>[Fork]</span></h3>
+            <p>
+                Orchestrated Docker deployment wrapping Docling as a REST
+                microservice API, optimizing PDF/image parsing layers for RAG
+                data injection.
+            </p>
+        </a>
+    </div>
+</section>
+
+<section id="web-extensions" class="section">
+    <div class="section-header">
+        <h2 class="label-text">WEB AND EXTENSIONS</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="project-grid">
+        <a href="https://vcf.aadit.cc/" class="archive-card">
+            <h3>The Mass Contact Maker</h3>
+            <p>
+                A React application performing intensive client-side parsing of
+                XLSX/CSV payloads to algorithmically generate structured VCF
+                contact files for enterprise importing.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/floatplaneEnhance"
+            class="archive-card"
+        >
+            <h3>floatplaneEnhance</h3>
+            <p>
+                A Chromium browser extension reverse-engineering and injecting
+                DOM overrides to fix UI logic and improve media controls on the
+                Floatplane streaming platform.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/unduck-plus"
+            class="archive-card"
+        >
+            <h3>unduck-plus <span>[Fork]</span></h3>
+            <p>
+                A fast, statically compiled local-first search routing engine
+                parsing URL queries to redirect to specific search targets
+                utilizing !bang syntax.
+            </p>
+        </a>
+
+        <a
+            href="https://git.aadit.cc/aadit/music-down-tag-albumiser-yt"
+            class="archive-card"
+        >
+            <h3>Music Albumiser</h3>
+            <p>
+                Automated pipeline script handling network stream downloads,
+                extracting ID3 tag metadata, and properly structuring
+                unorganized media files.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/contact-cards"
+            class="archive-card"
+        >
+            <h3>Personal Contact Cards</h3>
+            <p>
+                A dynamically rendered business card UI built with web
+                components that constructs raw vCard definitions and converts
+                them into scannable QR payloads on the fly.
+            </p>
+        </a>
+    </div>
+</section>
+
+<section id="desktop-misc" class="section">
+    <div class="section-header">
+        <h2 class="label-text">DESKTOP AND LOW LEVEL</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="project-grid">
+        <a
+            href="https://github.com/aaditagrawal/flappyboards"
+            class="archive-card"
+        >
+            <h3>Flappyboards <span>[Fork]</span></h3>
+            <p>
+                Open-source hardware interface software syncing standard
+                external monitor arrays to mimic the physical behaviors of
+                mechanical split-flap flight boards.
+            </p>
+        </a>
+
+        <a href="https://github.com/aaditagrawal/openmtp" class="archive-card">
+            <h3>OpenMTP <span>[Fork]</span></h3>
+            <p>
+                macOS application interface utilizing low-level USB transfer
+                protocols (MTP) to reliably read and write memory blocks between
+                Unix systems and Android.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/TheImaniPulator"
+            class="archive-card"
+        >
+            <h3>TheImaniPulator</h3>
+            <p>
+                A JavaFX application diving into fundamental image processing:
+                performing low-level matrix math for kernel convolutions, edge
+                detection, and pixel manipulation.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/vesper-fleet"
+            class="archive-card"
+        >
+            <h3>vesper-fleet</h3>
+            <p>
+                A manual port translating syntactical JSON highlighting
+                structures and AST coloring tokens to build a theme for
+                JetBrains Fleet.
+            </p>
+        </a>
+
+        <a href="https://git.aadit.cc/aadit/dotfiles" class="archive-card">
+            <h3>System dotfiles</h3>
+            <p>
+                The core configuration engine of my machines: bash scripting,
+                environment variable routing, and Neovim module setups used for
+                daily workflows.
+            </p>
+        </a>
+
+        <a
+            href="https://github.com/aaditagrawal/speedtest-cli"
+            class="archive-card"
+        >
+            <h3>speedtest-cli <span>[Fork]</span></h3>
+            <p>
+                A modified Python CLI using raw socket connections and HTTP
+                packet latency tracking to calculate bandwidth parameters.
+            </p>
+        </a>
+    </div>
+</section>
+</Layout>
+
+<style>
+    .link-subtle {
+        color: var(--text-primary);
+        text-decoration: underline;
+        text-decoration-color: var(--border-visible);
+        text-underline-offset: 4px;
+    }
+
+    .link-subtle:hover {
+        color: var(--accent);
+        text-decoration-color: var(--accent);
+    }
+
+    .project-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    @media (min-width: 640px) {
+        .project-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .archive-card {
+        padding: var(--space-md);
+        border: 1px solid var(--border-visible);
+        background: var(--surface);
+        transition: all 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+        text-decoration: none;
+    }
+
+    .archive-card:hover {
+        background: var(--surface-raised);
+        border-color: var(--accent);
+    }
+
+    .archive-card h3 {
+        font-size: 15px;
+        color: var(--text-display);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .archive-card h3 span {
+        font-family: "Geist Mono", monospace;
+        font-weight: 500;
+        font-size: 10px;
+        color: var(--text-disabled);
+        font-weight: normal;
+        background: var(--black);
+        padding: 2px 6px;
+        border: 1px solid var(--border-visible);
+    }
+
+    .archive-card p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.5;
+    }
+</style>

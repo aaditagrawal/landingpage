@@ -1,0 +1,169 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Experience | Aadit Agrawal">
+    <section id="experience" class="section">
+        <div class="section-header">
+            <h2 class="label-text">EXPERIENCE</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="exp-list">
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        Lead Research Engineer <span class="exp-at"
+                            >@ CASIR, School of Computing, MAHE</span>
+                    </h3>
+                    <span class="label-text font-mono">MAY 2025-PRES</span>
+                </div>
+                <ul>
+                    <li>
+                        Engineered an LLM-powered industrial protocol translator
+                        parsing IEC 61131-3 to IEC 61499, cutting
+                        PLC migration timelines for external manufacturing
+                        clients.
+                    </li>
+                    <li>
+                        Architected a massive on-premise production cluster
+                        running heavy AI workloads, load-balancing traffic
+                        across varied architectures (ARM64 Apple Silicon and
+                        CUDA Blackwells).
+                    </li>
+                    <li>
+                        Deployed an edge-compute computer vision pipeline onto
+                        NVIDIA Jetson hardware flying on DJI drones, sustaining
+                        30 fps inference directly on the embedded board via
+                        RTMP.
+                    </li>
+                    <li>
+                        Built an end-to-end full-stack agentic RAG pipeline
+                        processing 2000+ structured layouts via custom OCR
+                        tools.
+                    </li>
+                </ul>
+            </article>
+
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        Platform Engineer <span class="exp-at"
+                            >@ <a href="https://rossmanngroup.com"
+                                >Rossmann New Media 2 Inc.</a
+                            ></span>
+                    </h3>
+                    <span class="label-text font-mono">JAN 2026—PRES</span>
+                </div>
+                <ul>
+                    <li>
+                        Led a full-stack migration from legacy
+                        WordPress to a modern React/Next.js ecosystem.
+                    </li>
+                    <li>
+                        Redesigned the UI for true cross-device responsiveness,
+                        improving core web vitals and overall LCP by 60%+.
+                    </li>
+                    <li>
+                        Executed a technical SEO overhaul by analyzing
+                        and mapping data recovery search patterns, moving
+                        keyword rankings into the top 5.
+                    </li>
+                </ul>
+            </article>
+
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        DevOps Engineer <span class="exp-at"
+                            >@ Rasen AI (formerly Pixa AI), Bengaluru</span>
+                    </h3>
+                    <span class="label-text font-mono">DEC 2025</span>
+                </div>
+                <ul>
+                    <li>
+                        Focused purely on infrastructure-as-code and
+                        reliability, provisioning varied compute nodes
+                        (H100/H200/B200) tailored for heavy TTS/STT fine-tuning
+                        operations.
+                    </li>
+                    <li>
+                        Designed and implemented robust automated CI/CD
+                        pipelines guaranteeing 99.5% deployment success across
+                        consecutive API releases.
+                    </li>
+                </ul>
+            </article>
+
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        Founding President <span class="exp-at"
+                            >@ <a href="https://theprism.fyi"
+                                >PRISM - Computing & AI Club, MAHE</a
+                            ></span>
+                    </h3>
+                    <span class="label-text font-mono">JAN 2026—PRES</span>
+                </div>
+                <ul>
+                    <li>
+                        Founded and manage an interdisciplinary collective of
+                        150+ members focused on pushing the envelope across Web
+                        Development, embedded IoT, DevOps and Applied AI.
+                    </li>
+                    <li>
+                        Act as a technical bridge by serving on MAHE's Academic
+                        Advisory Board, helping adapt curricula to modern tech
+                        stacks.
+                    </li>
+                </ul>
+            </article>
+
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        Infrastructure Lead <span class="exp-at"
+                            >@ MIST (Cybersecurity Club)</span>
+                    </h3>
+                    <span class="label-text font-mono">OCT 2023-JUN 2025</span>
+                </div>
+                <ul>
+                    <li>
+                        Architected a resilient, dynamic CTF web platform
+                        supporting 300+ concurrent players, sustaining 100%
+                        uptime across 3 high-load events.
+                    </li>
+                    <li>
+                        Optimized cloud configurations and resource
+                        limits, reducing operational overhead by
+                        80%.
+                    </li>
+                </ul>
+            </article>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    ul {
+        list-style: none;
+        padding-left: var(--space-sm);
+    }
+
+    li {
+        position: relative;
+        font-size: 15px;
+        color: var(--text-secondary);
+        margin-bottom: var(--space-sm);
+        line-height: 1.6;
+        padding-left: var(--space-md);
+    }
+
+    li::before {
+        content: "▪";
+        position: absolute;
+        left: 0;
+        color: var(--text-disabled);
+        font-size: 12px;
+    }
+</style>
