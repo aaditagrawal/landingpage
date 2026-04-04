@@ -90,7 +90,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 			</div>
 
 			<div class="right-panel">
-				<main class="content" transition:animate="fade">
+				<main class="content" transition:animate="none">
 					<slot />
 				</main>
 			</div>
@@ -147,7 +147,8 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 
 	::view-transition-old(*),
 	::view-transition-new(*) {
-		animation-duration: 100ms;
+		animation-duration: 50ms;
+		animation-timing-function: linear;
 	}
 
 	html {

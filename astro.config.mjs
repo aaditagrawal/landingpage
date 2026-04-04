@@ -10,6 +10,6 @@ export default defineConfig({
   compressHTML: true,
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'hover',
+    defaultStrategy: 'tap',
   },
 });
