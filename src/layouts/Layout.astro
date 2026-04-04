@@ -12,14 +12,22 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Aadit Agrawal - Infrastructure and Systems Engineer" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		
-		<!-- Fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<!-- Resource Hints -->
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" rel="stylesheet" />
+		
+		<!-- Font Preload -->
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" as="style" />
+		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+		<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" rel="stylesheet" /></noscript>
 	</head>
 	<body class="dot-grid">
 		<div class="site-wrapper">
@@ -630,12 +638,12 @@ const { title } = Astro.props;
 	}
 </style>
 
-<script>
+<script defer>
 	// Theme handling
 	const themeToggle = document.getElementById('theme-toggle');
 	const html = document.documentElement;
 
-	const updateTheme = (isDark: boolean) => {
+	const updateTheme = (isDark) => {
 		html.setAttribute('data-theme', isDark ? 'dark' : 'light');
 		localStorage.setItem('theme', isDark ? 'dark' : 'light');
 	};
