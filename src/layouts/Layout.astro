@@ -21,7 +21,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		<ClientRouter />
+		<ClientRouter fallback="swap" />
 
 		<!-- Resource Hints -->
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -79,12 +79,12 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 					</div>
 
 					<nav class="nav-links vertical" transition:name="nav">
-						<a href="/" class:list={["nav-link", "font-mono", { active: isHome }]}>/about</a>
-						<a href="/experience" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/experience') }]}>/experience</a>
-						<a href="/projects" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/projects') }]}>/projects</a>
-						<a href="/research" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/research') }]}>/research</a>
-						<a href="/skills" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/skills') }]}>/skills</a>
-						<a href="/resume" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/resume') }]}>/resume</a>
+						<a href="/" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: isHome }]}>/about</a>
+						<a href="/experience" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/experience') }]}>/experience</a>
+						<a href="/projects" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/projects') }]}>/projects</a>
+						<a href="/research" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/research') }]}>/research</a>
+						<a href="/skills" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/skills') }]}>/skills</a>
+						<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-reload data-astro-prefetch="false" class="nav-link nav-link--tooltip font-mono" aria-label="view my resume" data-tooltip="view my resume">/resume.pdf</a>
 					</nav>
 				</header>
 			</div>
@@ -428,6 +428,39 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		padding-bottom: var(--space-xs);
 		border-bottom: 1px solid transparent;
 		width: fit-content;
+	}
+
+	.nav-link--tooltip {
+		position: relative;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.nav-link--tooltip::after {
+			content: attr(data-tooltip);
+			position: absolute;
+			left: calc(100% + var(--space-sm));
+			top: 50%;
+			transform: translateY(-50%) translateX(-4px);
+			padding: 6px 10px;
+			border: 1px solid var(--border-visible);
+			background: var(--surface-raised);
+			color: var(--text-display);
+			font-family: "Geist Mono", monospace;
+			font-size: 11px;
+			line-height: 1;
+			letter-spacing: 0.04em;
+			white-space: nowrap;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 120ms ease, transform 120ms ease;
+			z-index: 20;
+		}
+
+		.nav-link--tooltip:hover::after,
+		.nav-link--tooltip:focus-visible::after {
+			opacity: 1;
+			transform: translateY(-50%) translateX(0);
+		}
 	}
 
 	.nav-link:hover {
