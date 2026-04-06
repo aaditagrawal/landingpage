@@ -39,10 +39,11 @@ import Layout from "../layouts/Layout.astro";
                             click here.
                         </a>
 
-                     Unified multiple campus utilities like <a
-                        href="https://cd.coolstuff.work"
-                        class="link-subtle">Crowdsourced Directories</a
-                    > and mess menus into a single ecosystem.
+                        Unified multiple campus utilities like <a
+                            href="https://cd.coolstuff.work"
+                            class="link-subtle">Crowdsourced Directories</a
+                        >, <a href="https://sindhi.coolstuff.work" class="link-subtle">Sindhi Mess Menu</a>, and the
+                        <a href="https://tikm.coolstuff.work" class="link-subtle">TIK Admin API</a> into a single ecosystem.
 
                     </p>
                 </div>
@@ -105,37 +106,64 @@ import Layout from "../layouts/Layout.astro";
             </div>
         </article>
 
-        <article class="project-card">
-            <div class="project-meta">
-                <span class="label-text">DATA PIPELINES / UI</span>
-                <div class="tags">
-                    <span class="tag">React</span>
-                    <span class="tag">Radix UI</span>
-                    <span class="tag">Data Viz</span>
-                </div>
-            </div>
-            <div class="project-content">
-                <h3>
-                    <a href="https://coolstuff.work" class="project-title"
-                        >Coolstuff.work Utilities</a
-                    >
-                </h3>
+    </section>
+
+    <section id="campus-tools" class="section">
+        <div class="section-header">
+            <h2 class="label-text">CAMPUS TOOLS</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="project-grid">
+            <a href="https://indiaai.aadit.cc/" class="archive-card">
+                <h3>India AI Impact Summit Mapper</h3>
                 <p>
-                    A versatile suite of 10+ developer and campus tools focusing
-                    on complex data transformation and UI. Flagship tools
-                    include <a
-                        href="https://courses.coolstuff.work"
-                        class="link-subtle">MIT Courses Search</a
-                    >, building interactive physics-based network graph
-                    visualizations for over 500+ nodes using scraped course
-                    data, and <a
-                        href="https://or.coolstuff.work"
-                        class="link-subtle">OR-Free</a
-                    >, a real-time data ingestion tracker mapping free AI model
-                    availability across APIs.
+                    A fully indexable guide to the India AI Impact Summit — event schedules, guest lists, venue mapping, and expo layout all in one place.
                 </p>
-            </div>
-        </article>
+            </a>
+
+            <a href="https://tt.coolstuff.work" class="archive-card">
+                <h3>CCE-B Timetable</h3>
+                <p>
+                    Timetable for CCE-B for sixth semester for easy accessibility from anywhere.
+                </p>
+            </a>
+
+            <a href="https://courses.coolstuff.work" class="archive-card">
+                <h3>MIT Courses Search</h3>
+                <p>
+                    A website for MIT students to search for and find details and reference material for their respective courses.
+                </p>
+            </a>
+
+            <a href="https://electives.coolstuff.work" class="archive-card">
+                <h3>Electives Allocation Data</h3>
+                <p>
+                    Data for Elective Allocation for Sixth Semester Students for the Academic Year 2025 to 2026.
+                </p>
+            </a>
+
+            <a href="https://sindhi.coolstuff.work" class="archive-card">
+                <h3>Sindhi Mess Menu</h3>
+                <p>
+                    A mess menu website for Sindhi mess covering their cyclic menu rotation alongside extras listed by Sindhi mess.
+                </p>
+            </a>
+
+            <a href="https://cd.coolstuff.work" class="archive-card">
+                <h3>The MIT Manipal Campus Directory</h3>
+                <p>
+                    A crowdsourced directory collecting and sharing important contact resources and data from MIT Manipal, with a generate mail to warden feature included.
+                </p>
+            </a>
+
+            <a href="https://tikm.coolstuff.work" class="archive-card">
+                <h3>The TIK API</h3>
+                <p>
+                    A REST API for campus food data, backed by an admin dashboard with a dynamic XLSX data extractor. Full API documentation available at /docs/reference.
+                </p>
+            </a>
+        </div>
     </section>
 
 <section id="ai-cli" class="section">
@@ -157,14 +185,12 @@ import Layout from "../layouts/Layout.astro";
         </a>
 
         <a
-            href="https://github.com/aaditagrawal/LLM-Prompt-Injection-Demo-TUI"
+            href="https://or.coolstuff.work"
             class="archive-card"
         >
-            <h3>LLM Prompt Injection Demo TUI</h3>
+            <h3>OR-Free</h3>
             <p>
-                A Python TUI demonstrating prompt injections using
-                terminal emulator boundaries and console UI
-                frameworks.
+                A real-time data ingestion tracker mapping free AI model availability across OpenRouter APIs. Updated entirely client-side for perennial accuracy.
             </p>
         </a>
 
@@ -176,7 +202,7 @@ import Layout from "../layouts/Layout.astro";
             <p>
                 A lightweight command-line tracking utility querying API
                 telemetry to display LLM token usage directly within developer
-                shells.
+                shells. This fork extends support to agentic tools like Crush.
             </p>
         </a>
 
@@ -189,17 +215,6 @@ import Layout from "../layouts/Layout.astro";
             </p>
         </a>
 
-        <a
-            href="https://github.com/aaditagrawal/docling-serve"
-            class="archive-card"
-        >
-            <h3>docling-serve <span>[Fork]</span></h3>
-            <p>
-                Orchestrated Docker deployment wrapping Docling as a REST
-                microservice API, optimizing PDF/image parsing layers for RAG
-                data injection.
-            </p>
-        </a>
     </div>
 </section>
 
@@ -239,7 +254,8 @@ import Layout from "../layouts/Layout.astro";
             <p>
                 A fast, statically compiled local-first search routing engine
                 parsing URL queries to redirect to specific search targets
-                utilizing !bang syntax.
+                utilizing !bang syntax. This fork adds self-hosting support for
+                private deployments.
             </p>
         </a>
 
@@ -284,7 +300,8 @@ import Layout from "../layouts/Layout.astro";
             <p>
                 Open-source hardware interface software syncing standard
                 external monitor arrays to mimic the physical behaviors of
-                mechanical split-flap flight boards.
+                mechanical split-flap flight boards. This fork applies security
+                hardening and refines the visual design.
             </p>
         </a>
 
@@ -293,7 +310,9 @@ import Layout from "../layouts/Layout.astro";
             <p>
                 macOS application interface utilizing low-level USB transfer
                 protocols (MTP) to reliably read and write memory blocks between
-                Unix systems and Android.
+                Unix systems and Android. This fork updates the dependency chain
+                and replaces the brute-force transfer strategy with diff-based
+                delta calculations for existing folders.
             </p>
         </a>
 
@@ -321,15 +340,6 @@ import Layout from "../layouts/Layout.astro";
             </p>
         </a>
 
-        <a href="https://git.aadit.cc/aadit/dotfiles" class="archive-card">
-            <h3>System dotfiles</h3>
-            <p>
-                The core configuration engine of my machines: bash scripting,
-                environment variable routing, and Neovim module setups used for
-                daily workflows.
-            </p>
-        </a>
-
         <a
             href="https://github.com/aaditagrawal/speedtest-cli"
             class="archive-card"
@@ -337,7 +347,9 @@ import Layout from "../layouts/Layout.astro";
             <h3>speedtest-cli <span>[Fork]</span></h3>
             <p>
                 A modified Python CLI using raw socket connections and HTTP
-                packet latency tracking to calculate bandwidth parameters.
+                packet latency tracking to calculate bandwidth parameters. This
+                fork migrates to modern Linux timekeeping APIs for more accurate
+                measurements.
             </p>
         </a>
     </div>
@@ -493,5 +505,23 @@ import Layout from "../layouts/Layout.astro";
         color: var(--text-secondary);
         margin: 0;
         line-height: 1.5;
+    }
+
+    .archive-card.disabled {
+        cursor: default;
+        background: var(--surface);
+        opacity: 0.7;
+    }
+
+    .archive-card.disabled:hover {
+        background: var(--surface);
+    }
+
+    .archive-card.disabled::after {
+        display: none;
+    }
+
+    .archive-card.disabled h3 {
+        color: var(--text-secondary);
     }
 </style>
