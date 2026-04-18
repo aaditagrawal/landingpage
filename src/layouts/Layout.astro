@@ -84,8 +84,10 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 						<a href="/projects" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/projects') }]}>/projects</a>
 						<a href="/research" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/research') }]}>/research</a>
 						<a href="/skills" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/skills') }]}>/skills</a>
-						<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-astro-reload data-astro-prefetch="false" class="nav-link nav-link--tooltip font-mono" aria-label="view my resume" data-tooltip="view my resume">/resume.pdf</a>
+						<button type="button" id="resume-trigger" class="nav-link nav-link--tooltip nav-link--button font-mono" aria-label="view my resume" aria-haspopup="dialog" data-tooltip="view my resume">/resume.pdf</button>
 					</nav>
+
+					<div class="nav-clip-indicator font-mono" aria-hidden="true">↓ scroll</div>
 				</header>
 			</div>
 
@@ -95,6 +97,28 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 				</main>
 			</div>
 		</div>
+
+		<dialog id="resume-dialog" class="resume-dialog" aria-labelledby="resume-dialog-title">
+			<div class="resume-dialog__inner">
+				<button type="button" class="resume-dialog__close font-mono" aria-label="close" data-resume-close>[ x ]</button>
+				<div class="resume-dialog__header">
+					<span class="label-text">RESUME</span>
+					<div class="line"></div>
+				</div>
+				<h2 id="resume-dialog-title" class="resume-dialog__title">pick your flavor.</h2>
+				<p class="resume-dialog__subtitle">same content, tuned for the reader.</p>
+				<div class="resume-dialog__options">
+					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-option font-mono" data-resume-close>
+						<span class="resume-option__label">[ HUMAN FRIENDLY ]</span>
+						<span class="resume-option__desc">typeset, designed for people.</span>
+					</a>
+					<a href="/resume-ats.pdf" target="_blank" rel="noopener noreferrer" class="resume-option font-mono" data-resume-close>
+						<span class="resume-option__label">[ AGENT FRIENDLY ]</span>
+						<span class="resume-option__desc">plain-text ATS, parser-ready.</span>
+					</a>
+				</div>
+			</div>
+		</dialog>
 	</body>
 </html>
 
@@ -672,6 +696,147 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		border-bottom-color: var(--accent);
 	}
 
+	/* Resume trigger — button styled as nav-link */
+	.nav-link--button {
+		background: none;
+		border: none;
+		border-bottom: 1px solid transparent;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	/* Nav clip indicator — appears when left panel is overflowing (e.g. zoomed in) */
+	.nav-clip-indicator {
+		position: sticky;
+		bottom: 0;
+		margin-top: var(--space-sm);
+		padding: 6px 0;
+		font-size: 10px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-secondary);
+		text-align: center;
+		background: linear-gradient(to top, var(--black) 55%, transparent);
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 180ms ease, transform 180ms ease;
+		pointer-events: none;
+	}
+
+	.left-panel.is-clipped .nav-clip-indicator {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.left-panel.is-clipped.is-at-bottom .nav-clip-indicator {
+		opacity: 0;
+	}
+
+	/* Resume dialog */
+	.resume-dialog {
+		padding: 0;
+		border: 1px solid var(--border-visible);
+		background: var(--black);
+		color: var(--text-primary);
+		max-width: min(440px, calc(100vw - var(--space-xl) * 2));
+		width: 100%;
+	}
+
+	.resume-dialog::backdrop {
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(4px);
+	}
+
+	[data-theme="light"] .resume-dialog::backdrop {
+		background: rgba(0, 0, 0, 0.35);
+	}
+
+	.resume-dialog__inner {
+		position: relative;
+		padding: var(--space-xl);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.resume-dialog__close {
+		position: absolute;
+		top: var(--space-sm);
+		right: var(--space-sm);
+		background: none;
+		border: none;
+		color: var(--text-secondary);
+		cursor: pointer;
+		font-size: 11px;
+		padding: 4px 6px;
+	}
+
+	.resume-dialog__close:hover {
+		color: var(--accent);
+	}
+
+	.resume-dialog__header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+	}
+
+	.resume-dialog__title {
+		font-family: "Instrument Serif", serif;
+		font-weight: 400;
+		font-size: 28px;
+		line-height: 1.1;
+		color: var(--text-display);
+	}
+
+	.resume-dialog__subtitle {
+		font-size: 14px;
+		color: var(--text-secondary);
+		margin-bottom: var(--space-sm);
+	}
+
+	.resume-dialog__options {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.resume-option {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: var(--space-md);
+		border: 1px solid var(--border-visible);
+		background: var(--surface);
+		color: var(--text-primary);
+		transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+	}
+
+	.resume-option:hover,
+	.resume-option:focus-visible {
+		border-color: var(--accent);
+		background: var(--surface-raised);
+		color: var(--text-display);
+	}
+
+	.resume-option__label {
+		font-size: 13px;
+		letter-spacing: 0.06em;
+	}
+
+	.resume-option:hover .resume-option__label,
+	.resume-option:focus-visible .resume-option__label {
+		color: var(--accent);
+	}
+
+	.resume-option__desc {
+		font-family: "Space Grotesk", system-ui, sans-serif;
+		font-size: 12px;
+		color: var(--text-secondary);
+	}
+
 	/* Compact header on subpages (mobile only) */
 	@media (max-width: 1023px) {
 		body {
@@ -742,5 +907,61 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 	themeToggle?.addEventListener('click', () => {
 		const isDark = html.getAttribute('data-theme') === 'dark';
 		updateTheme(!isDark);
+	});
+
+	// Resume dialog
+	const setupResumeDialog = () => {
+		const dialog = document.getElementById('resume-dialog');
+		const trigger = document.getElementById('resume-trigger');
+		if (!dialog || !trigger || dialog.dataset.bound === '1') return;
+		dialog.dataset.bound = '1';
+
+		trigger.addEventListener('click', () => {
+			if (typeof dialog.showModal === 'function') {
+				dialog.showModal();
+			} else {
+				dialog.setAttribute('open', '');
+			}
+		});
+
+		dialog.addEventListener('click', (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+
+		dialog.querySelectorAll('[data-resume-close]').forEach((el) => {
+			el.addEventListener('click', () => {
+				setTimeout(() => dialog.close(), 0);
+			});
+		});
+	};
+
+	// Detect if left-panel content is clipped (e.g. browser zoom) and show indicator
+	const setupNavClipIndicator = () => {
+		const panel = document.querySelector('.left-panel');
+		if (!panel || panel.dataset.clipBound === '1') return;
+		panel.dataset.clipBound = '1';
+
+		const EPSILON = 2;
+		const update = () => {
+			const clipped = panel.scrollHeight - panel.clientHeight > EPSILON;
+			panel.classList.toggle('is-clipped', clipped);
+			const atBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - EPSILON;
+			panel.classList.toggle('is-at-bottom', atBottom);
+		};
+
+		update();
+		panel.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+		if (typeof ResizeObserver !== 'undefined') {
+			new ResizeObserver(update).observe(panel);
+		}
+	};
+
+	setupResumeDialog();
+	setupNavClipIndicator();
+
+	document.addEventListener('astro:page-load', () => {
+		setupResumeDialog();
+		setupNavClipIndicator();
 	});
 </script>
