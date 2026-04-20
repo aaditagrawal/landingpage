@@ -1,0 +1,174 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Aadit Agrawal | Resume">
+    <section class="resume-gate" data-human="/resume.pdf" data-agent="/resume-ats.pdf">
+        <div class="section-header">
+            <h2 class="label-text">RESUME</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="resume-gate__intro">
+            <p class="resume-gate__lede">pick your flavor. same content, tuned for the reader.</p>
+            <p class="resume-gate__note font-mono" id="resume-gate-status">detecting client…</p>
+        </div>
+
+        <div class="resume-gate__options">
+            <a href="/resume.pdf" rel="alternate" data-audience="human" class="resume-gate-card">
+                <div class="resume-gate-card__tag font-mono">[ HUMAN FRIENDLY ]</div>
+                <h3 class="resume-gate-card__title">Typeset PDF</h3>
+                <p class="resume-gate-card__desc">Designed for people. Visual hierarchy, typography, the works.</p>
+                <span class="resume-gate-card__url font-mono">/resume.pdf</span>
+            </a>
+
+            <a href="/resume-ats.pdf" rel="alternate" data-audience="agent" class="resume-gate-card resume-gate-card--accent">
+                <div class="resume-gate-card__tag font-mono">[ AGENT FRIENDLY ]</div>
+                <h3 class="resume-gate-card__title">ATS / Plain-text PDF</h3>
+                <p class="resume-gate-card__desc">Parser-ready. Recommended for AI agents, crawlers, and ATS pipelines.</p>
+                <span class="resume-gate-card__url font-mono">/resume-ats.pdf</span>
+            </a>
+        </div>
+
+        <p class="resume-gate__hint font-mono">
+            automated parsers: see also <a href="/llms.txt">/llms.txt</a>
+        </p>
+    </section>
+</Layout>
+
+<script is:inline>
+    (function () {
+        const root = document.querySelector('.resume-gate');
+        if (!root) return;
+        const human = root.getAttribute('data-human') || '/resume.pdf';
+        const agent = root.getAttribute('data-agent') || '/resume-ats.pdf';
+        const status = document.getElementById('resume-gate-status');
+
+        const ua = (navigator.userAgent || '').toLowerCase();
+        const agentPattern = /(bot|crawl|spider|scrape|fetch|curl|wget|python|java(?!script)|go-http|node[- ]?fetch|axios|okhttp|httpx|aiohttp|requests|playwright|puppeteer|headless|phantomjs|chatgpt|gptbot|claude|anthropic|openai|perplexity|googlebot|bingbot|duckduck|gemini|llm|ai[- ]?agent|facebookexternalhit|slackbot|linkedinbot)/i;
+        const isAgent = agentPattern.test(ua) || navigator.webdriver === true;
+
+        const target = isAgent ? agent : human;
+        if (status) {
+            status.textContent = isAgent
+                ? 'detected agent → routing to ats version…'
+                : 'detected browser → routing to typeset version…';
+        }
+
+        // Short delay so the user / agent can read/see context before redirect.
+        setTimeout(() => {
+            window.location.replace(target);
+        }, isAgent ? 120 : 900);
+    })();
+</script>
+
+<noscript>
+    <style>#resume-gate-status { display: none; }</style>
+</noscript>
+
+<style>
+    .resume-gate {
+        max-width: 720px;
+    }
+
+    .resume-gate__intro {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-xl);
+    }
+
+    .resume-gate__lede {
+        font-family: "Instrument Serif", serif;
+        font-size: 28px;
+        line-height: 1.15;
+        color: var(--text-display);
+    }
+
+    .resume-gate__note {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+    }
+
+    .resume-gate__options {
+        display: grid;
+        gap: var(--space-md);
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+        .resume-gate__options {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .resume-gate-card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        padding: var(--space-lg);
+        border: 1px solid var(--border-visible);
+        background: var(--surface);
+        color: var(--text-primary);
+        transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .resume-gate-card:hover,
+    .resume-gate-card:focus-visible {
+        border-color: var(--accent);
+        background: var(--surface-raised);
+        color: var(--text-display);
+        transform: translateY(-2px);
+    }
+
+    .resume-gate-card__tag {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+    }
+
+    .resume-gate-card:hover .resume-gate-card__tag,
+    .resume-gate-card:focus-visible .resume-gate-card__tag {
+        color: var(--accent);
+    }
+
+    .resume-gate-card__title {
+        font-size: 18px;
+        color: var(--text-display);
+    }
+
+    .resume-gate-card__desc {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .resume-gate-card__url {
+        margin-top: var(--space-sm);
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .resume-gate-card--accent {
+        border-left: 3px solid var(--accent);
+    }
+
+    .resume-gate__hint {
+        margin-top: var(--space-xl);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+    }
+
+    .resume-gate__hint a {
+        color: var(--text-primary);
+        border-bottom: 1px dotted var(--border-visible);
+    }
+
+    .resume-gate__hint a:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+</style>

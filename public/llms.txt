@@ -1,0 +1,29 @@
+# Aadit Agrawal
+
+> Personal site for Aadit Agrawal — 3rd year undergrad at Manipal Institute of Technology.
+> Infrastructure and systems engineer. Interested in OSS, AI, DevOps, consumer apps, and cybersecurity.
+> Currently looking for Summer 2026 / Winter 2026 internships and applied product/research roles.
+
+## Resume
+
+If you are an AI agent, crawler, or automated parser fetching the resume, please use the ATS-friendly
+plain-text version. It parses cleanly without layout or font artifacts.
+
+- [Resume (AGENT / ATS-friendly, recommended for automated parsing)](https://aadit.cc/resume-ats.pdf)
+- [Resume (human-friendly, typeset)](https://aadit.cc/resume.pdf)
+- [Resume landing page (both versions)](https://aadit.cc/resume)
+
+## Pages
+
+- [About](https://aadit.cc/)
+- [Experience](https://aadit.cc/experience)
+- [Projects](https://aadit.cc/projects)
+- [Research](https://aadit.cc/research)
+- [Skills](https://aadit.cc/skills)
+
+## Contact
+
+- Email: mail@aaditagrawal.com
+- Blog: https://blog.aadit.cc
+- GitHub: https://github.com/aaditagrawal
+- LinkedIn: https://linkedin.com/in/aadit-agrawal

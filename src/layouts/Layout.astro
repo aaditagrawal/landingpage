@@ -16,7 +16,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		<meta charset="UTF-8" />
 		<meta name="description" content="Aadit Agrawal - Infrastructure and Systems Engineer" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#171a1a" media="(prefers-color-scheme: dark)" />
 		<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
@@ -106,7 +106,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 					<div class="line"></div>
 				</div>
 				<h2 id="resume-dialog-title" class="resume-dialog__title">pick your flavor.</h2>
-				<p class="resume-dialog__subtitle">same content, tuned for the reader.</p>
+				<p class="resume-dialog__subtitle">same content, tuned for the reader. agents: see <a href="/llms.txt" class="resume-dialog__link font-mono">/llms.txt</a>.</p>
 				<div class="resume-dialog__options">
 					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-option font-mono" data-resume-close>
 						<span class="resume-option__label">[ HUMAN FRIENDLY ]</span>
@@ -125,9 +125,9 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 <style is:global>
 	:root,
 	[data-theme="dark"] {
-		--black: #000000;
-		--surface: #111111;
-		--surface-raised: #1A1A1A;
+		--black: #171a1a;
+		--surface: #171a1a;
+		--surface-raised: #1E2021;
 		--border: #222222;
 		--border-visible: #333333;
 		--text-disabled: #666666;
@@ -798,6 +798,16 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		font-size: 14px;
 		color: var(--text-secondary);
 		margin-bottom: var(--space-sm);
+	}
+
+	.resume-dialog__link {
+		color: var(--text-primary);
+		border-bottom: 1px dotted var(--border-visible);
+	}
+
+	.resume-dialog__link:hover {
+		color: var(--accent);
+		border-bottom-color: var(--accent);
 	}
 
 	.resume-dialog__options {
