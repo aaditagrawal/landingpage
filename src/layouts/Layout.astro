@@ -1,6 +1,4 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-
 interface Props {
 	title: string;
 }
@@ -16,23 +14,29 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		<meta charset="UTF-8" />
 		<meta name="description" content="Aadit Agrawal — computer science engineer working across AI/ML, software engineering, HPC, and DevOps." />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="theme-color" content="#171a1a" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#0c0e0e" media="(prefers-color-scheme: dark)" />
 		<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		<ClientRouter fallback="swap" />
 
-		<!-- Resource Hints -->
+		<!-- Resource hints: fonts load async so HTML/CSS paint first -->
 		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-		<!-- Font Preload -->
-		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" as="style" />
-		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-		<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Geist+Mono:wght@400;500;600;700;800&family=Doto:wght@400..900&family=Instrument+Serif&display=swap" rel="stylesheet" /></noscript>
+		<!-- Subset weights vs prior bundle (no 300/800 Space+Geist, no full Doto axis). display=swap is in the URL. -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Geist+Mono:wght@400;500;600;700&family=Doto:wght@500;600&family=Instrument+Serif&display=swap"
+			rel="stylesheet"
+		/>
+		<noscript>
+			<link
+				href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Geist+Mono:wght@400;500;600;700&family=Doto:wght@500;600&family=Instrument+Serif&display=swap"
+				rel="stylesheet"
+			/>
+		</noscript>
 	</head>
 	<body class="dot-grid">
 		<div class="site-wrapper">
@@ -46,12 +50,12 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 						</button>
 					</div>
 
-					<div class="hero" transition:name="hero">
-						<h1 class="font-serif-name" transition:name="site-name">Aadit Agrawal</h1>
-						<p class="subtitle" transition:name="subtitle">i just like to create cool stuff.</p>
+					<div class="hero">
+						<h1 class="font-serif-name">Aadit Agrawal</h1>
+						<p class="subtitle">i just like to create cool stuff.</p>
 					</div>
 
-					<div class="header-details" transition:name="header-details">
+					<div class="header-details">
 						<div class="status-grid">
 							<div class="status-item">
 								<span class="label-text">LOCATION</span>
@@ -78,7 +82,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 						</div>
 					</div>
 
-					<nav class="nav-links vertical" transition:name="nav">
+					<nav class="nav-links vertical">
 						<a href="/" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: isHome }]}>/about</a>
 						<a href="/experience" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/experience') }]}>/experience</a>
 						<a href="/projects" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/projects') }]}>/projects</a>
@@ -92,7 +96,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 			</div>
 
 			<div class="right-panel">
-				<main class="content" transition:animate="none">
+				<main class="content">
 					<slot />
 				</main>
 			</div>
@@ -125,15 +129,15 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 <style is:global>
 	:root,
 	[data-theme="dark"] {
-		--black: #171a1a;
-		--surface: #171a1a;
-		--surface-raised: #1E2021;
-		--border: #222222;
-		--border-visible: #333333;
-		--text-disabled: #666666;
-		--text-secondary: #999999;
-		--text-primary: #E8E8E8;
-		--text-display: #FFFFFF;
+		--black: #0c0e0e;
+		--surface: #0c0e0e;
+		--surface-raised: #141616;
+		--border: #1a1c1c;
+		--border-visible: #2a2d2d;
+		--text-disabled: #5c5c5c;
+		--text-secondary: #8f9494;
+		--text-primary: #e0e4e4;
+		--text-display: #f4f6f6;
 		--accent: #F55411;
 		--accent-subtle: rgba(245, 84, 17, 0.15);
 		--interactive: #5B9BF6;
@@ -167,12 +171,6 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
-	}
-
-	::view-transition-old(*),
-	::view-transition-new(*) {
-		animation-duration: 50ms;
-		animation-timing-function: linear;
 	}
 
 	html {
@@ -903,7 +901,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 	}
 </style>
 
-<script defer>
+<script is:inline defer>
 	// Theme handling
 	const themeToggle = document.getElementById('theme-toggle');
 	const html = document.documentElement;
@@ -972,9 +970,4 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 
 	setupResumeDialog();
 	setupNavClipIndicator();
-
-	document.addEventListener('astro:page-load', () => {
-		setupResumeDialog();
-		setupNavClipIndicator();
-	});
 </script>

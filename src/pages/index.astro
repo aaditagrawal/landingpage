@@ -127,7 +127,7 @@ try {
     </section>
 
     {(githubSvg || giteaSvg) && (
-        <section id="activity" class="section">
+        <section id="activity" class="section section--activity">
             <div class="section-header">
                 <h2 class="label-text">ACTIVITY</h2>
                 <div class="line"></div>
@@ -193,6 +193,12 @@ try {
     .status-callout strong {
         font-weight: 600;
         color: var(--accent);
+    }
+
+    /* Below the fold: defer layout/paint until the user scrolls near this block */
+    .section--activity {
+        content-visibility: auto;
+        contain-intrinsic-size: 0 520px;
     }
 
     .activity-stack {
