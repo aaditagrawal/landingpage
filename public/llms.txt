@@ -1,8 +1,8 @@
 # Aadit Agrawal
 
-> Personal site for Aadit Agrawal — 3rd year undergrad at Manipal Institute of Technology.
-> Infrastructure and systems engineer. Interested in OSS, AI, DevOps, consumer apps, and cybersecurity.
-> Currently looking for Summer 2026 / Winter 2026 internships and applied product/research roles.
+> Personal site for Aadit Agrawal — BTech Computer and Communication Engineering at Manipal Institute of Technology (grad. May 2027).
+> Computer science engineer working across AI/ML, software engineering, HPC, and DevOps; active in OSS.
+> Open to Summer 2026 / Winter 2026 internships and applied product/research roles.
 
 ## Resume
 

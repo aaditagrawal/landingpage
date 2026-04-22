@@ -13,34 +13,51 @@ import Layout from "../layouts/Layout.astro";
             <article class="exp-card">
                 <div class="exp-header">
                     <h3>
-                        Lead Research Engineer <span class="exp-at"
-                            >@ CASIR, School of Computing, MAHE</span>
+                        Head Student Researcher <span class="exp-at"
+                            >@ <a href="https://ecitis.org">CASIR, MAHE</a></span>
                     </h3>
-                    <span class="label-text font-mono">MAY 2025-PRES</span>
+                    <span class="label-text font-mono">MAY 2025—PRES</span>
                 </div>
                 <ul>
                     <li>
-                        Engineered an LLM-powered industrial protocol translator
-                        parsing IEC 61131-3 to IEC 61499, cutting
-                        PLC migration timelines for external manufacturing
-                        clients.
+                        Architected an on-prem HPC stack (96-core Threadripper
+                        7995WX, 48GB A6000, 256GB RAM) serving 1,500+ daily
+                        inference requests at 99.2% uptime.
                     </li>
                     <li>
-                        Architected a massive on-premise production cluster
-                        running heavy AI workloads, load-balancing traffic
-                        across varied architectures (ARM64 Apple Silicon and
-                        CUDA Blackwells).
+                        Leading setup of a $200K+ compute cluster pairing Apple
+                        Silicon with NVIDIA Blackwell, tuned for mixed ARM64 +
+                        CUDA workloads.
                     </li>
                     <li>
-                        Deployed an edge-compute computer vision pipeline onto
-                        NVIDIA Jetson hardware flying on DJI drones, sustaining
-                        30 fps inference directly on the embedded board via
-                        RTMP.
+                        Real-time computer vision on NVIDIA Jetson carried on
+                        DJI drones — 30fps edge inference over RTMP.
                     </li>
                     <li>
-                        Built an end-to-end full-stack agentic RAG pipeline
-                        processing 2000+ structured layouts via custom OCR
-                        tools.
+                        LLM semantic translator for Schneider Electric — IEC
+                        61131-3 to IEC 61499 automation for legacy PLC
+                        codebases; cut migration effort by about 70%.
+                    </li>
+                    <li>
+                        Technical document ingestion for machine and
+                        electronics engineering support — evolved from RAG +
+                        BM25 + keyword clusters to trigram indices with custom
+                        pi.dev search agents; VLM + LLM stack across 2,000+
+                        docs at 94% accuracy, roughly 3× faster than the prior
+                        approach.
+                    </li>
+                    <li>
+                        Application security analysis platform (Schneider
+                        Electric) — source and compiled-binary evaluation in
+                        computer-use sandboxes with OS state monitoring (registry
+                        / DLL deltas), pattern-matched to a correlated CVE / CWE
+                        / MITRE index; pentest lead time from three weeks to
+                        three days.
+                    </li>
+                    <li>
+                        Shipped three production AI systems; two peer-reviewed
+                        publications in progress; team write-ups on <a
+                            href="https://blog.ecitis.org">blog.ecitis.org</a>.
                     </li>
                 </ul>
             </article>
@@ -48,7 +65,24 @@ import Layout from "../layouts/Layout.astro";
             <article class="exp-card">
                 <div class="exp-header">
                     <h3>
-                        Platform Engineer <span class="exp-at"
+                        DevOps Engineer, Intern <span class="exp-at"
+                            >@ Pixa AI, Bengaluru</span>
+                    </h3>
+                    <span class="label-text font-mono">DEC 2025</span>
+                </div>
+                <ul>
+                    <li>
+                        Provisioned GPU compute (H100/H200/B200) and CI/CD for
+                        Phi-4 TTS/STT fine-tuning; 99.5% deployment success
+                        across two API releases.
+                    </li>
+                </ul>
+            </article>
+
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        Frontend Engineer <span class="exp-at"
                             >@ <a href="https://rossmanngroup.com"
                                 >Rossmann New Media 2 Inc.</a
                             ></span>
@@ -57,40 +91,13 @@ import Layout from "../layouts/Layout.astro";
                 </div>
                 <ul>
                     <li>
-                        Led a full-stack migration from legacy
-                        WordPress to a modern React/Next.js ecosystem.
+                        Migrated rossmanngroup.com from WordPress to Next.js;
+                        improved load performance and cross-platform
+                        responsiveness.
                     </li>
                     <li>
-                        Redesigned the UI for true cross-device responsiveness,
-                        improving core web vitals and overall LCP by 60%+.
-                    </li>
-                    <li>
-                        Executed a technical SEO overhaul by analyzing
-                        and mapping data recovery search patterns, moving
-                        keyword rankings into the top 5.
-                    </li>
-                </ul>
-            </article>
-
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        DevOps Engineer <span class="exp-at"
-                            >@ Rasen AI (formerly Pixa AI), Bengaluru</span>
-                    </h3>
-                    <span class="label-text font-mono">DEC 2025</span>
-                </div>
-                <ul>
-                    <li>
-                        Focused purely on infrastructure-as-code and
-                        reliability, provisioning varied compute nodes
-                        (H100/H200/B200) tailored for heavy TTS/STT fine-tuning
-                        operations.
-                    </li>
-                    <li>
-                        Designed and implemented robust automated CI/CD
-                        pipelines guaranteeing 99.5% deployment success across
-                        consecutive API releases.
+                        Technical SEO overhaul on data-recovery keywords —
+                        moved primary rankings from 100+ into the top 5.
                     </li>
                 </ul>
             </article>
@@ -99,22 +106,18 @@ import Layout from "../layouts/Layout.astro";
                 <div class="exp-header">
                     <h3>
                         Founding President <span class="exp-at"
-                            >@ <a href="https://theprism.fyi"
-                                >PRISM - Computing & AI Club, MAHE</a
-                            ></span>
+                            >@ <a href="https://theprism.fyi">PRISM</a></span>
                     </h3>
                     <span class="label-text font-mono">JAN 2026—PRES</span>
                 </div>
                 <ul>
                     <li>
-                        Founded and manage an interdisciplinary collective of
-                        150+ members focused on pushing the envelope across Web
-                        Development, embedded IoT, DevOps and Applied AI.
+                        Research club spanning AI/ML, software engineering,
+                        HPC, DevOps, biotech, and infosec — 150+ members.
                     </li>
                     <li>
-                        Act as a technical bridge by serving on MAHE's Academic
-                        Advisory Board, helping adapt curricula to modern tech
-                        stacks.
+                        Academic Advisory Board for AI curriculum and adoption
+                        at MAHE.
                     </li>
                 </ul>
             </article>
@@ -122,21 +125,19 @@ import Layout from "../layouts/Layout.astro";
             <article class="exp-card">
                 <div class="exp-header">
                     <h3>
-                        Infrastructure Lead <span class="exp-at"
+                        Management Committee <span class="exp-at"
                             >@ MIST (Cybersecurity Club)</span>
                     </h3>
-                    <span class="label-text font-mono">OCT 2023-JUN 2025</span>
+                    <span class="label-text font-mono">OCT 2023—JUN 2025</span>
                 </div>
                 <ul>
                     <li>
-                        Architected a resilient, dynamic CTF web platform
-                        supporting 300+ concurrent players, sustaining 100%
-                        uptime across 3 high-load events.
+                        CTF infrastructure for 300+ users at 100% uptime; cut
+                        operating costs by 80%.
                     </li>
                     <li>
-                        Optimized cloud configurations and resource
-                        limits, reducing operational overhead by
-                        80%.
+                        Ran 12+ workshops for 150+ participants; teams placed
+                        in the top 10% nationally at CTF competitions.
                     </li>
                 </ul>
             </article>

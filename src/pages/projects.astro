@@ -12,9 +12,10 @@ import Layout from "../layouts/Layout.astro";
         <div class="project-list">
             <article class="project-card">
                 <div class="project-meta">
-                    <span class="label-text">FULL-STACK PLATFORM</span>
+                    <span class="label-text">CAMPUS API / PLATFORM</span>
                     <div class="tags">
                         <span class="tag">Next.js</span>
+                        <span class="tag">REST</span>
                         <span class="tag tag-highlight">5K+ DAU</span>
                     </div>
                 </div>
@@ -26,85 +27,113 @@ import Layout from "../layouts/Layout.astro";
                         >
                     </h3>
                     <p>
-                        A zero-cost campus platform serving
-                        5,000+ Daily Active Users and processing over 150K
-                        monthly requests. Architected as a resilient
-                        offline-friendly Progressive Web App (PWA) backed by a
-                        REST API, dynamic XLSX parsing algorithms, and
-                        fast Cloudflare R2 edge storage. Blog about the
-                        architecture: <a
+                        Campus food and utilities stack with 5,000+ daily active
+                        users and 150K+ monthly requests — adopted in under a week
+                        on the ground. Progressive web app plus REST API,
+                        dynamic XLSX ingestion, and Cloudflare R2 at the edge.
+                        Architecture write-up: <a
                             href="https://blog.aadit.cc/posts/building-a-food-court-menu/"
                             class="link-subtle"
-                        >
-                            click here.
-                        </a>
-
-                        Unified multiple campus utilities like <a
+                            >building a food-court menu</a
+                        >. Bundles <a
                             href="https://cd.coolstuff.work"
-                            class="link-subtle">Crowdsourced Directories</a
-                        >, <a href="https://sindhi.coolstuff.work" class="link-subtle">Sindhi Mess Menu</a>, and the
-                        <a href="https://tikm.coolstuff.work" class="link-subtle">TIK Admin API</a> into a single ecosystem.
+                            class="link-subtle">campus directory</a>, <a
+                            href="https://sindhi.coolstuff.work"
+                            class="link-subtle">Sindhi mess menu</a>, and the <a
+                            href="https://tikm.coolstuff.work"
+                            class="link-subtle">TIK admin API</a>.
+                    </p>
+                </div>
+            </article>
 
+            <article class="project-card">
+                <div class="project-meta">
+                    <span class="label-text">UTILITIES SUITE</span>
+                    <div class="tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">Radix UI</span>
+                        <span class="tag">Forgejo</span>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>
+                        <a href="https://coolstuff.work" class="project-title"
+                            >Coolstuff.work</a
+                        >
+                    </h3>
+                    <p>
+                        Forgejo-backed suite of small tools for peers — 10,000+
+                        aggregate DAU across sub-apps. Highlights include <a
+                            href="https://or.coolstuff.work"
+                            class="link-subtle">OR-Free</a> (live OpenRouter model
+                        availability and pricing) and <a
+                            href="https://courses.coolstuff.work"
+                            class="link-subtle">MIT Courses Search</a> with an
+                        interactive graph of 500+ nodes. Also ships <a
+                            href="https://git.aadit.cc/aadit/transcript-cli"
+                            class="link-subtle">transcript-cli</a>, the <a
+                            href="https://cd.coolstuff.work"
+                            class="link-subtle">campus directory</a>, and the <a
+                            href="https://vcf.aadit.cc/"
+                            class="link-subtle">Mass Contact Maker</a> — more on <a
+                            href="https://git.aadit.cc/aadit"
+                            class="link-subtle">git.aadit.cc</a>.
+                    </p>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-meta">
+                    <span class="label-text">INFRASTRUCTURE / DEVOPS</span>
+                    <div class="tags">
+                        <span class="tag">Proxmox</span>
+                        <span class="tag">Docker</span>
+                        <span class="tag">GPU</span>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>
+                        <a href="https://cloud.aadit.cc" class="project-title"
+                            >Homelab Infrastructure</a
+                        >
+                    </h3>
+                    <p>
+                        Self-hosted cloud since 2022: 70+ services on Proxmox
+                        and Docker, 98% uptime over four years, 8TB MergerFS, and
+                        3-2-1 backups. Blackwell GPUs run custom object detection
+                        on security camera feeds at 30fps while offloading about
+                        95% of related compute from CPUs (including 4K
+                        transcoding). Survived live DDoS at 50K+ req/min with a
+                        roughly 95% reduction in exposed attack surface.
+                        Telemetry through Grafana and Loki.
+                    </p>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-meta">
+                    <span class="label-text">AGENTS / MOBILE</span>
+                    <div class="tags">
+                        <span class="tag">Shell</span>
+                        <span class="tag">Android</span>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>
+                        <a
+                            href="https://github.com/aaditagrawal/ophoner"
+                            class="project-title">ophoner</a
+                        >
+                    </h3>
+                    <p>
+                        Phone-driven agent loop for device APIs and filesystem
+                        workflows — extensible through tmux and Android shell
+                        tooling so you can edit or query files on the go without
+                        lugging a full desktop environment.
                     </p>
                 </div>
             </article>
         </div>
-
-        <article class="project-card">
-            <div class="project-meta">
-                <span class="label-text">INFRASTRUCTURE / DEVOPS</span>
-                <div class="tags">
-                    <span class="tag">Linux</span>
-                    <span class="tag">Docker</span>
-                    <span class="tag">CI/CD</span>
-                    <span class="tag">GPU</span>
-                </div>
-            </div>
-            <div class="project-content">
-                <h3>
-                    <a href="https://cloud.aadit.cc" class="project-title"
-                        >Production Homelab Environment</a
-                    >
-                </h3>
-                <p>
-                    A robust, self-hosted private cloud maintaining 98% uptime
-                    over 4 years. Acts as a sandbox for full-stack deployments
-                    running 70+ orchestrated services (Forgejo, Ghost CMS).
-                    Managed via IaC with telemetry through Grafana and
-                    Loki. Integrated Blackwell-GPU acceleration to offload 95%
-                    of compute from CPUs for real-time (30fps) security camera
-                    object detection. Configured to withstand live DDoS (50K+
-                    req/min) through fail2ban configurations and network
-                    routing.
-                </p>
-            </div>
-        </article>
-
-        <article class="project-card">
-            <div class="project-meta">
-                <span class="label-text">DESKTOP / SYSTEMS / WASM</span>
-                <div class="tags">
-                    <span class="tag">Electrobun</span>
-                    <span class="tag">Rust</span>
-                    <span class="tag">WASM</span>
-                </div>
-            </div>
-            <div class="project-content">
-                <h3>
-                    <a href="https://typst.coolstuff.work" class="project-title"
-                        >Typsmthng Native & Web</a
-                    >
-                </h3>
-                <p>
-                    Developed an editor interface for the Typst
-                    system spanning both web and desktop. The core engine
-                    utilizes WebAssembly (WASM) to compile code in-browser for
-                    immediate live previews. The web-client was further ported
-                    to an experimental, cross-platform native desktop
-                    application utilizing Tauri (Rust).
-                </p>
-            </div>
-        </article>
 
     </section>
 
@@ -132,7 +161,8 @@ import Layout from "../layouts/Layout.astro";
             <a href="https://courses.coolstuff.work" class="archive-card">
                 <h3>MIT Courses Search</h3>
                 <p>
-                    A website for MIT students to search for and find details and reference material for their respective courses.
+                    Course discovery with search plus an interactive dependency
+                    graph (500+ nodes) for reference material and syllabi.
                 </p>
             </a>
 
@@ -190,7 +220,9 @@ import Layout from "../layouts/Layout.astro";
         >
             <h3>OR-Free</h3>
             <p>
-                A real-time data ingestion tracker mapping free AI model availability across OpenRouter APIs. Updated entirely client-side for perennial accuracy.
+                Real-time tracker for OpenRouter model availability, pricing, and
+                free-tier windows — refreshed client-side so the numbers stay
+                honest without a cron farm.
             </p>
         </a>
 
@@ -285,6 +317,42 @@ import Layout from "../layouts/Layout.astro";
     </div>
 </section>
 
+<section id="developer-tooling" class="section">
+    <div class="section-header">
+        <h2 class="label-text">DEVELOPER TOOLING (OSS)</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="project-grid">
+        <a
+            href="https://github.com/aaditagrawal/agentskills"
+            class="archive-card"
+        >
+            <h3>agentskills</h3>
+            <p>
+                Published library of Claude Code skills for reusable agentic
+                development workflows.
+            </p>
+        </a>
+
+        <a href="https://github.com/aaditagrawal/t3code" class="archive-card">
+            <h3>t3code <span>[Fork]</span></h3>
+            <p>
+                T3 stack customised for parallel, agent-driven development flows
+                instead of hand-typing every scaffold step.
+            </p>
+        </a>
+
+        <a href="https://github.com/aaditagrawal" class="archive-card">
+            <h3>CI &amp; review automation</h3>
+            <p>
+                Self-hosted CI and sandboxing (migrating off Daytona) with
+                CodeRabbit wired in for public-repo review.
+            </p>
+        </a>
+    </div>
+</section>
+
 <section id="desktop-misc" class="section">
     <div class="section-header">
         <h2 class="label-text">DESKTOP AND LOW LEVEL</h2>
@@ -292,6 +360,14 @@ import Layout from "../layouts/Layout.astro";
     </div>
 
     <div class="project-grid">
+        <a href="https://typst.coolstuff.work" class="archive-card">
+            <h3>Typsmthng Native &amp; Web</h3>
+            <p>
+                Typst editor with WASM in-browser compile and an experimental
+                Electrobun / Tauri desktop port for instant previews offline.
+            </p>
+        </a>
+
         <a
             href="https://github.com/aaditagrawal/flappyboards"
             class="archive-card"
