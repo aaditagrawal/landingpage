@@ -9,9 +9,10 @@ export default defineConfig({
   },
   compressHTML: true,
   prefetch: {
-    // Only prefetch links that opt in (e.g. nav with data-astro-prefetch). Avoids competing
-    // requests on first paint versus fonts and below-the-fold content.
-    prefetchAll: false,
-    defaultStrategy: "viewport",
+    // Site is 6 pages — prefetch every internal link at page load so subsequent
+    // navigations come from cache. Uses <link rel="prefetch"> at low priority,
+    // so it doesn't block fonts or critical CSS on first paint.
+    prefetchAll: true,
+    defaultStrategy: "load",
   },
 });

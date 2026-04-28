@@ -10,21 +10,13 @@ const { title } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/' || currentPath === '/index.html';
 
-const navItems = isHome
-	? [
-			{ href: "#about", label: "/about", active: true },
-			{ href: "#experience", label: "/experience", active: false },
-			{ href: "#projects", label: "/projects", active: false },
-			{ href: "#research", label: "/research", active: false },
-			{ href: "#stack", label: "/stack", active: false },
-		]
-	: [
-			{ href: "/", label: "/about", active: false },
-			{ href: "/experience", label: "/experience", active: currentPath.startsWith('/experience') },
-			{ href: "/projects", label: "/projects", active: currentPath.startsWith('/projects') },
-			{ href: "/research", label: "/research", active: currentPath.startsWith('/research') },
-			{ href: "/skills", label: "/skills", active: currentPath.startsWith('/skills') },
-		];
+const navItems = [
+	{ href: "/", label: "/about", active: isHome },
+	{ href: "/experience", label: "/experience", active: currentPath.startsWith('/experience') },
+	{ href: "/projects", label: "/projects", active: currentPath.startsWith('/projects') },
+	{ href: "/research", label: "/research", active: currentPath.startsWith('/research') },
+	{ href: "/skills", label: "/skills", active: currentPath.startsWith('/skills') },
+];
 ---
 
 <!doctype html>
@@ -121,7 +113,6 @@ const navItems = isHome
 						{navItems.map((item) => (
 							<a
 								href={item.href}
-								data-astro-prefetch={item.href.startsWith("/") ? "viewport" : undefined}
 								class:list={["nav-link", "font-mono", { active: item.active }]}
 							>
 								{item.label}
@@ -181,16 +172,16 @@ const navItems = isHome
 		--accent-subtle: rgba(87, 107, 255, 0.15);
 		--interactive: #5B9BF6;
 
-		/* Spacing */
-		--space-2xs: 2px;
-		--space-xs: 4px;
-		--space-sm: 8px;
-		--space-md: 16px;
-		--space-lg: 24px;
-		--space-xl: 32px;
-		--space-2xl: 48px;
-		--space-3xl: 64px;
-		--space-4xl: 96px;
+		/* Spacing — rem-based so they scale with the fluid html font-size */
+		--space-2xs: 0.125rem;
+		--space-xs: 0.25rem;
+		--space-sm: 0.5rem;
+		--space-md: 1rem;
+		--space-lg: 1.5rem;
+		--space-xl: 2rem;
+		--space-2xl: 3rem;
+		--space-3xl: 4rem;
+		--space-4xl: 6rem;
 
 		/* Radius */
 		--radius-xs: 3px;
@@ -229,6 +220,9 @@ const navItems = isHome
 		color: var(--text-primary);
 		line-height: 1.5;
 		scroll-behavior: smooth;
+		/* Fluid base: 14px on small, scales up to 20px on large viewports.
+		   Everything sized in rem (spacing tokens, body, headings) tracks this. */
+		font-size: clamp(14px, 0.45vw + 11.5px, 20px);
 	}
 
 	body {
@@ -517,7 +511,7 @@ const navItems = isHome
 	}
 
 	.subtitle {
-		font-size: 16px;
+		font-size: 1rem;
 		line-height: 1.5;
 		color: var(--text-secondary);
 	}
@@ -543,7 +537,7 @@ const navItems = isHome
 	}
 
 	.status-value {
-		font-size: 13px;
+		font-size: 0.8125rem;
 		color: var(--text-primary);
 	}
 
@@ -556,7 +550,7 @@ const navItems = isHome
 		flex-direction: column;
 		gap: var(--space-sm);
 		margin-bottom: var(--space-xl);
-		font-size: 13px;
+		font-size: 0.8125rem;
 	}
 
 	/* Navigation */
@@ -569,7 +563,7 @@ const navItems = isHome
 	}
 
 	.nav-link {
-		font-size: 14px;
+		font-size: 0.875rem;
 		padding-bottom: var(--space-xs);
 		border-bottom: 1px solid transparent;
 		width: fit-content;
@@ -717,7 +711,7 @@ const navItems = isHome
 	}
 
 	.project-content h3 {
-		font-size: 18px;
+		font-size: 1.125rem;
 		margin-bottom: var(--space-xs);
 	}
 
@@ -746,7 +740,7 @@ const navItems = isHome
 
 	.project-content p {
 		color: var(--text-secondary);
-		font-size: 15px;
+		font-size: 0.9375rem;
 	}
 
 	/* Experience Cards */
@@ -790,7 +784,7 @@ const navItems = isHome
 	}
 
 	.exp-header h3 {
-		font-size: 16px;
+		font-size: 1rem;
 	}
 
 	.exp-at {
@@ -799,7 +793,7 @@ const navItems = isHome
 	}
 
 	.exp-card p {
-		font-size: 15px;
+		font-size: 0.9375rem;
 		color: var(--text-secondary);
 	}
 
@@ -824,7 +818,7 @@ const navItems = isHome
 	}
 
 	.skill-items {
-		font-size: 13px;
+		font-size: 0.8125rem;
 		color: var(--text-primary);
 	}
 
@@ -940,13 +934,13 @@ const navItems = isHome
 	.resume-dialog__title {
 		font-family: "Instrument Serif", serif;
 		font-weight: 400;
-		font-size: 28px;
+		font-size: 1.75rem;
 		line-height: 1.1;
 		color: var(--text-display);
 	}
 
 	.resume-dialog__subtitle {
-		font-size: 14px;
+		font-size: 0.875rem;
 		color: var(--text-secondary);
 		margin-bottom: var(--space-sm);
 	}
@@ -992,7 +986,7 @@ const navItems = isHome
 	}
 
 	.resume-option__label {
-		font-size: 13px;
+		font-size: 0.8125rem;
 		letter-spacing: 0.06em;
 	}
 
@@ -1030,7 +1024,7 @@ const navItems = isHome
 		}
 
 		.left-panel--compact .subtitle {
-			font-size: 13px;
+			font-size: 0.8125rem;
 		}
 
 		.left-panel--compact .header-details {
