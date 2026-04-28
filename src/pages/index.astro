@@ -2,63 +2,156 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Aadit Agrawal | Computer Science Engineer">
-    <section id="about" class="section">
+<Layout title="Aadit Agrawal | Student, Infra, Dev, AI Stuff">
+    <section id="about" class="section intro-section">
         <div class="section-header">
             <h2 class="label-text">ABOUT</h2>
             <div class="line"></div>
         </div>
 
-        <div class="about-content">
+        <div class="intro-copy">
+            <h2>I like figuring out tech by making things with it.</h2>
             <p>
-                Hello! I'm trying to build cool stuff.
+                CS student at MIT Manipal, generalist by temperament - <strong> infra,
+                AI, devtools, research prototypes</strong>. Most of what
+                I ship is small in scope and used by real people: campus tools
+                my peers actually open, scripts that escaped the notebook
+                stage, services I keep alive on my own boxes.
             </p>
-
             <p>
-                Most of my projects are hobbyist OSS tools because that's my favorite thing to do - solve a simple problem with a bootstrapped solution.
+                Right now I'm leading a student research lab at MAHE
+                (<a href="https://ecitis.org">CASIR</a>), running an on-prem
+                inference stack, and doing applied AI work with industry
+                partners. Outside of that - self-hosting, writing on
+                <a href="https://blog.ecitis.org">blog.ecitis.org</a>, and
+                building things with friends.
             </p>
+        </div>
 
-            <p>
-                I love working on a bunch of things - devops/MLOps/dev stuff.
-            </p>
+        <div class="intent-strip font-mono">
+            <span>LOOKING FOR</span>
+            <strong>Summer / Winter 2026 internships or full-time roles :).</strong>
+            <span>generalist engineering · infra · devtools · AI · applied product-research</span>
+        </div>
 
+        <p class="next-step">
+            See <a href="/projects">/projects</a> or <a href="/experience">/experience</a> for the longer story, or just say hi.
+        </p>
+    </section>
 
-            <div class="status-callout">
-                Currently looking for <strong>Summer 2026</strong>, <strong>Winter 2026</strong> internships or any <strong>applied product/research</strong> roles across any technical vertical. I tend to learn fast.
-            </div>
+    <section id="contact" class="section contact-section">
+        <div class="section-header">
+            <h2 class="label-text">CONTACT</h2>
+            <div class="line"></div>
+        </div>
+
+        <p class="contact-line">Email is the fastest way through.</p>
+        <div class="contact-actions font-mono">
+            <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
+            <button type="button" id="resume-trigger-inline" class="inline-resume">resume.pdf</button>
+            <a href="https://github.com/aaditagrawal">github</a>
+            <a href="https://linkedin.com/in/aadit-agrawal">linkedin</a>
         </div>
     </section>
 </Layout>
 
+<script is:inline>
+    document.getElementById('resume-trigger-inline')?.addEventListener('click', () => {
+        document.getElementById('resume-trigger')?.click();
+    });
+</script>
+
 <style>
-    .about-content {
+    .intro-section {
         display: flex;
         flex-direction: column;
-        gap: var(--space-lg);
-        font-size: 19px;
-        line-height: 1.65;
-        color: var(--text-primary);
-        max-width: 780px;
+        gap: var(--space-xl);
     }
 
-    .about-content p {
+    .intro-copy {
+        max-width: 720px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+
+    .intro-copy h2 {
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(22px, 2.4vw, 30px);
+        font-weight: 400;
+        line-height: 1.2;
+        letter-spacing: 0.01em;
+        max-width: 600px;
+        margin-bottom: var(--space-xs);
+    }
+
+    .intro-copy p {
         margin: 0;
+        color: var(--text-primary);
+        font-size: 18px;
+        line-height: 1.65;
     }
 
-    .status-callout {
-        margin-top: var(--space-md);
-        padding: var(--space-md) var(--space-lg);
-        background: var(--surface);
-        border: 1px solid var(--border-visible);
-        border-left: 3px solid var(--accent);
-        border-radius: var(--radius-sm);
-        font-size: 17px;
-        line-height: 1.55;
-        color: var(--text-display);
+    .intent-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-xs) var(--space-md);
+        align-items: baseline;
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.5;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        max-width: 760px;
     }
 
-    .status-callout strong {
+    .intent-strip > span:first-child {
+        color: var(--accent);
         font-weight: 600;
+    }
+
+    .intent-strip strong {
+        color: var(--text-display);
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .next-step {
+        color: var(--text-secondary);
+        font-size: 18px;
+        line-height: 1.65;
+        max-width: 720px;
+    }
+
+    .next-step a {
+        color: var(--text-primary);
+    }
+
+    .contact-line {
+        color: var(--text-secondary);
+        font-size: 18px;
+        line-height: 1.65;
+        margin-bottom: var(--space-lg);
+    }
+
+    .contact-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm) var(--space-xl);
+        font-size: 16px;
+    }
+
+    .inline-resume {
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        cursor: pointer;
+        font: inherit;
+        padding: 0;
+        transition: color var(--dur-base) ease;
+    }
+
+    .inline-resume:hover {
         color: var(--accent);
     }
 </style>

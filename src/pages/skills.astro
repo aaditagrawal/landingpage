@@ -294,9 +294,17 @@ import Layout from "../layouts/Layout.astro";
         gap: var(--space-xs);
         padding: var(--space-lg);
         background: var(--black);
-        transition: background-color var(--dur-base) ease;
+        transition: background-color var(--dur-base) ease, transform var(--dur-base) var(--ease);
         position: relative;
         overflow: hidden;
+    }
+
+    .skill-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .skill-item:active {
+        transform: translateY(0);
     }
 
     /* Fix border alignment on empty grid cells (by extending backgrounds) */

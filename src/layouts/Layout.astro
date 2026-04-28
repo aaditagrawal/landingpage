@@ -9,6 +9,22 @@ interface Props {
 const { title } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/' || currentPath === '/index.html';
+
+const navItems = isHome
+	? [
+			{ href: "#about", label: "/about", active: true },
+			{ href: "#experience", label: "/experience", active: false },
+			{ href: "#projects", label: "/projects", active: false },
+			{ href: "#research", label: "/research", active: false },
+			{ href: "#stack", label: "/stack", active: false },
+		]
+	: [
+			{ href: "/", label: "/about", active: false },
+			{ href: "/experience", label: "/experience", active: currentPath.startsWith('/experience') },
+			{ href: "/projects", label: "/projects", active: currentPath.startsWith('/projects') },
+			{ href: "/research", label: "/research", active: currentPath.startsWith('/research') },
+			{ href: "/skills", label: "/skills", active: currentPath.startsWith('/skills') },
+		];
 ---
 
 <!doctype html>
@@ -57,27 +73,30 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 						<Picture
 							src={pfp}
 							formats={["avif", "webp"]}
+							widths={[48, 72, 96, 144, 216]}
+							sizes="(max-width: 1023px) 48px, 72px"
 							alt="Aadit Agrawal"
 							class="hero-avatar"
 							width={72}
 							height={72}
 							loading="eager"
+							decoding="async"
 						/>
 						<h1 class="font-serif-name">Aadit Agrawal</h1>
-						<p class="subtitle">i just like to create cool stuff.</p>
+						<p class="subtitle">student, infra, dev, ai stuff</p>
 					</div>
 
 					<div class="header-details">
-							<div class="status-grid">
-								<div class="status-item">
-									<span class="label-text">EDUCATION</span>
-									<span class="status-value font-mono">MIT Manipal '27</span>
-								</div>
-								<div class="status-item">
-									<span class="label-text">LOCATION</span>
-									<span class="status-value font-mono">Bengaluru, India</span>
-								</div>
+						<div class="status-grid">
+							<div class="status-item">
+								<span class="label-text">EDUCATION</span>
+								<span class="status-value font-mono">MIT Manipal '27</span>
 							</div>
+							<div class="status-item">
+								<span class="label-text">LOCATION</span>
+								<span class="status-value font-mono">Bengaluru, India</span>
+							</div>
+						</div>
 
 						<div class="contact-links font-mono">
 							<a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
@@ -99,11 +118,15 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 					</div>
 
 					<nav class="nav-links vertical">
-						<a href="/" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: isHome }]}>/about</a>
-						<a href="/experience" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/experience') }]}>/experience</a>
-						<a href="/projects" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/projects') }]}>/projects</a>
-						<a href="/research" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/research') }]}>/research</a>
-						<a href="/skills" data-astro-prefetch="viewport" class:list={["nav-link", "font-mono", { active: currentPath.startsWith('/skills') }]}>/skills</a>
+						{navItems.map((item) => (
+							<a
+								href={item.href}
+								data-astro-prefetch={item.href.startsWith("/") ? "viewport" : undefined}
+								class:list={["nav-link", "font-mono", { active: item.active }]}
+							>
+								{item.label}
+							</a>
+						))}
 						<button type="button" id="resume-trigger" class="nav-link nav-link--tooltip nav-link--button font-mono" aria-label="view my resume" aria-haspopup="dialog" data-tooltip="view my resume">/resume.pdf</button>
 					</nav>
 
@@ -308,16 +331,46 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 	a {
 		color: var(--text-primary);
 		text-decoration: none;
-		transition: color var(--dur-base) var(--ease);
+		transition: color var(--dur-base) var(--ease), opacity var(--dur-fast) var(--ease);
 	}
 
 	a:hover {
 		color: var(--accent);
 	}
 
+	a:active {
+		opacity: 0.7;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	a,
+	button {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+		border-radius: var(--radius-xs);
+	}
+
 	::selection {
 		background: var(--accent);
 		color: #FFF;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 1ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 1ms !important;
+			scroll-behavior: auto !important;
+		}
 	}
 
 	.left-panel {
@@ -396,11 +449,15 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		border: 1px solid var(--border-visible);
 		border-radius: 999px;
 		position: relative;
-		transition: border-color var(--dur-base) var(--ease);
+		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
 	}
 
 	.theme-toggle:hover .toggle-track {
-		border-color: var(--text-primary);
+		border-color: var(--accent);
+	}
+
+	.theme-toggle:active .toggle-track {
+		background: var(--border-visible);
 	}
 
 	.toggle-thumb {
@@ -411,12 +468,24 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		position: absolute;
 		top: 2px;
 		left: 2px;
-		transition: transform var(--dur-base) var(--ease);
+		transition: transform var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
+	}
+
+	.theme-toggle:hover .toggle-thumb {
+		background: var(--accent);
+	}
+
+	.theme-toggle:active .toggle-thumb {
+		transform: scale(0.8);
 	}
 
 	html[data-theme="light"] .toggle-thumb {
 		transform: translateX(16px);
 		background: var(--text-display);
+	}
+
+	html[data-theme="light"] .theme-toggle:active .toggle-thumb {
+		transform: translateX(16px) scale(0.8);
 	}
 
 	.hero {
@@ -427,6 +496,12 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		border-radius: 50%;
 		display: block;
 		margin-bottom: var(--space-md);
+		transition: transform var(--dur-base) var(--ease), filter var(--dur-base) var(--ease);
+	}
+
+	.hero-avatar:hover {
+		transform: scale(1.04) rotate(-2deg);
+		filter: brightness(1.05);
 	}
 
 	.left-panel--compact .hero-avatar {
@@ -498,6 +573,11 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		padding-bottom: var(--space-xs);
 		border-bottom: 1px solid transparent;
 		width: fit-content;
+		transition: color var(--dur-base) var(--ease), border-bottom-color var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
+	}
+
+	.nav-link:active {
+		transform: translateX(2px) scale(0.98);
 	}
 
 	.nav-link--tooltip {
@@ -536,7 +616,8 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 
 	.nav-link:hover {
 		color: var(--text-display);
-		border-bottom-color: var(--text-display);
+		border-bottom-color: var(--accent);
+		transform: translateX(2px);
 	}
 
 	.socials {
@@ -546,10 +627,17 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 
 	.social-link {
 		color: var(--text-secondary);
+		display: inline-flex;
+		transition: color var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
 	}
 
 	.social-link:hover {
-		color: var(--text-display);
+		color: var(--accent);
+		transform: translateY(-2px);
+	}
+
+	.social-link:active {
+		transform: translateY(0) scale(0.94);
 	}
 
 	/* Main Content */
@@ -615,6 +703,12 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		border: 1px solid var(--border-visible);
 		border-radius: var(--radius-xs);
 		color: var(--text-secondary);
+		transition: border-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+	}
+
+	.project-card:hover .tag {
+		border-color: var(--text-disabled);
+		color: var(--text-primary);
 	}
 
 	.tag-highlight {
@@ -660,6 +754,11 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		padding-left: var(--space-md);
 		border-left: 1px solid var(--border-visible);
 		position: relative;
+		transition: border-left-color var(--dur-base) var(--ease);
+	}
+
+	.exp-card:hover {
+		border-left-color: var(--accent);
 	}
 
 	.exp-card::before {
@@ -672,11 +771,13 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		background: var(--black);
 		border: 1px solid var(--text-disabled);
 		border-radius: 50%;
-		transition: border-color var(--dur-base) var(--ease);
+		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
 	}
 
 	.exp-card:hover::before {
 		border-color: var(--accent);
+		background: var(--accent);
+		transform: scale(1.15);
 	}
 
 	.exp-header {
@@ -875,7 +976,7 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		border-radius: var(--radius-sm);
 		background: var(--surface);
 		color: var(--text-primary);
-		transition: border-color var(--dur-base) ease, background var(--dur-base) ease, color var(--dur-base) ease;
+		transition: border-color var(--dur-base) ease, background var(--dur-base) ease, color var(--dur-base) ease, transform var(--dur-base) var(--ease);
 	}
 
 	.resume-option:hover,
@@ -883,6 +984,11 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 		border-color: var(--accent);
 		background: var(--surface-raised);
 		color: var(--text-display);
+		transform: translateY(-2px);
+	}
+
+	.resume-option:active {
+		transform: translateY(0);
 	}
 
 	.resume-option__label {
