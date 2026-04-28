@@ -1,4 +1,7 @@
 ---
+import { Picture } from "astro:assets";
+import pfp from "../assets/pfp.png";
+
 interface Props {
 	title: string;
 }
@@ -51,6 +54,15 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 					</div>
 
 					<div class="hero">
+						<Picture
+							src={pfp}
+							formats={["avif", "webp"]}
+							alt="Aadit Agrawal"
+							class="hero-avatar"
+							width={72}
+							height={72}
+							loading="eager"
+						/>
 						<h1 class="font-serif-name">Aadit Agrawal</h1>
 						<p class="subtitle">i just like to create cool stuff.</p>
 					</div>
@@ -387,6 +399,18 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 
 	.hero {
 		margin-bottom: var(--space-2xl);
+	}
+
+	.hero-avatar {
+		border-radius: 50%;
+		display: block;
+		margin-bottom: var(--space-md);
+	}
+
+	.left-panel--compact .hero-avatar {
+		width: 48px;
+		height: 48px;
+		margin-bottom: var(--space-sm);
 	}
 
 	h1 {
