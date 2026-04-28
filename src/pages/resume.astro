@@ -110,9 +110,10 @@ import Layout from "../layouts/Layout.astro";
         gap: var(--space-xs);
         padding: var(--space-lg);
         border: 1px solid var(--border-visible);
+        border-radius: var(--radius-sm);
         background: var(--surface);
         color: var(--text-primary);
-        transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+        transition: border-color var(--dur-base) ease, background var(--dur-base) ease, transform var(--dur-base) ease;
     }
 
     .resume-gate-card:hover,

@@ -1,92 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-type HeatmapPoint = { timestamp: number; contributions: number };
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const DAY_MS = 86_400_000;
-
-function scoreFor(count: number): 0 | 1 | 2 | 3 | 4 {
-    if (count === 0) return 0;
-    if (count <= 2) return 1;
-    if (count <= 5) return 2;
-    if (count <= 10) return 3;
-    return 4;
-}
-
-function buildGiteaSvg(data: HeatmapPoint[]): string {
-    const counts = new Map<string, number>();
-    for (const { timestamp, contributions } of data) {
-        const key = new Date(timestamp * 1000).toISOString().slice(0, 10);
-        counts.set(key, (counts.get(key) ?? 0) + contributions);
-    }
-
-    // Match ghchart.rshah.org geometry so both SVGs render at identical cell size.
-    const WEEKS = 53;
-    const CELL = 10;
-    const STEP = 12;
-    const LEFT_PAD = 27;
-    const TOP_PAD = 20;
-
-    const today = new Date();
-    const endMs = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
-    const endDow = new Date(endMs).getUTCDay();
-    const startMs = endMs - endDow * DAY_MS - (WEEKS - 1) * 7 * DAY_MS;
-
-    const rects: string[] = [];
-    const labels: string[] = [];
-    let lastLabeledMonth = -1;
-
-    for (let w = 0; w < WEEKS; w++) {
-        for (let dow = 0; dow < 7; dow++) {
-            const ms = startMs + (w * 7 + dow) * DAY_MS;
-            if (ms > endMs) break;
-            const d = new Date(ms);
-            const key = d.toISOString().slice(0, 10);
-            const level = scoreFor(counts.get(key) ?? 0);
-            const x = LEFT_PAD + w * STEP;
-            const y = TOP_PAD + dow * STEP;
-            rects.push(`<rect data-score="${level}" x="${x}" y="${y}" width="${CELL}" height="${CELL}"/>`);
-
-            if (dow === 0) {
-                const month = d.getUTCMonth();
-                if (month !== lastLabeledMonth) {
-                    lastLabeledMonth = month;
-                    labels.push(`<text x="${x}" y="10">${MONTHS[month]}</text>`);
-                }
-            }
-        }
-    }
-
-    const width = LEFT_PAD + WEEKS * STEP;
-    const height = TOP_PAD + 7 * STEP;
-
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="Gitea contribution graph">${labels.join("")}${rects.join("")}</svg>`;
-}
-
-let githubSvg = "";
-try {
-    const res = await fetch("https://ghchart.rshah.org/F55411/aaditagrawal");
-    if (res.ok) {
-        // ghchart ships no viewBox, so its 10px rects don't scale with the 100%-width container.
-        // Inject one so cells fill the width (matching the Gitea chart's rendering).
-        githubSvg = (await res.text())
-            .replace(/<svg([^>]*)width="\d+"([^>]*)height="\d+"/, '<svg$1viewBox="0 0 663 104"$2');
-    }
-} catch {
-    // build-time fetch failed; section will be omitted
-}
-
-let giteaSvg = "";
-try {
-    const res = await fetch("https://git.aadit.cc/api/v1/users/aadit/heatmap");
-    if (res.ok) {
-        const data = (await res.json()) as HeatmapPoint[];
-        giteaSvg = buildGiteaSvg(data);
-    }
-} catch {
-    // build-time fetch failed; section will be omitted
-}
 ---
 
 <Layout title="Aadit Agrawal | Computer Science Engineer">
@@ -115,54 +28,17 @@ try {
             </div>
         </div>
     </section>
-
-    {(githubSvg || giteaSvg) && (
-        <section id="activity" class="section section--activity">
-            <div class="section-header">
-                <h2 class="label-text">ACTIVITY</h2>
-                <div class="line"></div>
-            </div>
-
-            <div class="activity-stack">
-                {githubSvg && (
-                    <a
-                        href="https://github.com/aaditagrawal"
-                        class="activity"
-                        aria-label="View GitHub profile"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <div class="activity__chart activity__chart--gh" set:html={githubSvg} />
-                        <span class="activity__caption font-mono">github.com/aaditagrawal ↗</span>
-                    </a>
-                )}
-
-                {giteaSvg && (
-                    <a
-                        href="https://git.aadit.cc/aadit"
-                        class="activity"
-                        aria-label="View Gitea profile"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <div class="activity__chart activity__chart--gt" set:html={giteaSvg} />
-                        <span class="activity__caption font-mono">git.aadit.cc/aadit ↗</span>
-                    </a>
-                )}
-            </div>
-        </section>
-    )}
 </Layout>
 
 <style>
     .about-content {
         display: flex;
         flex-direction: column;
-        gap: var(--space-md);
-        font-size: 16px;
-        line-height: 1.6;
+        gap: var(--space-lg);
+        font-size: 19px;
+        line-height: 1.65;
         color: var(--text-primary);
-        max-width: 650px;
+        max-width: 780px;
     }
 
     .about-content p {
@@ -171,99 +47,18 @@ try {
 
     .status-callout {
         margin-top: var(--space-md);
-        padding: var(--space-md);
+        padding: var(--space-md) var(--space-lg);
         background: var(--surface);
         border: 1px solid var(--border-visible);
         border-left: 3px solid var(--accent);
-        font-size: 15px;
-        line-height: 1.5;
+        border-radius: var(--radius-sm);
+        font-size: 17px;
+        line-height: 1.55;
         color: var(--text-display);
     }
 
     .status-callout strong {
         font-weight: 600;
-        color: var(--accent);
-    }
-
-    /* Below the fold: defer layout/paint until the user scrolls near this block */
-    .section--activity {
-        content-visibility: auto;
-        contain-intrinsic-size: 0 520px;
-    }
-
-    .activity-stack {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-md);
-    }
-
-    .activity {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-sm);
-        padding: var(--space-md);
-        border: 1px solid var(--border-visible);
-        background: var(--surface);
-        color: var(--text-secondary);
-        transition: border-color 200ms ease;
-    }
-
-    .activity:hover {
-        border-color: var(--accent);
-    }
-
-    .activity__chart {
-        overflow-x: auto;
-        scrollbar-width: none;
-    }
-
-    .activity__chart::-webkit-scrollbar {
-        display: none;
-    }
-
-    .activity__chart :global(svg) {
-        display: block;
-        width: 100%;
-        height: auto;
-        min-width: 680px;
-    }
-
-    /* GitHub (ghchart.rshah.org) — keep its orange shades, only override empties & text */
-    .activity__chart--gh :global(rect[data-score="0"]) {
-        fill: var(--surface-raised) !important;
-    }
-    /* ghchart ships Mon/Wed/Fri day labels at y=40/64/89; hide to match Gitea layout */
-    .activity__chart--gh :global(text):not([y="10"]) {
-        display: none !important;
-    }
-    .activity__chart--gh :global(text[y="10"]) {
-        fill: var(--text-secondary) !important;
-        font-family: "Geist Mono", monospace !important;
-        font-size: 9px !important;
-        letter-spacing: 0.04em;
-    }
-
-    /* Gitea — fully theme-driven, rects carry only data-score */
-    .activity__chart--gt :global(rect[data-score="0"]) { fill: var(--surface-raised); }
-    .activity__chart--gt :global(rect[data-score="1"]) { fill: rgba(245, 84, 17, 0.30); }
-    .activity__chart--gt :global(rect[data-score="2"]) { fill: rgba(245, 84, 17, 0.55); }
-    .activity__chart--gt :global(rect[data-score="3"]) { fill: rgba(245, 84, 17, 0.80); }
-    .activity__chart--gt :global(rect[data-score="4"]) { fill: var(--accent); }
-    .activity__chart--gt :global(text) {
-        fill: var(--text-secondary);
-        font-family: "Geist Mono", monospace;
-        font-size: 9px;
-        letter-spacing: 0.04em;
-    }
-
-    .activity__caption {
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--text-secondary);
-    }
-
-    .activity:hover .activity__caption {
         color: var(--accent);
     }
 </style>
