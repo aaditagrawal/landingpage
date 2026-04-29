@@ -357,6 +357,11 @@ try {
     .activity__chart :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.80) !important; }
     .activity__chart :global(rect[data-score="4"]) { fill: var(--accent) !important; }
 
+    /* Boost lower-score sensitivity on the GitHub chart so light activity reads more clearly */
+    .activity__chart--gh :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.50) !important; }
+    .activity__chart--gh :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.72) !important; }
+    .activity__chart--gh :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.90) !important; }
+
     .activity__chart--gh :global(text):not([y="10"]) {
         display: none !important;
     }
