@@ -87,6 +87,43 @@ try {
 ---
 
 <Layout title="Experience | Aadit Agrawal">
+    {(githubSvg || giteaSvg) && (
+        <section id="activity" class="section section--activity">
+            <div class="section-header">
+                <h2 class="label-text">ACTIVITY</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="activity-stack">
+                {githubSvg && (
+                    <a
+                        href="https://github.com/aaditagrawal"
+                        class="activity"
+                        aria-label="View GitHub profile"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <div class="activity__chart activity__chart--gh" set:html={githubSvg} />
+                        <span class="activity__caption font-mono">github.com/aaditagrawal ↗</span>
+                    </a>
+                )}
+
+                {giteaSvg && (
+                    <a
+                        href="https://git.aadit.cc/aadit"
+                        class="activity"
+                        aria-label="View Gitea profile"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <div class="activity__chart activity__chart--gt" set:html={giteaSvg} />
+                        <span class="activity__caption font-mono">git.aadit.cc/aadit ↗</span>
+                    </a>
+                )}
+            </div>
+        </section>
+    )}
+
     <section id="experience" class="section">
         <div class="section-header">
             <h2 class="label-text">EXPERIENCE</h2>
@@ -184,6 +221,17 @@ try {
                         moved primary rankings from 100+ into the top 5.
                     </li>
                 </ul>
+                <div class="exp-header exp-header--sub">
+                    <h3>
+                        Freelance Graphic Designer
+                    </h3>
+                    <span class="label-text font-mono">2022—2024</span>
+                </div>
+                <ul>
+                    <li>
+                        Designed select thumbnails and merch designs.
+                    </li>
+                </ul>
             </article>
 
             <article class="exp-card">
@@ -227,43 +275,6 @@ try {
             </article>
         </div>
     </section>
-
-    {(githubSvg || giteaSvg) && (
-        <section id="activity" class="section section--activity">
-            <div class="section-header">
-                <h2 class="label-text">ACTIVITY</h2>
-                <div class="line"></div>
-            </div>
-
-            <div class="activity-stack">
-                {githubSvg && (
-                    <a
-                        href="https://github.com/aaditagrawal"
-                        class="activity"
-                        aria-label="View GitHub profile"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <div class="activity__chart activity__chart--gh" set:html={githubSvg} />
-                        <span class="activity__caption font-mono">github.com/aaditagrawal ↗</span>
-                    </a>
-                )}
-
-                {giteaSvg && (
-                    <a
-                        href="https://git.aadit.cc/aadit"
-                        class="activity"
-                        aria-label="View Gitea profile"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <div class="activity__chart activity__chart--gt" set:html={giteaSvg} />
-                        <span class="activity__caption font-mono">git.aadit.cc/aadit ↗</span>
-                    </a>
-                )}
-            </div>
-        </section>
-    )}
 </Layout>
 
 <style>
@@ -289,15 +300,31 @@ try {
         font-size: 12px;
     }
 
+    .exp-header--sub {
+        margin-top: var(--space-md);
+    }
+
+    .exp-header--sub h3 {
+        font-size: 0.9375rem;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
     .section--activity {
         content-visibility: auto;
         contain-intrinsic-size: 0 320px;
     }
 
     .activity-stack {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-lg);
+        display: grid;
+        gap: var(--space-lg) var(--space-xl);
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 720px) {
+        .activity-stack {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     .activity {
@@ -305,7 +332,7 @@ try {
         flex-direction: column;
         gap: var(--space-sm);
         color: var(--text-secondary);
-        max-width: 560px;
+        min-width: 0;
     }
 
     .activity__chart {
@@ -324,9 +351,12 @@ try {
         min-width: 480px;
     }
 
-    .activity__chart--gh :global(rect[data-score="0"]) {
-        fill: var(--surface-raised) !important;
-    }
+    .activity__chart :global(rect[data-score="0"]) { fill: var(--surface-raised) !important; }
+    .activity__chart :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.30) !important; }
+    .activity__chart :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.55) !important; }
+    .activity__chart :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.80) !important; }
+    .activity__chart :global(rect[data-score="4"]) { fill: var(--accent) !important; }
+
     .activity__chart--gh :global(text):not([y="10"]) {
         display: none !important;
     }
@@ -337,11 +367,6 @@ try {
         letter-spacing: 0.04em;
     }
 
-    .activity__chart--gt :global(rect[data-score="0"]) { fill: var(--surface-raised); }
-    .activity__chart--gt :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.30); }
-    .activity__chart--gt :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.55); }
-    .activity__chart--gt :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.80); }
-    .activity__chart--gt :global(rect[data-score="4"]) { fill: var(--accent); }
     .activity__chart--gt :global(text) {
         fill: var(--text-secondary);
         font-family: "Geist Mono", monospace;
