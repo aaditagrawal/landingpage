@@ -88,6 +88,10 @@ const navItems = [
 								<span class="label-text">LOCATION</span>
 								<span class="status-value font-mono">Bengaluru, India</span>
 							</div>
+							<button type="button" id="resume-trigger" class="status-item status-item--button" aria-haspopup="dialog" aria-label="view my resume">
+								<span class="label-text">RESUME</span>
+								<span class="status-value font-mono">/resume.pdf <span class="status-item__arrow" aria-hidden="true">→</span></span>
+							</button>
 						</div>
 
 						<div class="contact-links font-mono">
@@ -118,7 +122,9 @@ const navItems = [
 								{item.label}
 							</a>
 						))}
-						<button type="button" id="resume-trigger" class="nav-link nav-link--tooltip nav-link--button font-mono" aria-label="view my resume" aria-haspopup="dialog" data-tooltip="view my resume">/resume.pdf</button>
+						{!isHome && (
+							<button type="button" id="resume-trigger" class="nav-link nav-link--tooltip nav-link--button font-mono" aria-label="view my resume" aria-haspopup="dialog" data-tooltip="view my resume">/resume.pdf</button>
+						)}
 					</nav>
 
 					<div class="nav-clip-indicator font-mono" aria-hidden="true">↓ scroll</div>
@@ -543,6 +549,39 @@ const navItems = [
 
 	.status-value.success {
 		color: #4A9E5C;
+	}
+
+	.status-item--button {
+		background: var(--black);
+		border: none;
+		font: inherit;
+		color: inherit;
+		text-align: left;
+		cursor: pointer;
+		transition: background var(--dur-base) var(--ease);
+	}
+
+	.status-item--button:hover,
+	.status-item--button:focus-visible {
+		background: var(--surface-raised);
+	}
+
+	.status-item--button:hover .status-value,
+	.status-item--button:focus-visible .status-value {
+		color: var(--accent);
+	}
+
+	.status-item__arrow {
+		display: inline-block;
+		margin-left: var(--space-xs);
+		color: var(--text-secondary);
+		transition: transform var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+	}
+
+	.status-item--button:hover .status-item__arrow,
+	.status-item--button:focus-visible .status-item__arrow {
+		transform: translateX(2px);
+		color: var(--accent);
 	}
 
 	.contact-links {
