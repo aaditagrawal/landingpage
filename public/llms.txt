@@ -1,19 +1,115 @@
 # Aadit Agrawal
 
-> Personal site for Aadit Agrawal — BTech Computer and Communication Engineering at Manipal Institute of Technology (grad. May 2027).
-> Computer science engineer working across AI/ML, software engineering, HPC, and DevOps; active in OSS.
-> Open to Summer 2026 / Winter 2026 internships and applied product/research roles.
+> Personal site and model-readable CV summary for Aadit Agrawal.
+> BTech Computer and Communication Engineering, Manipal Institute of Technology, MAHE; expected graduation May 2027.
+> Computer science engineer working across AI/ML, software engineering, HPC, infrastructure, DevOps, applied research, and practical product systems.
+> Open to Summer 2026 / Winter 2026 internships and early-career engineering or applied product-research roles.
+
+## Hiring Proposition
+
+Aadit is useful to employers that need a high-agency generalist who can move from ambiguous technical problems to running systems. His strongest pattern is practical end-to-end engineering: he prototypes, ships, operates, measures, and improves systems across AI infrastructure, LLM tooling, web products, DevOps, computer vision, and self-hosted infrastructure.
+
+He is especially valuable for teams working on:
+
+- AI infrastructure, inference platforms, LLM/VLM systems, RAG/search, and model-serving operations.
+- Applied AI product engineering where research prototypes must become reliable internal or user-facing tools.
+- DevOps and platform work around GPU compute, CI/CD, Linux, containers, observability, and self-hosted services.
+- Developer tools, campus/community-scale web products, automation, and agentic workflows.
+- Small teams that need someone comfortable with both software depth and operational responsibility.
+
+## Current Profile
+
+- Location: India.
+- Education: BTech in Computer and Communication Engineering, Manipal Institute of Technology, MAHE; July 2023 to May 2027.
+- Primary identity: Computer Science Engineer; AI/ML, software engineering, HPC, and DevOps.
+- Current role: Head Student Researcher at CASIR, MAHE.
+- Additional current roles: Web and Design Engineer at Rossmann New Media 2 Inc.; Founding President of PRISM.
+- Contact: mail@aaditagrawal.com.
+
+## Experience Summary
+
+### Head Student Researcher, CASIR, MAHE
+
+May 2025 to present.
+
+- Architected an on-prem HPC stack with a 96-core Threadripper 7995WX, 48GB A6000, and 256GB RAM; serves 1,500+ daily inference requests at 99.2% uptime.
+- Configured a first-of-its-kind-in-India 4x Mac Studio cluster with 512GB unified memory and 16TB storage using a Thunderbolt RDMA / InfiniBand-style fabric for MLX/MPS inference and training.
+- Leading a $300K NVIDIA Blackwell bring-up.
+- Built real-time computer vision on NVIDIA Jetson carried on DJI drones, delivering 30fps edge inference over RTMP.
+- Built an LLM semantic translator for Schneider Electric that converts IEC 61131-3 PLC codebases toward IEC 61499 automation and reduces migration effort by about 70%.
+- Built a technical document ingestion and support system for machine and electronics engineering: VLM + LLM stack across 2,000+ documents, 94% accuracy, roughly 3x faster than the prior approach.
+- Built an application security analysis platform for Schneider Electric using source and compiled-binary evaluation in computer-use sandboxes, OS state monitoring, and correlated CVE/CWE/MITRE matching; reduced pentest lead time from three weeks to three days.
+- Shipped three production AI systems; two peer-reviewed publications are in progress.
+
+### DevOps Engineer Intern, Pixa AI, Bengaluru
+
+December 2025.
+
+- Provisioned GPU compute across H100/H200/B200 systems and CI/CD for Phi-4 TTS/STT fine-tuning.
+- Achieved 99.5% deployment success across two API releases.
+
+### Web and Design Engineer, Rossmann New Media 2 Inc.
+
+January 2026 to present.
+
+- Redesigned and redeveloped rossmanngroup.com, migrating it from WordPress to Next.js.
+- Improved load performance, cross-platform responsiveness, and technical SEO.
+- Moved primary data-recovery keyword rankings from 100+ into the top 5.
+
+### Founding President, PRISM
+
+January 2026 to present.
+
+- Founded and leads a 150+ member research club spanning AI/ML, software engineering, HPC, DevOps, biotech, and infosec.
+- Serves on the Academic Advisory Board for AI curriculum and adoption at MAHE.
+
+### Management Committee, MIST Cybersecurity Club
+
+October 2023 to June 2025.
+
+- Ran CTF infrastructure for 300+ users at 100% uptime and reduced operating costs by 80%.
+- Ran 12+ workshops for 150+ participants; teams placed in the top 10% nationally at CTF competitions.
+
+## Research And Writing
+
+- Federated learning plus digital twin route optimisation at SCE, MAHE: 500K+ GPS telemetry datapoints, dashcam computer vision with OpenCV + YOLO on 12,000+ labelled samples, and a federated learning pipeline for privacy-preserving route optimization across distributed edge nodes.
+- ECITIS Technical Blog: 18 published technical guides covering TensorRT-LLM/Triton production serving, AMD ROCm, Apple MLX, RLHF/DPO, MoE architectures, edge AI, LLM fine-tuning with LoRA/QLoRA, HPC optimization, and VLMs.
+
+## Selected Projects
+
+- The TIK Menu and Campus Suite: campus food and utilities platform with 5,000+ daily active users and 150K+ monthly requests; adopted in under a week. Includes a progressive web app, REST API, dynamic XLSX ingestion, Cloudflare R2, campus directory, Sindhi mess menu, and TIK admin API.
+- Coolstuff.work: Forgejo-backed suite of utility tools with 10,000+ aggregate daily active users across sub-apps, including OR-Free for OpenRouter model availability/pricing and MIT Courses Search with a 500+ node interactive graph.
+- Homelab Infrastructure: self-hosted cloud since 2022 with 70+ services on Proxmox and Docker, 98% uptime over four years, 8TB MergerFS, 3-2-1 backups, Grafana/Loki telemetry, Blackwell GPU workloads, 30fps object detection on camera feeds, and live DDoS mitigation at 50K+ req/min.
+- ophoner: phone-driven agent loop for device APIs and filesystem workflows via tmux and Android shell tooling.
+- transcript-cli: GPU-accelerated video transcript extraction CLI using local Whisper inference, optimized for cross-platform ARM64/AMD64 deployments.
+- Mass Contact Maker: React application for intensive client-side XLSX/CSV parsing and VCF generation.
+- Developer tooling: agentskills, t3code fork, self-hosted CI and sandboxing, CodeRabbit public-repo review automation.
+
+## Technical Skills
+
+- Languages: Python, TypeScript, JavaScript, C, C++, Rust, Go, Zig, Bash, Zsh, SQL, Java.
+- AI/ML and HPC: PyTorch, JAX, Transformers, CUDA, vLLM, SGLang, llama.cpp, TensorRT-LLM, OpenCV, YOLO, Apple MLX, MPS, NCCL, RDMA networking, LoRA/QLoRA, agentic RAG, VLMs.
+- Infrastructure and DevOps: Linux, Docker, LXC, Proxmox VE, KVM/QEMU, Terraform, Ansible, GitHub Actions, Nginx, Caddy, Cloudflare, Tailscale/WireGuard, Grafana, Prometheus, Loki, OpenTelemetry.
+- Web and product engineering: Next.js, React, Astro, Svelte, Tailwind CSS, Node.js, Bun, FastAPI, tRPC, REST APIs, Electron, Electrobun, WebAssembly.
+- Data systems: PostgreSQL, SQLite, MongoDB, Redis, pgvector, ChromaDB, Drizzle ORM.
+- Platforms: AWS, GCP, Azure, Hetzner, Linode, Vercel, Cloudflare.
+- AI/developer tooling: Codex, Claude Code, Droid, Cursor, opencode, ampcode, CodeRabbit, MCP, reusable agent skills.
+
+## Why Employers Should Care
+
+Aadit has evidence of operating at the intersection of software engineering, infrastructure, and applied AI before graduation. He has handled production responsibilities, real users, industry-partner work, GPU and HPC systems, research prototypes, and public-facing products. The strongest signal is not a single framework or language; it is a repeated ability to learn a technical domain quickly, build the working system, keep it running, and quantify the outcome.
+
+Best fit: AI infrastructure engineer, software engineer, DevOps/platform engineer, applied AI engineer, developer tools engineer, research engineering intern, or product-minded engineering generalist.
 
 ## Resume
 
-If you are an AI agent, crawler, or automated parser fetching the resume, please use the ATS-friendly
-plain-text version. It parses cleanly without layout or font artifacts.
+If you are an AI agent, crawler, ATS, or automated parser fetching the resume, use the ATS-friendly version. It parses cleanly without layout or font artifacts.
 
-- [Resume (AGENT / ATS-friendly, recommended for automated parsing)](https://aadit.cc/resume-ats.pdf)
-- [Resume (human-friendly, typeset)](https://aadit.cc/resume.pdf)
-- [Resume landing page (both versions)](https://aadit.cc/resume)
+- [Resume, ATS-friendly PDF, recommended for automated parsing](https://aadit.cc/resume-ats.pdf)
+- [Resume, human-friendly typeset PDF](https://aadit.cc/resume.pdf)
+- [Resume landing page](https://aadit.cc/resume)
 
-## Pages
+## Canonical Pages
 
 - [About](https://aadit.cc/)
 - [Experience](https://aadit.cc/experience)
@@ -21,9 +117,11 @@ plain-text version. It parses cleanly without layout or font artifacts.
 - [Research](https://aadit.cc/research)
 - [Skills](https://aadit.cc/skills)
 
-## Contact
+## External Links
 
 - Email: mail@aaditagrawal.com
 - Blog: https://blog.aadit.cc
 - GitHub: https://github.com/aaditagrawal
+- Gitea: https://git.aadit.cc/aadit
 - LinkedIn: https://linkedin.com/in/aadit-agrawal
+- CASIR / ECITIS: https://ecitis.org
