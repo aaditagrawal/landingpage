@@ -63,27 +63,42 @@ function buildGiteaSvg(data: HeatmapPoint[]): string {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="Gitea contribution graph">${labels.join("")}${rects.join("")}</svg>`;
 }
 
-let githubSvg = "";
-try {
-    const res = await fetch("https://ghchart.rshah.org/576BFF/aaditagrawal");
-    if (res.ok) {
-        githubSvg = (await res.text())
-            .replace(/<svg([^>]*)width="\d+"([^>]*)height="\d+"/, '<svg$1viewBox="0 0 663 104"$2');
+const FETCH_TIMEOUT_MS = 600;
+
+async function fetchWithTimeout(url: string): Promise<Response> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+        return await fetch(url, { signal: controller.signal });
+    } finally {
+        clearTimeout(timeout);
     }
-} catch {
-    // build-time fetch failed; section will be omitted
 }
 
-let giteaSvg = "";
-try {
-    const res = await fetch("https://git.aadit.cc/api/v1/users/aadit/heatmap");
-    if (res.ok) {
-        const data = (await res.json()) as HeatmapPoint[];
-        giteaSvg = buildGiteaSvg(data);
-    }
-} catch {
-    // build-time fetch failed; section will be omitted
-}
+const [githubSvg, giteaSvg] = await Promise.all([
+    (async () => {
+        try {
+            const res = await fetchWithTimeout("https://ghchart.rshah.org/576BFF/aaditagrawal");
+            if (!res.ok) return "";
+            return (await res.text())
+                .replace(/<svg([^>]*)width="\d+"([^>]*)height="\d+"/, '<svg$1viewBox="0 0 663 104"$2');
+        } catch {
+            // build-time fetch failed or timed out; section will be omitted
+            return "";
+        }
+    })(),
+    (async () => {
+        try {
+            const res = await fetchWithTimeout("https://git.aadit.cc/api/v1/users/aadit/heatmap");
+            if (!res.ok) return "";
+            const data = (await res.json()) as HeatmapPoint[];
+            return buildGiteaSvg(data);
+        } catch {
+            // build-time fetch failed or timed out; section will be omitted
+            return "";
+        }
+    })(),
+]);
 ---
 
 <Layout title="Experience | Aadit Agrawal">
@@ -131,6 +146,22 @@ try {
         </div>
 
         <div class="exp-list">
+            <article class="exp-card">
+                <div class="exp-header">
+                    <h3>
+                        Codex Consultant <span class="exp-at"
+                            >@ OpenAI India</span>
+                    </h3>
+                    <span class="label-text font-mono">MAY 2026—PRES</span>
+                </div>
+                <ul>
+                    <li>
+                        Consulting engagement focused on Codex and agentic
+                        developer workflows.
+                    </li>
+                </ul>
+            </article>
+
             <article class="exp-card">
                 <div class="exp-header">
                     <h3>

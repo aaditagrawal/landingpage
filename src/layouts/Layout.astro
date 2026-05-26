@@ -12,10 +12,10 @@ const isHome = currentPath === '/' || currentPath === '/index.html';
 
 const navItems = [
 	{ href: "/", label: "/about", active: isHome },
-	{ href: "/experience", label: "/experience", active: currentPath.startsWith('/experience') },
-	{ href: "/projects", label: "/projects", active: currentPath.startsWith('/projects') },
-	{ href: "/research", label: "/research", active: currentPath.startsWith('/research') },
-	{ href: "/skills", label: "/skills", active: currentPath.startsWith('/skills') },
+	{ href: "/experience/", label: "/experience", active: currentPath.startsWith('/experience') },
+	{ href: "/projects/", label: "/projects", active: currentPath.startsWith('/projects') },
+	{ href: "/research/", label: "/research", active: currentPath.startsWith('/research') },
+	{ href: "/skills/", label: "/skills", active: currentPath.startsWith('/skills') },
 ];
 ---
 
@@ -23,7 +23,7 @@ const navItems = [
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Aadit Agrawal — computer science engineer working across AI/ML, software engineering, HPC, and DevOps." />
+		<meta name="description" content="Aadit Agrawal — Codex Consultant at OpenAI India and computer science engineer working across AI/ML, software engineering, HPC, and DevOps." />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#0c0e0e" media="(prefers-color-scheme: dark)" />
 		<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
@@ -88,10 +88,10 @@ const navItems = [
 								<span class="label-text">LOCATION</span>
 								<span class="status-value font-mono">Bengaluru, India</span>
 							</div>
-							<button type="button" id="resume-trigger" class="status-item status-item--button" aria-haspopup="dialog" aria-label="view my resume">
+							<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="status-item status-item--button" aria-label="view my resume">
 								<span class="label-text">RESUME</span>
 								<span class="status-value font-mono">/resume.pdf <span class="status-item__arrow" aria-hidden="true">→</span></span>
-							</button>
+							</a>
 						</div>
 
 						<div class="contact-links font-mono">
@@ -123,7 +123,7 @@ const navItems = [
 							</a>
 						))}
 						{!isHome && (
-							<button type="button" id="resume-trigger" class="nav-link nav-link--tooltip nav-link--button font-mono" aria-label="view my resume" aria-haspopup="dialog" data-tooltip="view my resume">/resume.pdf</button>
+							<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-link nav-link--tooltip nav-link--button font-mono" aria-label="view my resume" data-tooltip="view my resume">/resume.pdf</a>
 						)}
 					</nav>
 

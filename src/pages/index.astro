@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Aadit Agrawal | Student, Infra, Dev, AI Stuff">
+<Layout title="Aadit Agrawal | Codex Consultant, Student, Infra, Dev, AI Stuff">
     <section id="about" class="section intro-section">
         <div class="section-header">
             <h2 class="label-text">ABOUT</h2>
@@ -12,14 +12,12 @@ import Layout from "../layouts/Layout.astro";
         <div class="intro-copy">
             <h2>I like figuring out tech by making things with it.</h2>
             <p>
-                CS student at MIT Manipal, generalist by temperament - <strong> infra,
-                AI, devtools, research prototypes</strong>. Most of what
-                I ship is small in scope and used by real people: campus tools
-                my peers actually open, scripts that escaped the notebook
-                stage, services I keep alive on my own boxes.
+                CS student at MIT Manipal and Codex Consultant at OpenAI India, generalist by interest - <strong> infra,
+                AI, devtools, research prototypes</strong>. I like to make cool stuff: campus tools
+                used by almost everyone here, tool scripts, self-hosted services.
             </p>
             <p>
-                Right now I'm leading a student research lab at MAHE
+                Right now I'm consulting on Codex and agentic developer workflows, leading a student research lab at MAHE
                 (<a href="https://ecitis.org">CASIR</a>), running an on-prem
                 inference stack, configuring Apple Silicon / Blackwell compute
                 for MLX, MPS, and CUDA workloads, and doing applied AI work
@@ -27,16 +25,19 @@ import Layout from "../layouts/Layout.astro";
                 <a href="https://blog.ecitis.org">blog.ecitis.org</a>, and
                 building things with friends.
             </p>
+            <p>
+                I'm an avid fan of scientific/science-fiction literature, especially the works of Isaac Asimov, Carl Sagan and Andy Weir.
+            </p>
         </div>
 
         <div class="intent-strip font-mono">
             <span>LOOKING FOR</span>
-            <strong>Summer / Winter 2026 internships or full-time roles :).</strong>
+            <strong>Selective 2026 internships or full-time/new-grad roles :).</strong>
             <span>generalist engineering · infra · devtools · AI · applied product-research</span>
         </div>
 
         <p class="next-step">
-            See <a href="/projects">/projects</a> or <a href="/experience">/experience</a> for the longer story, or just say hi.
+            See <a href="/projects/">/projects</a> or <a href="/experience/">/experience</a> for the longer story, or just say hi.
         </p>
     </section>
 
@@ -46,21 +47,16 @@ import Layout from "../layouts/Layout.astro";
             <div class="line"></div>
         </div>
 
-        <p class="contact-line">Email is the fastest way through.</p>
         <div class="contact-actions font-mono">
             <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
-            <button type="button" id="resume-trigger-inline" class="inline-resume">resume.pdf</button>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="inline-resume">resume.pdf</a>
             <a href="https://github.com/aaditagrawal">github</a>
             <a href="https://linkedin.com/in/aadit-agrawal">linkedin</a>
         </div>
     </section>
 </Layout>
 
-<script is:inline>
-    document.getElementById('resume-trigger-inline')?.addEventListener('click', () => {
-        document.getElementById('resume-trigger')?.click();
-    });
-</script>
+
 
 <style>
     .intro-section {
@@ -143,12 +139,7 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .inline-resume {
-        background: none;
-        border: none;
         color: var(--text-primary);
-        cursor: pointer;
-        font: inherit;
-        padding: 0;
         transition: color var(--dur-base) ease;
     }
 

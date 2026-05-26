@@ -1,5 +1,5 @@
 {
-  "name": "tmp-astro",
+  "name": "landingpage",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "dev:portless": "portless run",
+    "dev:portless": "portless run --force --app-port 4873 -- astro dev --host 127.0.0.1 --port 4873",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

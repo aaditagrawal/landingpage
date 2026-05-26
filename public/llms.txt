@@ -2,8 +2,8 @@
 
 > Personal site and model-readable CV summary for Aadit Agrawal.
 > BTech Computer and Communication Engineering, Manipal Institute of Technology, MAHE; expected graduation May 2027.
-> Computer science engineer working across AI/ML, software engineering, HPC, infrastructure, DevOps, applied research, and practical product systems.
-> Open to Summer 2026 / Winter 2026 internships and early-career engineering or applied product-research roles.
+> Codex Consultant at OpenAI India and computer science engineer working across AI/ML, software engineering, HPC, infrastructure, DevOps, applied research, and practical product systems.
+> Open to selective 2026 internships and full-time/new-grad applied product/research roles.
 
 ## Hiring Proposition
 
