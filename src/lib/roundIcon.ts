@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import sharp from "sharp";
 
 export async function roundIcon(input: string | Buffer, size: number): Promise<Buffer> {
