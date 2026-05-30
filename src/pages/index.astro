@@ -2,146 +2,160 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Aadit Agrawal | Codex Consultant, Student, Infra, Dev, AI Stuff">
-    <section id="about" class="section intro-section">
-        <div class="section-header">
-            <h2 class="label-text">About</h2>
-            <div class="line"></div>
-        </div>
+<Layout title="Aadit Agrawal | Codex Creative, Student, Infra, Dev, AI Stuff">
+    <section id="about" class="intro">
+        <!-- <p class="intro-meta font-mono" aria-label="Availability">
+            <span class="intro-meta__avail">open to 2026 roles</span>
+        </p> -->
 
-        <div class="intro-copy">
-            <h2>I like figuring out tech by making things with it.</h2>
+        <h2 class="statement">I like figuring out tech by making things with it.</h2>
+
+        <div class="intro-body">
             <p>
-                I'm a CS student at MIT Manipal and a Codex consultant at
-                OpenAI India. Mostly I'm a generalist (infra, AI, developer
-                tools, the occasional research prototype), but the part I
-                actually love is making things people end up using: campus
-                tools half the college quietly relies on, small scripts, and
-                services I host myself and tend to like a garden.
+                I'm a CS student at MIT Manipal and Codex Creative at OpenAI.
             </p>
             <p>
-                These days that means consulting on Codex and agentic
-                developer workflows, leading a student research lab at MAHE
-                (<a href="https://ecitis.org">CASIR</a>), and keeping an
-                on-prem inference stack alive across Apple Silicon, Blackwell,
-                and CUDA. When I step away from that I'm usually self-hosting
-                something new, writing on
-                <a href="https://blog.ecitis.org">blog.ecitis.org</a>, or
-                building with friends.
+                I grew up on science fiction. Asimov, Sagan, Andy Weir.
+                Science, and optimism about it.
             </p>
-            <p class="intro-close">
-                I grew up on science fiction. Asimov, Sagan, Andy Weir. I think
-                that's where the building comes from: a quiet conviction that
-                careful engineering is a kind of optimism.
+            <p>
+                There's a longer story in <a href="/projects/">/projects</a> and
+                <a href="/experience/">/experience</a>. Or just say hi.
             </p>
         </div>
-
-        <p class="next-step">
-            There's a longer story in <a href="/projects/">/projects</a> and
-            <a href="/experience/">/experience</a>. Or just say hi.
-        </p>
     </section>
 
-    <section id="contact" class="section contact-section">
-        <div class="section-header">
-            <h2 class="label-text">Contact</h2>
-            <div class="line"></div>
-        </div>
-
-        <p class="contact-lead">
-            The fastest way to reach me is email. I read everything, and I
-            answer the thoughtful ones.
-        </p>
-
-        <div class="contact-actions font-mono">
+    <footer id="contact" class="contact">
+        <span class="eyebrow font-mono">elsewhere</span>
+        <nav class="elsewhere-links font-mono" aria-label="Contact and links">
             <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="inline-resume" data-resume-open>resume.pdf</a>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-resume-open>resume.pdf</a>
             <a href="https://github.com/aaditagrawal">github</a>
             <a href="https://linkedin.com/in/aadit-agrawal">linkedin</a>
-        </div>
-    </section>
+        </nav>
+    </footer>
 </Layout>
 
 <style>
-    .intro-section {
+    .intro {
         display: flex;
         flex-direction: column;
-        gap: var(--space-xl);
+        gap: var(--space-lg);
     }
 
-    .intro-copy {
-        max-width: 60ch;
+    /* .intro-meta {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        text-align: right;
+        font-size: 0.6875rem;
+        line-height: 1.55;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+    }
+
+    @media (max-width: 1023px) {
+        .intro-meta {
+            position: static;
+            align-self: flex-end;
+            text-align: right;
+        }
+    } */
+
+    /* Glow on "open to 2026 roles" — uncomment with .intro-meta above
+    .intro-meta__avail {
+        display: inline-block;
+        font-weight: 500;
+        background: linear-gradient(
+            100deg,
+            var(--accent) 0%,
+            #9fb0ff 50%,
+            var(--accent) 100%
+        );
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        filter: drop-shadow(0 0 7px rgba(87, 107, 255, 0.42));
+        animation: intro-meta-glow 3.6s linear infinite;
+    }
+
+    @keyframes intro-meta-glow {
+        from { background-position: 200% 0; }
+        to { background-position: 0% 0; }
+    }
+    */
+
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        font-size: 0.6875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-secondary);
+    }
+
+    .statement {
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: clamp(1.5rem, 2.7vw, 2.25rem);
+        line-height: 1.3;
+        letter-spacing: -0.035em;
+        max-width: 20ch;
+        color: var(--text-display);
+        margin: var(--space-2xs) 0 var(--space-sm);
+    }
+
+    .intro-body {
         display: flex;
         flex-direction: column;
         gap: var(--space-md);
-    }
-
-    .intro-copy h2 {
-        font-family: var(--font-serif);
-        font-size: clamp(1.7rem, 2.6vw, 2.4rem);
-        font-weight: 400;
-        line-height: 1.12;
-        letter-spacing: -0.01em;
-        max-width: 18ch;
-        margin-bottom: var(--space-sm);
-        color: var(--text-display);
-    }
-
-    .intro-copy p {
-        margin: 0;
-        color: var(--text-primary);
-        font-size: 1.0625rem;
-        line-height: 1.7;
-    }
-
-    .intro-close {
-        font-family: var(--font-serif);
-        font-size: 1.25rem !important;
-        line-height: 1.5 !important;
-        font-style: italic;
-        color: var(--text-secondary) !important;
-        padding-top: var(--space-sm);
-    }
-
-    .next-step {
-        color: var(--text-secondary);
-        font-size: 1.0625rem;
-        line-height: 1.7;
-        max-width: 60ch;
-    }
-
-    .next-step a {
-        color: var(--text-primary);
-        border-bottom: 1px solid var(--border-visible);
-        transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
-    }
-
-    .next-step a:hover {
-        color: var(--accent);
-        border-bottom-color: var(--accent);
-    }
-
-    .contact-lead {
-        color: var(--text-secondary);
-        font-size: 1.0625rem;
-        line-height: 1.7;
         max-width: 52ch;
-        margin-bottom: var(--space-lg);
+        font-size: 1.0625rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
     }
 
-    .contact-actions {
+    .intro-body p {
+        margin: 0;
+    }
+
+    .intro-body a {
+        color: inherit;
+        text-decoration: none;
+        transition: color var(--dur-fast) var(--ease);
+    }
+
+    .intro-body a:hover {
+        color: var(--accent);
+    }
+
+    /* Contact footer */
+    .contact {
         display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        padding-top: var(--space-lg);
+        border-top: 1px solid var(--border);
+    }
+
+    .elsewhere-links {
+        display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
         gap: var(--space-sm) var(--space-xl);
         font-size: 0.9375rem;
     }
 
-    .contact-actions a {
+    .elsewhere-links a {
         color: var(--text-secondary);
         transition: color var(--dur-fast) var(--ease);
     }
 
-    .contact-actions a:hover {
+    .elsewhere-links a:hover {
         color: var(--accent);
     }
 </style>

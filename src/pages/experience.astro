@@ -75,10 +75,16 @@ async function fetchWithTimeout(url: string): Promise<Response> {
     }
 }
 
+type ActivityCache = { githubSvg: string; giteaSvg: string; at: number };
+const ACTIVITY_TTL_MS = 30 * 60 * 1000;
+const cacheHost = globalThis as unknown as { __activityCharts?: ActivityCache };
+
+let activity = cacheHost.__activityCharts;
+if (!activity || Date.now() - activity.at > ACTIVITY_TTL_MS) {
 const [githubSvg, giteaSvg] = await Promise.all([
     (async () => {
         try {
-            const res = await fetchWithTimeout("https://ghchart.rshah.org/E8A06A/aaditagrawal");
+            const res = await fetchWithTimeout("https://ghchart.rshah.org/576BFF/aaditagrawal");
             if (!res.ok) return "";
             return (await res.text())
                 .replace(/<svg([^>]*)width="\d+"([^>]*)height="\d+"/, '<svg$1viewBox="0 0 663 104"$2');
@@ -99,6 +105,10 @@ const [githubSvg, giteaSvg] = await Promise.all([
         }
     })(),
 ]);
+    activity = { githubSvg, giteaSvg, at: Date.now() };
+    cacheHost.__activityCharts = activity;
+}
+const { githubSvg, giteaSvg } = activity;
 ---
 
 <Layout title="Experience | Aadit Agrawal">
@@ -149,15 +159,15 @@ const [githubSvg, giteaSvg] = await Promise.all([
             <article class="exp-card">
                 <div class="exp-header">
                     <h3>
-                        Codex Consultant <span class="exp-at"
-                            >@ OpenAI India</span>
+                        Codex Creative <span class="exp-at"
+                            >@ OpenAI</span>
                     </h3>
                     <span class="label-text font-mono">MAY 2026—PRES</span>
                 </div>
                 <ul>
                     <li>
-                        Consulting engagement focused on Codex and agentic
-                        developer workflows.
+                        Driving awareness and adoption of Codex for dev and
+                        knowledge work in India.
                     </li>
                 </ul>
             </article>
@@ -385,15 +395,15 @@ const [githubSvg, giteaSvg] = await Promise.all([
     }
 
     .activity__chart :global(rect[data-score="0"]) { fill: var(--surface-raised) !important; }
-    .activity__chart :global(rect[data-score="1"]) { fill: rgba(232, 160, 106, 0.30) !important; }
-    .activity__chart :global(rect[data-score="2"]) { fill: rgba(232, 160, 106, 0.55) !important; }
-    .activity__chart :global(rect[data-score="3"]) { fill: rgba(232, 160, 106, 0.80) !important; }
+    .activity__chart :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.30) !important; }
+    .activity__chart :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.55) !important; }
+    .activity__chart :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.80) !important; }
     .activity__chart :global(rect[data-score="4"]) { fill: var(--accent) !important; }
 
     /* Boost lower-score sensitivity on the GitHub chart so light activity reads more clearly */
-    .activity__chart--gh :global(rect[data-score="1"]) { fill: rgba(232, 160, 106, 0.50) !important; }
-    .activity__chart--gh :global(rect[data-score="2"]) { fill: rgba(232, 160, 106, 0.72) !important; }
-    .activity__chart--gh :global(rect[data-score="3"]) { fill: rgba(232, 160, 106, 0.90) !important; }
+    .activity__chart--gh :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.50) !important; }
+    .activity__chart--gh :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.72) !important; }
+    .activity__chart--gh :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.90) !important; }
 
     .activity__chart--gh :global(text):not([y="10"]) {
         display: none !important;

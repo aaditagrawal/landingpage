@@ -1,12 +1,20 @@
 ---
 import { Picture } from "astro:assets";
+import { join } from "node:path";
 import pfp from "../assets/pfp.png";
+import { iconDataUrl, roundIcon } from "../lib/roundIcon";
 
 interface Props {
 	title: string;
 }
 
 const { title } = Astro.props;
+
+const pfpPath = join(process.cwd(), "src/assets/pfp.png");
+const [favicon32, appleTouchIcon] = await Promise.all([
+	roundIcon(pfpPath, 32),
+	roundIcon(pfpPath, 180),
+]);
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/' || currentPath === '/index.html';
 
@@ -23,11 +31,12 @@ const navItems = [
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Aadit Agrawal, Codex consultant at OpenAI India and computer science engineer working across AI/ML, software engineering, HPC, and DevOps." />
+		<meta name="description" content="Aadit Agrawal, Codex Creative at OpenAI and computer science engineer working across AI/ML, software engineering, HPC, and DevOps." />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#0c0e0e" media="(prefers-color-scheme: dark)" />
-		<meta name="theme-color" content="#f3f1ed" media="(prefers-color-scheme: light)" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="theme-color" content="#f4f5f6" media="(prefers-color-scheme: light)" />
+		<link rel="icon" type="image/png" sizes="32x32" href={iconDataUrl(favicon32)} />
+		<link rel="apple-touch-icon" sizes="180x180" href={iconDataUrl(appleTouchIcon)} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 
@@ -37,14 +46,14 @@ const navItems = [
 		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-		<!-- Space Grotesk (UI), Geist Mono (data/labels), Newsreader (editorial voice, variable optical size). -->
+		<!-- DM Sans (body, UI), Geist Mono (titles, data, labels). -->
 		<link
-			href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,16..72,400;0,16..72,500;1,16..72,400&family=Space+Grotesk:wght@400;500;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Geist+Mono:wght@400;500;600&display=swap"
 			rel="stylesheet"
 		/>
 		<noscript>
 			<link
-				href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,16..72,400;0,16..72,500;1,16..72,400&family=Space+Grotesk:wght@400;500;700&display=swap"
+				href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Geist+Mono:wght@400;500;600&display=swap"
 				rel="stylesheet"
 			/>
 		</noscript>
@@ -74,7 +83,7 @@ const navItems = [
 							loading="eager"
 							decoding="async"
 						/>
-						<h1 class="font-serif-name">Aadit Agrawal</h1>
+						<h1 class="font-name">Aadit Agrawal</h1>
 						<p class="subtitle">student, infra, dev, ai stuff</p>
 					</div>
 
@@ -114,11 +123,6 @@ const navItems = [
 							</a>
 						</div>
 					</div>
-
-					<div class="sidebar-footer font-mono">
-						<span class="avail"><span class="avail-dot" aria-hidden="true"></span>open to 2026 roles</span>
-						<span class="colophon">built &amp; self-hosted</span>
-					</div>
 				</header>
 			</aside>
 
@@ -134,7 +138,7 @@ const navItems = [
 					))}
 					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-link nav-link--ext" data-resume-open aria-label="view my resume">/resume.pdf</a>
 				</nav>
-				<main class="content">
+				<main class:list={["content", { "content--home": isHome }]}>
 					<slot />
 				</main>
 			</div>
@@ -177,16 +181,15 @@ const navItems = [
 		--text-primary: #e3e6e3;
 		--text-display: #f5f7f4;
 
-		/* One warm accent, used identically everywhere (color consistency lock). */
-		--accent: #e8a06a;
-		--accent-strong: #f0b07e;
-		--accent-subtle: rgba(232, 160, 106, 0.14);
-		--on-accent: #0c0e0e;
+		/* One accent, used identically everywhere (color consistency lock). */
+		--accent: #576BFF;
+		--accent-strong: #6e80ff;
+		--accent-subtle: rgba(87, 107, 255, 0.15);
+		--on-accent: #ffffff;
 
-		/* Fonts */
-		--font-sans: "Space Grotesk", system-ui, sans-serif;
+		/* Fonts — titles in Geist Mono, body in DM Sans */
+		--font-sans: "DM Sans", system-ui, sans-serif;
 		--font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
-		--font-serif: "Newsreader", Georgia, "Times New Roman", serif;
 
 		/* Spacing — rem-based so they scale with the fluid html font-size */
 		--space-2xs: 0.125rem;
@@ -214,21 +217,20 @@ const navItems = [
 	}
 
 	[data-theme="light"] {
-		/* Warm paper light theme to match the amber accent */
-		--black: #f3f1ed;
-		--surface: #fbfaf7;
-		--surface-raised: #ece9e2;
-		--border: #e4e1d9;
-		--border-visible: #d0ccc1;
-		--text-disabled: #a8a294;
-		--text-secondary: #6c6458;
-		--text-primary: #2a2620;
-		--text-display: #161310;
+		--black: #f4f5f6;
+		--surface: #ffffff;
+		--surface-raised: #eef0f2;
+		--border: #e6e8ea;
+		--border-visible: #ccd1d6;
+		--text-disabled: #9aa0a6;
+		--text-secondary: #5c636b;
+		--text-primary: #1a1d21;
+		--text-display: #0a0c0f;
 
-		--accent: #b5631f;
-		--accent-strong: #9c5316;
-		--accent-subtle: rgba(181, 99, 31, 0.12);
-		--on-accent: #fbfaf7;
+		--accent: #576BFF;
+		--accent-strong: #4257e6;
+		--accent-subtle: rgba(87, 107, 255, 0.12);
+		--on-accent: #ffffff;
 	}
 
 	* {
@@ -315,23 +317,24 @@ const navItems = [
 		border-bottom-right-radius: var(--radius-xs);
 	}
 
-	/* Typography */
+	/* Typography — titles in Geist Mono, body in DM Sans */
 	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--font-mono);
 		color: var(--text-display);
 		font-weight: 500;
+		letter-spacing: -0.02em;
 	}
 
 	.font-display {
-		font-family: var(--font-sans);
-		font-weight: 700;
-		letter-spacing: -0.01em;
+		font-family: var(--font-mono);
+		font-weight: 600;
+		letter-spacing: -0.02em;
 	}
 
-	.font-serif-name {
-		font-family: var(--font-serif);
-		font-weight: 400;
-		font-style: normal;
-		letter-spacing: -0.01em;
+	.font-name {
+		font-family: var(--font-mono);
+		font-weight: 500;
+		letter-spacing: -0.03em;
 	}
 
 	.font-mono {
@@ -499,8 +502,8 @@ const navItems = [
 	}
 
 	h1 {
-		font-size: clamp(2.5rem, 3vw, 3.1rem);
-		line-height: 0.98;
+		font-size: clamp(1.6rem, 2vw, 1.95rem);
+		line-height: 1.1;
 		margin-bottom: var(--space-sm);
 	}
 
@@ -587,42 +590,28 @@ const navItems = [
 		transform: translateY(0) scale(0.94);
 	}
 
-	/* Sidebar footer — quiet availability + colophon, pinned to the bottom */
-	.sidebar-footer {
-		margin-top: auto;
-		padding-top: var(--space-2xl);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2xs);
-		font-size: 0.6875rem;
-		letter-spacing: 0.04em;
-		color: var(--text-secondary);
+	/* Continuous left-to-right blue gradient glow on /resume.pdf links */
+	.status-resume,
+	.index .nav-link--ext {
+		font-weight: 500;
+		background: linear-gradient(
+			100deg,
+			var(--accent) 0%,
+			#9fb0ff 50%,
+			var(--accent) 100%
+		);
+		background-size: 200% 100%;
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+		filter: drop-shadow(0 0 7px rgba(87, 107, 255, 0.42));
+		animation: avail-glow 3.6s linear infinite;
 	}
 
-	.avail {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-sm);
-		color: var(--text-primary);
-	}
-
-	.avail-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--accent);
-		box-shadow: 0 0 0 0 var(--accent-subtle);
-		animation: avail-pulse 2.8s var(--ease-out) infinite;
-	}
-
-	.colophon {
-		color: var(--text-disabled);
-	}
-
-	@keyframes avail-pulse {
-		0% { box-shadow: 0 0 0 0 var(--accent-subtle); }
-		70% { box-shadow: 0 0 0 6px transparent; }
-		100% { box-shadow: 0 0 0 0 transparent; }
+	@keyframes avail-glow {
+		from { background-position: 200% 0; }
+		to { background-position: 0% 0; }
 	}
 
 	/* ===== Index (top nav of the content column) ===== */
@@ -691,6 +680,18 @@ const navItems = [
 		flex-direction: column;
 		gap: var(--space-3xl);
 		flex: 1;
+	}
+
+	/* Home is sparse: center it as a composed page, links pinned at the bottom */
+	.content--home {
+		justify-content: center;
+		gap: var(--space-2xl);
+	}
+
+	@media (max-width: 1023px) {
+		.content--home {
+			justify-content: flex-start;
+		}
 	}
 
 	.section-header {
@@ -943,10 +944,11 @@ const navItems = [
 	}
 
 	.resume-dialog__title {
-		font-family: var(--font-serif);
-		font-weight: 400;
-		font-size: 2rem;
-		line-height: 1.05;
+		font-family: var(--font-mono);
+		font-weight: 500;
+		font-size: 1.4rem;
+		letter-spacing: -0.02em;
+		line-height: 1.1;
 		color: var(--text-display);
 	}
 
@@ -1046,11 +1048,6 @@ const navItems = [
 			height: 72px;
 		}
 
-		.sidebar-footer {
-			flex-direction: row;
-			gap: var(--space-md);
-			padding-top: var(--space-xl);
-		}
 	}
 
 	@media (max-width: 480px) {
