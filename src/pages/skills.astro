@@ -1,376 +1,125 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+const skillGroups = [
+    {
+        title: "Languages",
+        items: [
+            { name: "Python", desc: "Primary scripting, AI/ML pipelines, TUI development" },
+            { name: "TypeScript / JS", desc: "Full-stack web apps, AST tooling, React/Next.js" },
+            { name: "C / C++", desc: "Low-level systems, CUDA kernels, HPC optimization" },
+            { name: "Rust", desc: "Memory-safe tooling, WASM compilation (Tauri)" },
+            { name: "Go", desc: "Concurrent microservices, CLI development" },
+            { name: "Zig", desc: "Systems programming" },
+            { name: "Bash / Zsh", desc: "CI/CD automation, Unix environment scripting" },
+            { name: "SQL", desc: "PostgreSQL schema design, advanced querying" },
+            { name: "Java", desc: "Desktop app development (JavaFX), legacy systems" },
+        ],
+    },
+    {
+        title: "AI and HPC",
+        items: [
+            { name: "PyTorch & JAX", desc: "Deep learning model architecture, training, and fine-tuning" },
+            { name: "Inference engines", desc: "vLLM, SGLang, llama.cpp, TensorRT-LLM" },
+            { name: "CUDA & GPU", desc: "NVIDIA Blackwell/Hopper compute, kernel optimization" },
+            { name: "Apple Silicon (MLX)", desc: "Unified memory ML acceleration on ARM64" },
+            { name: "Computer vision", desc: "OpenCV, YOLO, edge inference (NVIDIA Jetson)" },
+            { name: "Cluster management", desc: "Distributed CUDA, NCCL, RDMA networking" },
+            { name: "NLP & LLM ops", desc: "Transformers, LoRA/QLoRA fine-tuning, agentic RAG" },
+        ],
+    },
+    {
+        title: "Infrastructure and DevOps",
+        items: [
+            { name: "Containerization", desc: "Docker, LXC" },
+            { name: "Virtualization", desc: "Proxmox VE, KVM/QEMU, clustered hypervisors" },
+            { name: "IaC & automation", desc: "Terraform, Ansible, GitHub Actions, CI/CD pipelines" },
+            { name: "Networking", desc: "Tailscale (WireGuard), Nginx, Caddy, Cloudflare" },
+            { name: "Observability", desc: "Grafana, Prometheus, Loki, OpenTelemetry" },
+            { name: "OS & environments", desc: "Linux (Debian/Arch/RHEL), macOS (Darwin), POSIX" },
+        ],
+    },
+    {
+        title: "Web, Cloud and Databases",
+        items: [
+            { name: "Frameworks", desc: "Next.js, React, Astro, Svelte, Tailwind CSS" },
+            { name: "Backend & runtimes", desc: "Node.js, Bun, FastAPI, tRPC, REST APIs" },
+            { name: "Cross-platform", desc: "Electron, Electrobun, WebAssembly (WASM)" },
+            { name: "Relational DBs", desc: "PostgreSQL (w/ pgvector), SQLite, Drizzle ORM" },
+            { name: "NoSQL & vector", desc: "MongoDB, Redis, ChromaDB" },
+            { name: "Cloud providers", desc: "AWS, GCP, Azure, Hetzner, Linode, Vercel, Cloudflare" },
+        ],
+    },
+    {
+        title: "System Architecture",
+        items: [
+            { name: "Instruction sets", desc: "ARM64 (Apple M-series, Jetson), AMD64/x86-64, RISC-V" },
+            { name: "Optimization", desc: "SIMD vectorization, cross-compilation" },
+        ],
+    },
+];
 ---
 
 <Layout title="Skills | Aadit Agrawal">
     <section id="skills" class="section">
-        <div class="section-header">
-            <h2 class="label-text">TECHNICAL SKILLS MATRIX</h2>
-            <div class="line"></div>
-        </div>
+        <h2 class="section-title">skills</h2>
 
-        <div class="skills-container">
-            <div class="skill-category">
-                <div class="category-header">
-                    <h3 class="font-display">PROGRAMMING LANGUAGES</h3>
-                    <span class="label-text count">[09]</span>
-                </div>
-                <div class="skill-grid">
-                    <div class="skill-item">
-                        <span class="skill-name">Python</span>
-                        <span class="skill-desc"
-                            >Primary scripting, AI/ML pipelines, TUI development</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">TypeScript / JS</span>
-                        <span class="skill-desc"
-                            >Full-stack web apps, AST tooling, React/Next.js</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">C / C++</span>
-                        <span class="skill-desc"
-                            >Low-level systems, CUDA kernels, HPC optimization</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Rust</span>
-                        <span class="skill-desc"
-                            >Memory-safe tooling, WASM compilation (Tauri)</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Go</span>
-                        <span class="skill-desc"
-                            >Concurrent microservices, CLI development</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Zig</span>
-                        <span class="skill-desc"
-                            >Systems programming</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Bash / Zsh</span>
-                        <span class="skill-desc"
-                            >CI/CD automation, Unix environment scripting</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">SQL</span>
-                        <span class="skill-desc"
-                            >PostgreSQL schema design, advanced querying</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Java</span>
-                        <span class="skill-desc"
-                            >Desktop app development (JavaFX), legacy systems</span
-                        >
+        <div class="skill-groups">
+            {skillGroups.map((group) => (
+                <div class="skill-group">
+                    <h3>{group.title}</h3>
+                    <div class="skill-grid">
+                        {group.items.map((item) => (
+                            <div class="skill-item">
+                                <span class="skill-name font-mono">{item.name}</span>
+                                <span class="skill-desc">{item.desc}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </div>
-
-            <div class="skill-category">
-                <div class="category-header">
-                    <h3 class="font-display">AI & HPC</h3>
-                    <span class="label-text count">[07]</span>
-                </div>
-                <div class="skill-grid">
-                    <div class="skill-item">
-                        <span class="skill-name">PyTorch & JAX</span>
-                        <span class="skill-desc"
-                            >Deep learning model architecture, training, and
-                            fine-tuning</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Inference Engines</span>
-                        <span class="skill-desc"
-                            >vLLM, SGLang, llama.cpp, TensorRT-LLM</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">CUDA & GPU</span>
-                        <span class="skill-desc"
-                            >NVIDIA Blackwell/Hopper compute, kernel
-                            optimization</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Apple Silicon (MLX)</span>
-                        <span class="skill-desc"
-                            >Unified memory ML acceleration on ARM64</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Computer Vision</span>
-                        <span class="skill-desc"
-                            >OpenCV, YOLO, edge inference (NVIDIA Jetson)</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Cluster Management</span>
-                        <span class="skill-desc"
-                            >Distributed CUDA, NCCL, RDMA networking</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">NLP & LLM Ops</span>
-                        <span class="skill-desc"
-                            >Transformers, SGLang, vLLM, Llama.cpp, LoRA/QLoRA
-                            fine-tuning, Agentic RAG</span
-                        >
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <div class="category-header">
-                    <h3 class="font-display">INFRASTRUCTURE & DEVOPS</h3>
-                    <span class="label-text count">[06]</span>
-                </div>
-                <div class="skill-grid">
-                    <div class="skill-item">
-                        <span class="skill-name">Containerization</span>
-                        <span class="skill-desc"
-                            >Docker, LXC</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Virtualization</span>
-                        <span class="skill-desc"
-                            >Proxmox VE, KVM/QEMU, clustered hypervisors</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">IaC & Automation</span>
-                        <span class="skill-desc"
-                            >Terraform, Ansible, GitHub Actions, CI/CD pipelines</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Networking</span>
-                        <span class="skill-desc"
-                            >Tailscale (WireGuard), Nginx, Caddy, Cloudflare</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Observability</span>
-                        <span class="skill-desc"
-                            >Grafana dashboards, Prometheus metrics, Loki logs, OpenTelemetry</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">OS & Environments</span>
-                        <span class="skill-desc"
-                            >Linux (Debian/Arch/RHEL), macOS (Darwin), POSIX</span
-                        >
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <div class="category-header">
-                    <h3 class="font-display">WEB, CLOUD & DATABASES</h3>
-                    <span class="label-text count">[06]</span>
-                </div>
-                <div class="skill-grid">
-                    <div class="skill-item">
-                        <span class="skill-name">Frameworks</span>
-                        <span class="skill-desc"
-                            >Next.js, React, Astro, Svelte, Tailwind CSS</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Backend & Runtimes</span>
-                        <span class="skill-desc"
-                            >Node.js, Bun, FastAPI, tRPC, REST APIs</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Cross-Platform</span>
-                        <span class="skill-desc"
-                            >Electron, Electrobun, WebAssembly (WASM)</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Relational DBs</span>
-                        <span class="skill-desc"
-                            >SQL, PostgreSQL (w/ pgvector), SQLite, Drizzle ORM</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">NoSQL & Vector</span>
-                        <span class="skill-desc">MongoDB, Redis, ChromaDB</span>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Cloud Providers</span>
-                        <span class="skill-desc"
-                            >AWS, GCP, Azure, Hetzner, Linode, Vercel, Cloudflare</span
-                        >
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <div class="category-header">
-                    <h3 class="font-display">SYSTEM ARCHITECTURE</h3>
-                    <span class="label-text count">[02]</span>
-                </div>
-                <div class="skill-grid">
-                    <div class="skill-item">
-                        <span class="skill-name">Instruction Sets</span>
-                        <span class="skill-desc"
-                            >ARM64 (Apple M-series, Jetson), AMD64/x86-64,
-                            RISC-V</span
-                        >
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Optimization</span>
-                        <span class="skill-desc"
-                            >SIMD vectorization, cross-compilation</span
-                        >
-                    </div>
-                </div>
-            </div>
+            ))}
         </div>
     </section>
 </Layout>
 
 <style>
-    .skills-container {
+    .skill-groups {
         display: flex;
         flex-direction: column;
-        gap: var(--space-3xl);
+        gap: var(--space-2xl);
     }
 
-    .category-header {
-        display: flex;
-        align-items: baseline;
-        gap: var(--space-sm);
-        margin-bottom: var(--space-xl);
-        padding-bottom: var(--space-sm);
-        border-bottom: 1px solid var(--border);
-    }
-
-    .category-header h3 {
-        font-size: 1.5rem;
-        color: var(--text-display);
-        text-transform: uppercase;
-        letter-spacing: -0.02em;
-        margin: 0;
-    }
-
-    .category-header .count {
-        color: var(--accent);
+    .skill-group h3 {
+        font-size: 1rem;
+        margin-bottom: var(--space-lg);
     }
 
     .skill-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1px;
-        background: var(--border-visible);
-        border: 1px solid var(--border-visible);
+        gap: var(--space-lg) var(--space-2xl);
     }
 
     @media (min-width: 640px) {
         .skill-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .skill-grid {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
     .skill-item {
         display: flex;
         flex-direction: column;
-        gap: var(--space-xs);
-        padding: var(--space-lg);
-        background: var(--black);
-        transition: background-color var(--dur-base) ease, transform var(--dur-base) var(--ease);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .skill-item:hover {
-        transform: translateY(-2px);
-    }
-
-    .skill-item:active {
-        transform: translateY(0);
-    }
-
-    /* Fix border alignment on empty grid cells (by extending backgrounds) */
-    .skill-item:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-    }
-
-    @media (min-width: 640px) and (max-width: 1023px) {
-        .skill-item:last-child:nth-child(odd) {
-            grid-column: 1 / -1;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .skill-category:nth-child(1) .skill-item:last-child,
-        .skill-category:nth-child(2) .skill-item:last-child,
-        .skill-category:nth-child(3) .skill-item:last-child,
-        .skill-category:nth-child(4) .skill-item:last-child {
-            /* Reset for 3-column layout where 9, 6, 6 are clean multiples of 3, but 7 isn't */
-            grid-column: auto;
-        }
-
-        /* Target the 7th item in AI_&_HPC grid specifically */
-        .skill-category:nth-child(2) .skill-item:last-child {
-            grid-column: 1 / span 3;
-        }
-
-        /* Target the 2 items in Architecture grid */
-        .skill-category:nth-child(5) .skill-item:last-child {
-            grid-column: 2 / span 2;
-        }
-    }
-
-    .skill-item::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: var(--accent);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform var(--dur-base) var(--ease);
-    }
-
-    .skill-item:hover {
-        background: var(--surface);
-    }
-
-    .skill-item:hover::before {
-        transform: scaleX(1);
+        gap: var(--space-2xs);
     }
 
     .skill-name {
-        font-family: "Geist Mono", monospace;
-        font-weight: 600;
-        font-size: 0.875rem;
-        color: var(--text-display);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
+        font-size: 0.8125rem;
+        color: var(--text-primary);
     }
 
     .skill-desc {
         font-size: 0.875rem;
+        line-height: 1.55;
         color: var(--text-secondary);
-        line-height: 1.5;
     }
 </style>

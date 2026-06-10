@@ -18,14 +18,14 @@
     "check": "astro check"
   },
   "dependencies": {
-    "astro": "^6.4.2",
+    "astro": "^6.4.5",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@types/node": "^25.9.1",
+    "@types/node": "^25.9.2",
     "oxfmt": "^0.43.0",
-    "oxlint": "^1.67.0",
+    "oxlint": "^1.69.0",
     "typescript": "^6.0.3"
   }
 }

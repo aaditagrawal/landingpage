@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { compactGithubSvg, compactHeatmapSvg, type HeatCell, type HeatLabel } from "../lib/heatmap";
 
 type HeatmapPoint = { timestamp: number; contributions: number };
 
@@ -22,7 +23,6 @@ function buildGiteaSvg(data: HeatmapPoint[]): string {
     }
 
     const WEEKS = 53;
-    const CELL = 10;
     const STEP = 12;
     const LEFT_PAD = 27;
     const TOP_PAD = 20;
@@ -32,8 +32,8 @@ function buildGiteaSvg(data: HeatmapPoint[]): string {
     const endDow = new Date(endMs).getUTCDay();
     const startMs = endMs - endDow * DAY_MS - (WEEKS - 1) * 7 * DAY_MS;
 
-    const rects: string[] = [];
-    const labels: string[] = [];
+    const cells: HeatCell[] = [];
+    const labels: HeatLabel[] = [];
     let lastLabeledMonth = -1;
 
     for (let w = 0; w < WEEKS; w++) {
@@ -42,25 +42,26 @@ function buildGiteaSvg(data: HeatmapPoint[]): string {
             if (ms > endMs) break;
             const d = new Date(ms);
             const key = d.toISOString().slice(0, 10);
-            const level = scoreFor(counts.get(key) ?? 0);
             const x = LEFT_PAD + w * STEP;
-            const y = TOP_PAD + dow * STEP;
-            rects.push(`<rect data-score="${level}" x="${x}" y="${y}" width="${CELL}" height="${CELL}"/>`);
+            cells.push({ x, y: TOP_PAD + dow * STEP, score: scoreFor(counts.get(key) ?? 0) });
 
             if (dow === 0) {
                 const month = d.getUTCMonth();
                 if (month !== lastLabeledMonth) {
                     lastLabeledMonth = month;
-                    labels.push(`<text x="${x}" y="10">${MONTHS[month]}</text>`);
+                    labels.push({ x, y: 10, text: MONTHS[month] ?? "" });
                 }
             }
         }
     }
 
-    const width = LEFT_PAD + WEEKS * STEP;
-    const height = TOP_PAD + 7 * STEP;
-
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="Gitea contribution graph">${labels.join("")}${rects.join("")}</svg>`;
+    return compactHeatmapSvg({
+        cells,
+        labels,
+        width: LEFT_PAD + WEEKS * STEP,
+        height: TOP_PAD + 7 * STEP,
+        ariaLabel: "Gitea contribution graph",
+    });
 }
 
 const FETCH_TIMEOUT_MS = 4000;
@@ -86,8 +87,11 @@ const [githubSvg, giteaSvg] = await Promise.all([
         try {
             const res = await fetchWithTimeout("https://ghchart.rshah.org/576BFF/aaditagrawal");
             if (!res.ok) return "";
-            return (await res.text())
-                .replace(/<svg([^>]*)width="\d+"([^>]*)height="\d+"/, '<svg$1viewBox="0 0 663 104"$2');
+            const raw = await res.text();
+            // Compact path rebuild; fall back to the raw chart if the
+            // upstream format ever changes.
+            return compactGithubSvg(raw)
+                || raw.replace(/<svg([^>]*)width="\d+"([^>]*)height="\d+"/, '<svg$1viewBox="0 0 663 104"$2');
         } catch {
             // build-time fetch failed or timed out; section will be omitted
             return "";
@@ -114,10 +118,7 @@ const { githubSvg, giteaSvg } = activity;
 <Layout title="Experience | Aadit Agrawal">
     {(githubSvg || giteaSvg) && (
         <section id="activity" class="section section--activity">
-            <div class="section-header">
-                <h2 class="label-text">ACTIVITY</h2>
-                <div class="line"></div>
-            </div>
+            <h2 class="section-title">activity</h2>
 
             <div class="activity-stack">
                 {githubSvg && (
@@ -150,209 +151,155 @@ const { githubSvg, giteaSvg } = activity;
     )}
 
     <section id="experience" class="section">
-        <div class="section-header">
-            <h2 class="label-text">EXPERIENCE</h2>
-            <div class="line"></div>
+        <h2 class="section-title">experience</h2>
+
+        <div class="entry-list">
+            <article class="entry">
+                <span class="entry-when">may 2026 - now</span>
+                <div class="entry-body">
+                    <h3>Codex Creative <span class="entry-at">at OpenAI</span></h3>
+                    <ul>
+                        <li>
+                            Driving awareness and adoption of Codex for dev and
+                            knowledge work in India.
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="entry">
+                <span class="entry-when">may 2025 - now</span>
+                <div class="entry-body">
+                    <h3>Head Student Researcher <span class="entry-at">at <a href="https://ecitis.org">CASIR, MAHE</a></span></h3>
+                    <ul>
+                        <li>
+                            Architected an on-prem HPC stack (96-core Threadripper
+                            7995WX, 48GB A6000, 256GB RAM) serving 1,500+ daily
+                            inference requests at 99.2% uptime.
+                        </li>
+                        <li>
+                            Configured a first-of-its-kind-in-India 4× Mac Studio
+                            cluster (512GB unified memory, 16TB storage) with a
+                            Thunderbolt RDMA / InfiniBand-style fabric for MLX/MPS
+                            inference and training; leading $300K NVIDIA Blackwell
+                            bring-up.
+                        </li>
+                        <li>
+                            Real-time computer vision on NVIDIA Jetson carried on
+                            DJI drones: 30fps edge inference over RTMP.
+                        </li>
+                        <li>
+                            LLM semantic translator for Schneider Electric, with IEC
+                            61131-3 to IEC 61499 automation for legacy PLC
+                            codebases; cut migration effort by about 70%.
+                        </li>
+                        <li>
+                            Technical document ingestion for machine and
+                            electronics engineering support, evolved from RAG +
+                            BM25 + keyword clusters to trigram indices with custom
+                            pi.dev search agents; VLM + LLM stack across 2,000+
+                            docs at 94% accuracy, roughly 3× faster than the prior
+                            approach.
+                        </li>
+                        <li>
+                            Application security analysis platform for Schneider
+                            Electric: source and compiled-binary evaluation in
+                            computer-use sandboxes with OS state monitoring (registry
+                            / DLL deltas), pattern-matched to a correlated CVE / CWE
+                            / MITRE index; pentest lead time from three weeks to
+                            three days.
+                        </li>
+                        <li>
+                            Shipped three production AI systems; two peer-reviewed
+                            publications in progress; team write-ups on <a
+                                href="https://blog.ecitis.org">blog.ecitis.org</a>.
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="entry">
+                <span class="entry-when">jan 2026 - now</span>
+                <div class="entry-body">
+                    <h3>Web and Design Engineer <span class="entry-at">at <a href="https://rossmanngroup.com">Rossmann New Media 2 Inc.</a></span></h3>
+                    <ul>
+                        <li>
+                            Redesigned and redeveloped rossmanngroup.com,
+                            migrating it from WordPress to Next.js; improved load
+                            performance and cross-platform responsiveness.
+                        </li>
+                        <li>
+                            Technical SEO overhaul on data-recovery keywords:
+                            moved primary rankings from 100+ into the top 5.
+                        </li>
+                        <li>
+                            Earlier (2022-2024): freelance graphic design, select
+                            thumbnails and merch.
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="entry">
+                <span class="entry-when">dec 2025</span>
+                <div class="entry-body">
+                    <h3>DevOps Engineer, Intern <span class="entry-at">at Pixa AI, Bengaluru</span></h3>
+                    <ul>
+                        <li>
+                            Provisioned GPU compute (H100/H200/B200) and CI/CD for
+                            Phi-4 TTS/STT fine-tuning; 99.5% deployment success
+                            across two API releases.
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
         </div>
+    </section>
 
-        <div class="exp-list">
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        Codex Creative <span class="exp-at"
-                            >@ OpenAI</span>
-                    </h3>
-                    <span class="label-text font-mono">MAY 2026—PRES</span>
+    <section id="volunteering" class="section">
+        <h2 class="section-title">volunteering</h2>
+
+        <div class="entry-list">
+            <article class="entry">
+                <span class="entry-when">jan 2026 - now</span>
+                <div class="entry-body">
+                    <h3>Founding President <span class="entry-at">at <a href="https://theprism.fyi">PRISM</a></span></h3>
+                    <ul>
+                        <li>
+                            Research club spanning AI/ML, software engineering,
+                            HPC, DevOps, biotech, and infosec; 150+ members.
+                        </li>
+                        <li>
+                            Academic Advisory Board for AI curriculum and adoption
+                            at MAHE.
+                        </li>
+                    </ul>
                 </div>
-                <ul>
-                    <li>
-                        Driving awareness and adoption of Codex for dev and
-                        knowledge work in India.
-                    </li>
-                </ul>
             </article>
 
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        Head Student Researcher <span class="exp-at"
-                            >@ <a href="https://ecitis.org">CASIR, MAHE</a></span>
-                    </h3>
-                    <span class="label-text font-mono">MAY 2025—PRES</span>
+            <article class="entry">
+                <span class="entry-when">oct 2023 - jun 2025</span>
+                <div class="entry-body">
+                    <h3>Management Committee <span class="entry-at">at MIST (Cybersecurity Club)</span></h3>
+                    <ul>
+                        <li>
+                            CTF infrastructure for 300+ users at 100% uptime; cut
+                            operating costs by 80%.
+                        </li>
+                        <li>
+                            Ran 12+ workshops for 150+ participants; teams placed
+                            in the top 10% nationally at CTF competitions.
+                        </li>
+                    </ul>
                 </div>
-                <ul>
-                    <li>
-                        Architected an on-prem HPC stack (96-core Threadripper
-                        7995WX, 48GB A6000, 256GB RAM) serving 1,500+ daily
-                        inference requests at 99.2% uptime.
-                    </li>
-                    <li>
-                        Configured a first-of-its-kind-in-India 4× Mac Studio
-                        cluster (512GB unified memory, 16TB storage) with a
-                        Thunderbolt RDMA / InfiniBand-style fabric for MLX/MPS
-                        inference and training; leading $300K NVIDIA Blackwell
-                        bring-up.
-                    </li>
-                    <li>
-                        Real-time computer vision on NVIDIA Jetson carried on
-                        DJI drones — 30fps edge inference over RTMP.
-                    </li>
-                    <li>
-                        LLM semantic translator for Schneider Electric — IEC
-                        61131-3 to IEC 61499 automation for legacy PLC
-                        codebases; cut migration effort by about 70%.
-                    </li>
-                    <li>
-                        Technical document ingestion for machine and
-                        electronics engineering support — evolved from RAG +
-                        BM25 + keyword clusters to trigram indices with custom
-                        pi.dev search agents; VLM + LLM stack across 2,000+
-                        docs at 94% accuracy, roughly 3× faster than the prior
-                        approach.
-                    </li>
-                    <li>
-                        Application security analysis platform (Schneider
-                        Electric) — source and compiled-binary evaluation in
-                        computer-use sandboxes with OS state monitoring (registry
-                        / DLL deltas), pattern-matched to a correlated CVE / CWE
-                        / MITRE index; pentest lead time from three weeks to
-                        three days.
-                    </li>
-                    <li>
-                        Shipped three production AI systems; two peer-reviewed
-                        publications in progress; team write-ups on <a
-                            href="https://blog.ecitis.org">blog.ecitis.org</a>.
-                    </li>
-                </ul>
-            </article>
-
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        DevOps Engineer, Intern <span class="exp-at"
-                            >@ Pixa AI, Bengaluru</span>
-                    </h3>
-                    <span class="label-text font-mono">DEC 2025</span>
-                </div>
-                <ul>
-                    <li>
-                        Provisioned GPU compute (H100/H200/B200) and CI/CD for
-                        Phi-4 TTS/STT fine-tuning; 99.5% deployment success
-                        across two API releases.
-                    </li>
-                </ul>
-            </article>
-
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        Web and Design Engineer <span class="exp-at"
-                            >@ <a href="https://rossmanngroup.com"
-                                >Rossmann New Media 2 Inc.</a
-                            ></span>
-                    </h3>
-                    <span class="label-text font-mono">JAN 2026—PRES</span>
-                </div>
-                <ul>
-                    <li>
-                        Redesigned and redeveloped rossmanngroup.com,
-                        migrating it from WordPress to Next.js; improved load
-                        performance and cross-platform responsiveness.
-                    </li>
-                    <li>
-                        Technical SEO overhaul on data-recovery keywords —
-                        moved primary rankings from 100+ into the top 5.
-                    </li>
-                </ul>
-                <div class="exp-header exp-header--sub">
-                    <h3>
-                        Freelance Graphic Designer
-                    </h3>
-                    <span class="label-text font-mono">2022—2024</span>
-                </div>
-                <ul>
-                    <li>
-                        Designed select thumbnails and merch designs.
-                    </li>
-                </ul>
-            </article>
-
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        Founding President <span class="exp-at"
-                            >@ <a href="https://theprism.fyi">PRISM</a></span>
-                    </h3>
-                    <span class="label-text font-mono">JAN 2026—PRES</span>
-                </div>
-                <ul>
-                    <li>
-                        Research club spanning AI/ML, software engineering,
-                        HPC, DevOps, biotech, and infosec — 150+ members.
-                    </li>
-                    <li>
-                        Academic Advisory Board for AI curriculum and adoption
-                        at MAHE.
-                    </li>
-                </ul>
-            </article>
-
-            <article class="exp-card">
-                <div class="exp-header">
-                    <h3>
-                        Management Committee <span class="exp-at"
-                            >@ MIST (Cybersecurity Club)</span>
-                    </h3>
-                    <span class="label-text font-mono">OCT 2023—JUN 2025</span>
-                </div>
-                <ul>
-                    <li>
-                        CTF infrastructure for 300+ users at 100% uptime; cut
-                        operating costs by 80%.
-                    </li>
-                    <li>
-                        Ran 12+ workshops for 150+ participants; teams placed
-                        in the top 10% nationally at CTF competitions.
-                    </li>
-                </ul>
             </article>
         </div>
     </section>
+
 </Layout>
 
 <style>
-    ul {
-        list-style: none;
-        padding-left: var(--space-sm);
-    }
-
-    li {
-        position: relative;
-        font-size: 0.9375rem;
-        color: var(--text-secondary);
-        margin-bottom: var(--space-sm);
-        line-height: 1.6;
-        padding-left: var(--space-md);
-    }
-
-    li::before {
-        content: "▪";
-        position: absolute;
-        left: 0;
-        color: var(--text-disabled);
-        font-size: 12px;
-    }
-
-    .exp-header--sub {
-        margin-top: var(--space-md);
-    }
-
-    .exp-header--sub h3 {
-        font-size: 0.9375rem;
-        color: var(--text-primary);
-        font-weight: 500;
-    }
-
     .section--activity {
         content-visibility: auto;
         contain-intrinsic-size: 0 320px;
@@ -394,38 +341,27 @@ const { githubSvg, giteaSvg } = activity;
         min-width: 480px;
     }
 
-    .activity__chart :global(rect[data-score="0"]) { fill: var(--surface-raised) !important; }
-    .activity__chart :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.30) !important; }
-    .activity__chart :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.55) !important; }
-    .activity__chart :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.80) !important; }
-    .activity__chart :global(rect[data-score="4"]) { fill: var(--accent) !important; }
+    .activity__chart :global([data-score="0"]) { fill: var(--surface-raised); }
+    .activity__chart :global([data-score="1"]) { fill: rgba(87, 107, 255, 0.30); }
+    .activity__chart :global([data-score="2"]) { fill: rgba(87, 107, 255, 0.55); }
+    .activity__chart :global([data-score="3"]) { fill: rgba(87, 107, 255, 0.80); }
+    .activity__chart :global([data-score="4"]) { fill: var(--accent); }
 
     /* Boost lower-score sensitivity on the GitHub chart so light activity reads more clearly */
-    .activity__chart--gh :global(rect[data-score="1"]) { fill: rgba(87, 107, 255, 0.50) !important; }
-    .activity__chart--gh :global(rect[data-score="2"]) { fill: rgba(87, 107, 255, 0.72) !important; }
-    .activity__chart--gh :global(rect[data-score="3"]) { fill: rgba(87, 107, 255, 0.90) !important; }
+    .activity__chart--gh :global([data-score="1"]) { fill: rgba(87, 107, 255, 0.50); }
+    .activity__chart--gh :global([data-score="2"]) { fill: rgba(87, 107, 255, 0.72); }
+    .activity__chart--gh :global([data-score="3"]) { fill: rgba(87, 107, 255, 0.90); }
 
-    .activity__chart--gh :global(text):not([y="10"]) {
-        display: none !important;
-    }
-    .activity__chart--gh :global(text[y="10"]) {
-        fill: var(--text-secondary) !important;
-        font-family: "Geist Mono", monospace !important;
-        font-size: 9px !important;
-        letter-spacing: 0.04em;
-    }
-
-    .activity__chart--gt :global(text) {
+    .activity__chart :global(text) {
         fill: var(--text-secondary);
-        font-family: "Geist Mono", monospace;
+        font-family: var(--font-mono);
         font-size: 9px;
         letter-spacing: 0.04em;
     }
 
     .activity__caption {
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-size: 0.6875rem;
+        letter-spacing: 0.04em;
         color: var(--text-secondary);
         transition: color var(--dur-base) ease;
     }

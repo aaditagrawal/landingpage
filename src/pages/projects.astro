@@ -4,161 +4,105 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Projects | Aadit Agrawal">
     <section id="projects" class="section">
-        <div class="section-header">
-            <h2 class="label-text">FEATURED SYSTEMS</h2>
-            <div class="line"></div>
-        </div>
+        <h2 class="section-title">featured systems</h2>
 
-        <div class="project-list">
-            <article class="project-card">
-                <div class="project-meta">
-                    <span class="label-text">CAMPUS API / PLATFORM</span>
-                    <div class="tags">
-                        <span class="tag">Next.js</span>
-                        <span class="tag">REST</span>
-                        <span class="tag tag-highlight">5K+ DAU</span>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a
-                            href="https://fc2.coolstuff.work"
-                            class="project-title">The TIK Menu & Campus Suite</a
-                        >
-                    </h3>
-                    <p>
-                        Campus food and utilities stack with 5,000+ daily active
-                        users and 150K+ monthly requests — adopted in under a week
-                        on the ground. Progressive web app plus REST API,
-                        dynamic XLSX ingestion, and Cloudflare R2 at the edge.
-                        Architecture write-up: <a
-                            href="https://blog.aadit.cc/posts/building-a-food-court-menu/"
-                            class="link-subtle"
-                            >building a food-court menu</a
-                        >. Bundles <a
-                            href="https://cd.coolstuff.work"
-                            class="link-subtle">campus directory</a>, <a
-                            href="https://sindhi.coolstuff.work"
-                            class="link-subtle">Sindhi mess menu</a>, and the <a
-                            href="https://tikm.coolstuff.work"
-                            class="link-subtle">TIK admin API</a>.
-                    </p>
-                </div>
+        <div class="feature-list">
+            <article class="feature">
+                <h3>
+                    <a href="https://fc2.coolstuff.work" class="feature-title">The TIK Menu &amp; Campus Suite</a>
+                </h3>
+                <p>
+                    Campus food and utilities stack with 5,000+ daily active
+                    users and 150K+ monthly requests, adopted in under a week
+                    on the ground. Progressive web app plus REST API,
+                    dynamic XLSX ingestion, and Cloudflare R2 at the edge.
+                    Architecture write-up: <a
+                        href="https://blog.aadit.cc/posts/building-a-food-court-menu/"
+                        class="link-subtle"
+                        >building a food-court menu</a
+                    >. Bundles <a
+                        href="https://cd.coolstuff.work"
+                        class="link-subtle">campus directory</a>, <a
+                        href="https://sindhi.coolstuff.work"
+                        class="link-subtle">Sindhi mess menu</a>, and the <a
+                        href="https://tikm.coolstuff.work"
+                        class="link-subtle">TIK admin API</a>.
+                </p>
             </article>
 
-            <article class="project-card">
-                <div class="project-meta">
-                    <span class="label-text">UTILITIES SUITE</span>
-                    <div class="tags">
-                        <span class="tag">Next.js</span>
-                        <span class="tag">Radix UI</span>
-                        <span class="tag">Forgejo</span>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a href="https://coolstuff.work" class="project-title"
-                            >Coolstuff.work</a
-                        >
-                    </h3>
-                    <p>
-                        Forgejo-backed suite of small tools for peers — 10,000+
-                        aggregate DAU across sub-apps. Highlights include <a
-                            href="https://or.coolstuff.work"
-                            class="link-subtle">OR-Free</a> (live OpenRouter model
-                        availability and pricing) and <a
-                            href="https://courses.coolstuff.work"
-                            class="link-subtle">MIT Courses Search</a> with an
-                        interactive graph of 500+ nodes. Also ships <a
-                            href="https://git.aadit.cc/aadit/transcript-cli"
-                            class="link-subtle">transcript-cli</a>, the <a
-                            href="https://cd.coolstuff.work"
-                            class="link-subtle">campus directory</a>, and the <a
-                            href="https://vcf.aadit.cc/"
-                            class="link-subtle">Mass Contact Maker</a> — more on <a
-                            href="https://git.aadit.cc/aadit"
-                            class="link-subtle">git.aadit.cc</a>.
-                    </p>
-                </div>
+            <article class="feature">
+                <h3>
+                    <a href="https://coolstuff.work" class="feature-title">Coolstuff.work</a>
+                </h3>
+                <p>
+                    Forgejo-backed suite of small tools for peers: 10,000+
+                    aggregate DAU across sub-apps. Highlights include <a
+                        href="https://or.coolstuff.work"
+                        class="link-subtle">OR-Free</a> (live OpenRouter model
+                    availability and pricing) and <a
+                        href="https://courses.coolstuff.work"
+                        class="link-subtle">MIT Courses Search</a> with an
+                    interactive graph of 500+ nodes. Also ships <a
+                        href="https://git.aadit.cc/aadit/transcript-cli"
+                        class="link-subtle">transcript-cli</a>, the <a
+                        href="https://cd.coolstuff.work"
+                        class="link-subtle">campus directory</a>, and the <a
+                        href="https://vcf.aadit.cc/"
+                        class="link-subtle">Mass Contact Maker</a>; more on <a
+                        href="https://git.aadit.cc/aadit"
+                        class="link-subtle">git.aadit.cc</a>.
+                </p>
             </article>
 
-            <article class="project-card">
-                <div class="project-meta">
-                    <span class="label-text">INFRASTRUCTURE / DEVOPS</span>
-                    <div class="tags">
-                        <span class="tag">Proxmox</span>
-                        <span class="tag">Docker</span>
-                        <span class="tag">GPU</span>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a href="https://cloud.aadit.cc" class="project-title"
-                            >Homelab Infrastructure</a
-                        >
-                    </h3>
-                    <p>
-                        Self-hosted cloud since 2022: 70+ services on Proxmox
-                        and Docker, 98% uptime over four years, 8TB MergerFS, and
-                        3-2-1 backups. Blackwell GPUs run custom object detection
-                        on security camera feeds at 30fps while offloading about
-                        95% of related compute from CPUs (including 4K
-                        transcoding). Survived live DDoS at 50K+ req/min with a
-                        roughly 95% reduction in exposed attack surface.
-                        Telemetry through Grafana and Loki.
-                    </p>
-                </div>
+            <article class="feature">
+                <h3>
+                    <a href="https://cloud.aadit.cc" class="feature-title">Homelab Infrastructure</a>
+                </h3>
+                <p>
+                    Self-hosted cloud since 2022: 70+ services on Proxmox
+                    and Docker, 98% uptime over four years, 8TB MergerFS, and
+                    3-2-1 backups. Blackwell GPUs run custom object detection
+                    on security camera feeds at 30fps while offloading about
+                    95% of related compute from CPUs (including 4K
+                    transcoding). Survived live DDoS at 50K+ req/min with a
+                    roughly 95% reduction in exposed attack surface.
+                    Telemetry through Grafana and Loki.
+                </p>
             </article>
 
-            <article class="project-card">
-                <div class="project-meta">
-                    <span class="label-text">AGENTS / MOBILE</span>
-                    <div class="tags">
-                        <span class="tag">Shell</span>
-                        <span class="tag">Android</span>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>
-                        <a
-                            href="https://github.com/aaditagrawal/ophoner"
-                            class="project-title">ophoner</a
-                        >
-                    </h3>
-                    <p>
-                        Phone-driven agent loop for device APIs and filesystem
-                        workflows — extensible through tmux and Android shell
-                        tooling so you can edit or query files on the go without
-                        lugging a full desktop environment.
-                    </p>
-                </div>
+            <article class="feature">
+                <h3>
+                    <a href="https://github.com/aaditagrawal/ophoner" class="feature-title">ophoner</a>
+                </h3>
+                <p>
+                    Phone-driven agent loop for device APIs and filesystem
+                    workflows, extensible through tmux and Android shell
+                    tooling so you can edit or query files on the go without
+                    lugging a full desktop environment.
+                </p>
             </article>
         </div>
-
     </section>
 
     <section id="campus-tools" class="section">
-        <div class="section-header">
-            <h2 class="label-text">CAMPUS TOOLS</h2>
-            <div class="line"></div>
-        </div>
+        <h2 class="section-title">campus tools</h2>
 
-        <div class="project-grid">
-            <a href="https://indiaai.aadit.cc/" class="archive-card">
+        <div class="mini-grid">
+            <a href="https://indiaai.aadit.cc/" class="mini">
                 <h3>India AI Impact Summit Mapper</h3>
                 <p>
-                    A fully indexable guide to the India AI Impact Summit — event schedules, guest lists, venue mapping, and expo layout all in one place.
+                    A fully indexable guide to the India AI Impact Summit: event schedules, guest lists, venue mapping, and expo layout all in one place.
                 </p>
             </a>
 
-            <a href="https://tt.coolstuff.work" class="archive-card">
+            <a href="https://tt.coolstuff.work" class="mini">
                 <h3>CCE-B Timetable</h3>
                 <p>
                     Timetable for CCE-B for sixth semester for easy accessibility from anywhere.
                 </p>
             </a>
 
-            <a href="https://courses.coolstuff.work" class="archive-card">
+            <a href="https://courses.coolstuff.work" class="mini">
                 <h3>MIT Courses Search</h3>
                 <p>
                     Course discovery with search plus an interactive dependency
@@ -166,28 +110,28 @@ import Layout from "../layouts/Layout.astro";
                 </p>
             </a>
 
-            <a href="https://electives.coolstuff.work" class="archive-card">
+            <a href="https://electives.coolstuff.work" class="mini">
                 <h3>Electives Allocation Data</h3>
                 <p>
                     Data for Elective Allocation for Sixth Semester Students for the Academic Year 2025 to 2026.
                 </p>
             </a>
 
-            <a href="https://sindhi.coolstuff.work" class="archive-card">
+            <a href="https://sindhi.coolstuff.work" class="mini">
                 <h3>Sindhi Mess Menu</h3>
                 <p>
                     A mess menu website for Sindhi mess covering their cyclic menu rotation alongside extras listed by Sindhi mess.
                 </p>
             </a>
 
-            <a href="https://cd.coolstuff.work" class="archive-card">
+            <a href="https://cd.coolstuff.work" class="mini">
                 <h3>The MIT Manipal Campus Directory</h3>
                 <p>
                     A crowdsourced directory collecting and sharing important contact resources and data from MIT Manipal, with a generate mail to warden feature included.
                 </p>
             </a>
 
-            <a href="https://tikm.coolstuff.work" class="archive-card">
+            <a href="https://tikm.coolstuff.work" class="mini">
                 <h3>The TIK API</h3>
                 <p>
                     A REST API for campus food data, backed by an admin dashboard with a dynamic XLSX data extractor. Full API documentation available at /docs/reference.
@@ -196,243 +140,221 @@ import Layout from "../layouts/Layout.astro";
         </div>
     </section>
 
-<section id="ai-cli" class="section">
-    <div class="section-header">
-        <h2 class="label-text">CLI AND EMBEDDED EDGE</h2>
-        <div class="line"></div>
-    </div>
-    <div class="project-grid">
-        <a
-            href="https://git.aadit.cc/aadit/transcript-cli"
-            class="archive-card"
-        >
-            <h3>transcript-cli</h3>
-            <p>
-                GPU-accelerated video transcript extraction CLI running edge
-                inference models (Whisper) locally. Optimized for cross-platform
-                ARM64/AMD64 deployments.
-            </p>
-        </a>
+    <section id="ai-cli" class="section">
+        <h2 class="section-title">cli and embedded edge</h2>
 
-        <a
-            href="https://or.coolstuff.work"
-            class="archive-card"
-        >
-            <h3>OR-Free</h3>
-            <p>
-                Real-time tracker for OpenRouter model availability, pricing, and
-                free-tier windows — refreshed client-side so the numbers stay
-                honest without a cron farm.
-            </p>
-        </a>
+        <div class="mini-grid">
+            <a href="https://git.aadit.cc/aadit/transcript-cli" class="mini">
+                <h3>transcript-cli</h3>
+                <p>
+                    GPU-accelerated video transcript extraction CLI running edge
+                    inference models (Whisper) locally. Optimized for cross-platform
+                    ARM64/AMD64 deployments.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/slopmeter"
-            class="archive-card"
-        >
-            <h3>slopmeter <span>[Fork]</span></h3>
-            <p>
-                A lightweight command-line tracking utility querying API
-                telemetry to display LLM token usage directly within developer
-                shells. This fork extends support to agentic tools like Crush.
-            </p>
-        </a>
+            <a href="https://or.coolstuff.work" class="mini">
+                <h3>OR-Free</h3>
+                <p>
+                    Real-time tracker for OpenRouter model availability, pricing, and
+                    free-tier windows, refreshed client-side so the numbers stay
+                    honest without a cron farm.
+                </p>
+            </a>
 
-        <a href="https://git.aadit.cc/aadit/tetris-cli" class="archive-card">
-            <h3>tetris-cli</h3>
-            <p>
-                A terminal-native implementation of Tetris built by strictly
-                managing standard I/O streams and implementing efficient console
-                loop rendering algorithms.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/slopmeter" class="mini">
+                <h3>slopmeter <span class="fork-tag">fork</span></h3>
+                <p>
+                    A lightweight command-line tracking utility querying API
+                    telemetry to display LLM token usage directly within developer
+                    shells. This fork extends support to agentic tools like Crush.
+                </p>
+            </a>
 
-    </div>
-</section>
+            <a href="https://git.aadit.cc/aadit/tetris-cli" class="mini">
+                <h3>tetris-cli</h3>
+                <p>
+                    A terminal-native implementation of Tetris built by strictly
+                    managing standard I/O streams and implementing efficient console
+                    loop rendering algorithms.
+                </p>
+            </a>
+        </div>
+    </section>
 
-<section id="web-extensions" class="section">
-    <div class="section-header">
-        <h2 class="label-text">WEB AND EXTENSIONS</h2>
-        <div class="line"></div>
-    </div>
+    <section id="web-extensions" class="section">
+        <h2 class="section-title">web and extensions</h2>
 
-    <div class="project-grid">
-        <a href="https://vcf.aadit.cc/" class="archive-card">
-            <h3>The Mass Contact Maker</h3>
-            <p>
-                A React application performing intensive client-side parsing of
-                XLSX/CSV payloads to algorithmically generate structured VCF
-                contact files for enterprise importing.
-            </p>
-        </a>
+        <div class="mini-grid">
+            <a href="https://vcf.aadit.cc/" class="mini">
+                <h3>The Mass Contact Maker</h3>
+                <p>
+                    A React application performing intensive client-side parsing of
+                    XLSX/CSV payloads to algorithmically generate structured VCF
+                    contact files for enterprise importing.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/floatplaneEnhance"
-            class="archive-card"
-        >
-            <h3>floatplaneEnhance</h3>
-            <p>
-                A Chromium browser extension reverse-engineering and injecting
-                DOM overrides to fix UI logic and improve media controls on the
-                Floatplane streaming platform.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/floatplaneEnhance" class="mini">
+                <h3>floatplaneEnhance</h3>
+                <p>
+                    A Chromium browser extension reverse-engineering and injecting
+                    DOM overrides to fix UI logic and improve media controls on the
+                    Floatplane streaming platform.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/unduck-plus"
-            class="archive-card"
-        >
-            <h3>unduck-plus <span>[Fork]</span></h3>
-            <p>
-                A fast, statically compiled local-first search routing engine
-                parsing URL queries to redirect to specific search targets
-                utilizing !bang syntax. This fork adds self-hosting support for
-                private deployments.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/unduck-plus" class="mini">
+                <h3>unduck-plus <span class="fork-tag">fork</span></h3>
+                <p>
+                    A fast, statically compiled local-first search routing engine
+                    parsing URL queries to redirect to specific search targets
+                    utilizing !bang syntax. This fork adds self-hosting support for
+                    private deployments.
+                </p>
+            </a>
 
-        <a
-            href="https://git.aadit.cc/aadit/music-down-tag-albumiser-yt"
-            class="archive-card"
-        >
-            <h3>Music Albumiser</h3>
-            <p>
-                Automated pipeline script handling network stream downloads,
-                extracting ID3 tag metadata, and properly structuring
-                unorganized media files.
-            </p>
-        </a>
+            <a href="https://git.aadit.cc/aadit/music-down-tag-albumiser-yt" class="mini">
+                <h3>Music Albumiser</h3>
+                <p>
+                    Automated pipeline script handling network stream downloads,
+                    extracting ID3 tag metadata, and properly structuring
+                    unorganized media files.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/contact-cards"
-            class="archive-card"
-        >
-            <h3>Personal Contact Cards</h3>
-            <p>
-                A dynamically rendered business card UI built with web
-                components that constructs raw vCard definitions and converts
-                them into scannable QR payloads on the fly.
-            </p>
-        </a>
-    </div>
-</section>
+            <a href="https://github.com/aaditagrawal/contact-cards" class="mini">
+                <h3>Personal Contact Cards</h3>
+                <p>
+                    A dynamically rendered business card UI built with web
+                    components that constructs raw vCard definitions and converts
+                    them into scannable QR payloads on the fly.
+                </p>
+            </a>
+        </div>
+    </section>
 
-<section id="developer-tooling" class="section">
-    <div class="section-header">
-        <h2 class="label-text">DEVELOPER TOOLING (OSS)</h2>
-        <div class="line"></div>
-    </div>
+    <section id="developer-tooling" class="section">
+        <h2 class="section-title">developer tooling (oss)</h2>
 
-    <div class="project-grid">
-        <a
-            href="https://github.com/aaditagrawal/agentskills"
-            class="archive-card"
-        >
-            <h3>agentskills</h3>
-            <p>
-                Published library of Claude Code skills for reusable agentic
-                development workflows.
-            </p>
-        </a>
+        <div class="mini-grid">
+            <a href="https://github.com/aaditagrawal/agentskills" class="mini">
+                <h3>agentskills</h3>
+                <p>
+                    Published library of Claude Code skills for reusable agentic
+                    development workflows.
+                </p>
+            </a>
 
-        <a href="https://github.com/aaditagrawal/t3code" class="archive-card">
-            <h3>t3code <span>[Fork]</span></h3>
-            <p>
-                T3 stack customised for parallel, agent-driven development flows
-                instead of hand-typing every scaffold step.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/t3code" class="mini">
+                <h3>t3code <span class="fork-tag">fork</span></h3>
+                <p>
+                    T3 stack customised for parallel, agent-driven development flows
+                    instead of hand-typing every scaffold step.
+                </p>
+            </a>
 
-        <a href="https://github.com/aaditagrawal" class="archive-card">
-            <h3>CI &amp; review automation</h3>
-            <p>
-                Self-hosted CI and sandboxing (migrating off Daytona) with
-                CodeRabbit wired in for public-repo review.
-            </p>
-        </a>
-    </div>
-</section>
+            <a href="https://github.com/aaditagrawal" class="mini">
+                <h3>CI &amp; review automation</h3>
+                <p>
+                    Self-hosted CI and sandboxing (migrating off Daytona) with
+                    CodeRabbit wired in for public-repo review.
+                </p>
+            </a>
+        </div>
+    </section>
 
-<section id="desktop-misc" class="section">
-    <div class="section-header">
-        <h2 class="label-text">DESKTOP AND LOW LEVEL</h2>
-        <div class="line"></div>
-    </div>
+    <section id="desktop-misc" class="section">
+        <h2 class="section-title">desktop and low level</h2>
 
-    <div class="project-grid">
-        <a href="https://typst.coolstuff.work" class="archive-card">
-            <h3>Typsmthng Native &amp; Web</h3>
-            <p>
-                Typst editor with WASM in-browser compile and an experimental
-                Electrobun / Tauri desktop port for instant previews offline.
-            </p>
-        </a>
+        <div class="mini-grid">
+            <a href="https://typst.coolstuff.work" class="mini">
+                <h3>Typsmthng Native &amp; Web</h3>
+                <p>
+                    Typst editor with WASM in-browser compile and an experimental
+                    Electrobun / Tauri desktop port for instant previews offline.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/flappyboards"
-            class="archive-card"
-        >
-            <h3>Flappyboards <span>[Fork]</span></h3>
-            <p>
-                Open-source hardware interface software syncing standard
-                external monitor arrays to mimic the physical behaviors of
-                mechanical split-flap flight boards. This fork applies security
-                hardening and refines the visual design.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/flappyboards" class="mini">
+                <h3>Flappyboards <span class="fork-tag">fork</span></h3>
+                <p>
+                    Open-source hardware interface software syncing standard
+                    external monitor arrays to mimic the physical behaviors of
+                    mechanical split-flap flight boards. This fork applies security
+                    hardening and refines the visual design.
+                </p>
+            </a>
 
-        <a href="https://github.com/aaditagrawal/openmtp" class="archive-card">
-            <h3>OpenMTP <span>[Fork]</span></h3>
-            <p>
-                macOS application interface utilizing low-level USB transfer
-                protocols (MTP) to reliably read and write memory blocks between
-                Unix systems and Android. This fork updates the dependency chain
-                and replaces the brute-force transfer strategy with diff-based
-                delta calculations for existing folders.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/openmtp" class="mini">
+                <h3>OpenMTP <span class="fork-tag">fork</span></h3>
+                <p>
+                    macOS application interface utilizing low-level USB transfer
+                    protocols (MTP) to reliably read and write memory blocks between
+                    Unix systems and Android. This fork updates the dependency chain
+                    and replaces the brute-force transfer strategy with diff-based
+                    delta calculations for existing folders.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/TheImaniPulator"
-            class="archive-card"
-        >
-            <h3>TheImaniPulator</h3>
-            <p>
-                A JavaFX application diving into fundamental image processing:
-                performing low-level matrix math for kernel convolutions, edge
-                detection, and pixel manipulation.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/TheImaniPulator" class="mini">
+                <h3>TheImaniPulator</h3>
+                <p>
+                    A JavaFX application diving into fundamental image processing:
+                    performing low-level matrix math for kernel convolutions, edge
+                    detection, and pixel manipulation.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/vesper-fleet"
-            class="archive-card"
-        >
-            <h3>vesper-fleet</h3>
-            <p>
-                A manual port translating syntactical JSON highlighting
-                structures and AST coloring tokens to build a theme for
-                JetBrains Fleet.
-            </p>
-        </a>
+            <a href="https://github.com/aaditagrawal/vesper-fleet" class="mini">
+                <h3>vesper-fleet</h3>
+                <p>
+                    A manual port translating syntactical JSON highlighting
+                    structures and AST coloring tokens to build a theme for
+                    JetBrains Fleet.
+                </p>
+            </a>
 
-        <a
-            href="https://github.com/aaditagrawal/speedtest-cli"
-            class="archive-card"
-        >
-            <h3>speedtest-cli <span>[Fork]</span></h3>
-            <p>
-                A modified Python CLI using raw socket connections and HTTP
-                packet latency tracking to calculate bandwidth parameters. This
-                fork migrates to modern Linux timekeeping APIs for more accurate
-                measurements.
-            </p>
-        </a>
-    </div>
-</section>
+            <a href="https://github.com/aaditagrawal/speedtest-cli" class="mini">
+                <h3>speedtest-cli <span class="fork-tag">fork</span></h3>
+                <p>
+                    A modified Python CLI using raw socket connections and HTTP
+                    packet latency tracking to calculate bandwidth parameters. This
+                    fork migrates to modern Linux timekeeping APIs for more accurate
+                    measurements.
+                </p>
+            </a>
+        </div>
+    </section>
 </Layout>
 
 <style>
+    .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xl);
+    }
+
+    .feature h3 {
+        font-size: 1.0625rem;
+        margin-bottom: var(--space-sm);
+    }
+
+    .feature-title {
+        color: var(--text-display);
+    }
+
+    .feature-title:hover {
+        color: var(--accent);
+    }
+
+    .feature p {
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--text-secondary);
+        max-width: 62ch;
+    }
+
     .link-subtle {
         color: var(--text-primary);
         text-decoration: underline;
@@ -445,169 +367,50 @@ import Layout from "../layouts/Layout.astro";
         text-decoration-color: var(--accent);
     }
 
-    .project-grid {
+    .mini-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1px;
-        background: var(--border-visible);
-        border: 1px solid var(--border-visible);
+        gap: var(--space-xl) var(--space-2xl);
     }
 
     @media (min-width: 640px) {
-        .project-grid {
-            grid-template-columns: repeat(2, 1fr);
+        .mini-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
-    @media (min-width: 1024px) {
-        .project-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    .archive-card {
-        padding: var(--space-lg);
-        background: var(--black);
-        border-radius: var(--radius-sm);
-        transition: background-color var(--dur-base) ease, transform var(--dur-base) var(--ease);
-        position: relative;
-        overflow: hidden;
+    .mini {
         display: flex;
         flex-direction: column;
-        gap: var(--space-sm);
-        text-decoration: none;
+        gap: var(--space-xs);
     }
 
-    .archive-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: var(--accent);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform var(--dur-base) var(--ease);
-    }
-
-    .archive-card:hover {
-        background: var(--surface);
-        transform: translateY(-2px);
-    }
-
-    .archive-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .archive-card:active {
-        transform: translateY(0);
-    }
-
-    .archive-card::after {
-        content: "→";
-        position: absolute;
-        top: var(--space-lg);
-        right: var(--space-lg);
-        font-family: "Geist Mono", monospace;
-        font-size: 0.875rem;
-        color: var(--text-disabled);
-        transform: rotate(-45deg);
-        transition: color var(--dur-base) ease, transform var(--dur-base) ease;
-    }
-
-    .archive-card:hover::after {
-        color: var(--accent);
-        transform: rotate(-45deg) translate(3px, -3px);
-    }
-
-    /* Pseudo-element to cover empty grid cells with card background */
-    .project-grid::after {
-        content: "";
-        background: var(--black);
-    }
-
-    @media (min-width: 640px) {
-        .project-grid::after {
-            grid-column: 2;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .project-grid::after {
-            grid-column: 3;
-        }
-        /* Hide pseudo-element when grid is full (desktop-misc has 6 items) */
-        #desktop-misc .project-grid::after {
-            display: none;
-        }
-    }
-
-    /* Fix empty grid cells by extending last item when odd count */
-    .archive-card:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-    }
-
-    @media (min-width: 640px) and (max-width: 1023px) {
-        .archive-card:last-child:nth-child(odd) {
-            grid-column: 1 / -1;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .archive-card:last-child:nth-child(odd) {
-            grid-column: auto;
-        }
-        /* For 3-col layout, span last item across remaining columns when needed */
-        .project-grid:has(.archive-card:nth-child(3n+1):last-child) .archive-card:last-child,
-        .project-grid:has(.archive-card:nth-child(3n+2):last-child) .archive-card:last-child {
-            grid-column: span 2;
-        }
-    }
-
-    .archive-card h3 {
-        font-size: 0.9375rem;
-        color: var(--text-display);
-        margin: 0;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 6px;
-    }
-
-    .archive-card h3 span {
-        font-family: "Geist Mono", monospace;
+    .mini h3 {
+        font-family: var(--font-mono);
         font-weight: 500;
-        font-size: 10px;
-        color: var(--text-disabled);
-        font-weight: normal;
-        background: var(--black);
-        padding: 2px 6px;
-        border: 1px solid var(--border-visible);
-    }
-
-    .archive-card p {
         font-size: 0.875rem;
-        color: var(--text-secondary);
-        margin: 0;
-        line-height: 1.5;
+        color: var(--text-primary);
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        transition: color var(--dur-fast) var(--ease);
     }
 
-    .archive-card.disabled {
-        cursor: default;
-        background: var(--surface);
-        opacity: 0.7;
+    .mini:hover h3 {
+        color: var(--accent);
     }
 
-    .archive-card.disabled:hover {
-        background: var(--surface);
+    .fork-tag {
+        font-family: var(--font-mono);
+        font-weight: 400;
+        font-size: 0.625rem;
+        color: var(--text-disabled);
     }
 
-    .archive-card.disabled::after {
-        display: none;
-    }
-
-    .archive-card.disabled h3 {
+    .mini p {
+        font-size: 0.875rem;
+        line-height: 1.6;
         color: var(--text-secondary);
     }
 </style>

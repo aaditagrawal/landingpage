@@ -1,12 +1,30 @@
 ---
+import { Picture } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
+import pfp from "../assets/pfp.png";
 ---
 
 <Layout title="Aadit Agrawal | Codex Creative, Student, Infra, Dev, AI Stuff">
     <section id="about" class="intro">
-        <!-- <p class="intro-meta font-mono" aria-label="Availability">
-            <span class="intro-meta__avail">open to 2026 roles</span>
-        </p> -->
+        <div class="identity">
+            <Picture
+                src={pfp}
+                formats={["avif", "webp"]}
+                widths={[56, 72, 96, 144]}
+                sizes="56px"
+                alt="Aadit Agrawal"
+                class="avatar"
+                width={56}
+                height={56}
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+            />
+            <div class="identity-text">
+                <h1>Aadit Agrawal</h1>
+                <p class="identity-meta font-mono">mit manipal '27 · bengaluru, india</p>
+            </div>
+        </div>
 
         <h2 class="statement">I like figuring out tech by making things with it.</h2>
 
@@ -18,95 +36,94 @@ import Layout from "../layouts/Layout.astro";
                 I grew up on science fiction. Asimov, Sagan, Andy Weir.
                 Science, and optimism about it.
             </p>
-            <p>
-                There's a longer story in <a href="/projects/">/projects</a> and
-                <a href="/experience/">/experience</a>. Or just say hi.
-            </p>
         </div>
     </section>
 
-    <footer id="contact" class="contact">
-        <span class="eyebrow font-mono">elsewhere</span>
-        <nav class="elsewhere-links font-mono" aria-label="Contact and links">
-            <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-resume-open>resume.pdf</a>
-            <a href="https://github.com/aaditagrawal">github</a>
-            <a href="https://linkedin.com/in/aadit-agrawal">linkedin</a>
-        </nav>
-    </footer>
+    <section id="now" class="section">
+        <h2 class="section-title">currently</h2>
+        <ul class="plain-list">
+            <li>
+                <a href="/experience/">Codex Creative at OpenAI</a>, driving
+                Codex adoption for dev and knowledge work in India.
+            </li>
+            <li>
+                <a href="https://ecitis.org">Head Student Researcher at CASIR, MAHE</a>,
+                running an on-prem HPC stack and a 4× Mac Studio inference cluster.
+            </li>
+            <li>
+                <a href="https://theprism.fyi">Founding President of PRISM</a>,
+                a 150+ member research club at MIT Manipal.
+            </li>
+        </ul>
+    </section>
+
+    <section id="work" class="section">
+        <h2 class="section-title">selected work</h2>
+        <ul class="plain-list">
+            <li>
+                <a href="https://fc2.coolstuff.work">The TIK Menu &amp; Campus Suite</a>,
+                campus food and utilities used by 5,000+ people daily.
+            </li>
+            <li>
+                <a href="https://cloud.aadit.cc">Homelab infrastructure</a>,
+                70+ self-hosted services at 98% uptime since 2022.
+            </li>
+            <li>
+                <a href="https://coolstuff.work">coolstuff.work</a>,
+                small tools for peers with 10,000+ aggregate daily users.
+            </li>
+        </ul>
+        <p class="more">
+            the longer story is in <a href="/projects/">/projects</a> and
+            <a href="/experience/">/experience</a>. or just say hi.
+        </p>
+    </section>
 </Layout>
 
 <style>
     .intro {
         display: flex;
         flex-direction: column;
-        gap: var(--space-lg);
+        gap: var(--space-xl);
     }
 
-    /* .intro-meta {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        text-align: right;
-        font-size: 0.6875rem;
-        line-height: 1.55;
-        letter-spacing: 0.04em;
-        color: var(--text-secondary);
-    }
-
-    @media (max-width: 1023px) {
-        .intro-meta {
-            position: static;
-            align-self: flex-end;
-            text-align: right;
-        }
-    } */
-
-    /* Glow on "open to 2026 roles" — uncomment with .intro-meta above
-    .intro-meta__avail {
-        display: inline-block;
-        font-weight: 500;
-        background: linear-gradient(
-            100deg,
-            var(--accent) 0%,
-            #9fb0ff 50%,
-            var(--accent) 100%
-        );
-        background-size: 200% 100%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-        filter: drop-shadow(0 0 7px rgba(87, 107, 255, 0.42));
-        animation: intro-meta-glow 3.6s linear infinite;
-    }
-
-    @keyframes intro-meta-glow {
-        from { background-position: 200% 0; }
-        to { background-position: 0% 0; }
-    }
-    */
-
-    .eyebrow {
-        display: inline-flex;
+    .identity {
+        display: flex;
         align-items: center;
-        gap: var(--space-sm);
-        font-size: 0.6875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
+        gap: var(--space-md);
+    }
+
+    .avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: block;
+        border: 1px solid var(--border-visible);
+        transition: transform var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
+    }
+
+    .avatar:hover {
+        transform: scale(1.04) rotate(-2deg);
+        border-color: var(--accent);
+    }
+
+    .identity-text h1 {
+        font-size: 1.125rem;
+        line-height: 1.2;
+        margin-bottom: var(--space-2xs);
+    }
+
+    .identity-meta {
+        font-size: 0.75rem;
         color: var(--text-secondary);
     }
 
     .statement {
-        font-family: var(--font-mono);
-        font-weight: 500;
-        font-size: clamp(1.5rem, 2.7vw, 2.25rem);
-        line-height: 1.3;
-        letter-spacing: -0.035em;
+        font-size: clamp(1.625rem, 4vw, 2.25rem);
+        line-height: 1.2;
+        letter-spacing: -0.025em;
         max-width: 20ch;
-        color: var(--text-display);
-        margin: var(--space-2xs) 0 var(--space-sm);
+        margin-top: var(--space-sm);
     }
 
     .intro-body {
@@ -114,48 +131,44 @@ import Layout from "../layouts/Layout.astro";
         flex-direction: column;
         gap: var(--space-md);
         max-width: 52ch;
-        font-size: 1.0625rem;
+        font-size: 1rem;
         line-height: 1.7;
         color: var(--text-secondary);
     }
 
-    .intro-body p {
-        margin: 0;
-    }
-
-    .intro-body a {
-        color: inherit;
-        text-decoration: none;
-        transition: color var(--dur-fast) var(--ease);
-    }
-
-    .intro-body a:hover {
-        color: var(--accent);
-    }
-
-    /* Contact footer */
-    .contact {
+    .plain-list {
+        list-style: none;
         display: flex;
         flex-direction: column;
         gap: var(--space-md);
-        padding-top: var(--space-lg);
-        border-top: 1px solid var(--border);
+        max-width: 56ch;
     }
 
-    .elsewhere-links {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: var(--space-sm) var(--space-xl);
+    .plain-list li {
         font-size: 0.9375rem;
-    }
-
-    .elsewhere-links a {
+        line-height: 1.65;
         color: var(--text-secondary);
-        transition: color var(--dur-fast) var(--ease);
     }
 
-    .elsewhere-links a:hover {
+    .plain-list a {
+        color: var(--text-primary);
+    }
+
+    .plain-list a:hover {
+        color: var(--accent);
+    }
+
+    .more {
+        margin-top: var(--space-lg);
+        font-size: 0.9375rem;
+        color: var(--text-secondary);
+    }
+
+    .more a {
+        color: var(--text-primary);
+    }
+
+    .more a:hover {
         color: var(--accent);
     }
 </style>

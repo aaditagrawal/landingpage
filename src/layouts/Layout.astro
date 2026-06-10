@@ -1,8 +1,6 @@
 ---
-import { Picture } from "astro:assets";
-import { join } from "node:path";
-import pfp from "../assets/pfp.png";
-import { iconDataUrl, roundIcon } from "../lib/roundIcon";
+import { Font } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
 	title: string;
@@ -10,20 +8,15 @@ interface Props {
 
 const { title } = Astro.props;
 
-const pfpPath = join(process.cwd(), "src/assets/pfp.png");
-const [favicon32, appleTouchIcon] = await Promise.all([
-	roundIcon(pfpPath, 32),
-	roundIcon(pfpPath, 180),
-]);
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/' || currentPath === '/index.html';
 
 const navItems = [
-	{ href: "/", label: "/about", active: isHome },
-	{ href: "/experience/", label: "/experience", active: currentPath.startsWith('/experience') },
-	{ href: "/projects/", label: "/projects", active: currentPath.startsWith('/projects') },
-	{ href: "/research/", label: "/research", active: currentPath.startsWith('/research') },
-	{ href: "/skills/", label: "/skills", active: currentPath.startsWith('/skills') },
+	{ href: "/", label: "about", active: isHome },
+	{ href: "/experience/", label: "experience", active: currentPath.startsWith('/experience') },
+	{ href: "/projects/", label: "projects", active: currentPath.startsWith('/projects') },
+	{ href: "/research/", label: "research", active: currentPath.startsWith('/research') },
+	{ href: "/skills/", label: "skills", active: currentPath.startsWith('/skills') },
 ];
 ---
 
@@ -35,131 +28,81 @@ const navItems = [
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#0c0e0e" media="(prefers-color-scheme: dark)" />
 		<meta name="theme-color" content="#f4f5f6" media="(prefers-color-scheme: light)" />
-		<link rel="icon" type="image/png" sizes="32x32" href={iconDataUrl(favicon32)} />
-		<link rel="apple-touch-icon" sizes="180x180" href={iconDataUrl(appleTouchIcon)} />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 
-		<!-- Resource hints: fonts load async so HTML/CSS paint first -->
-		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-		<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<Font cssVariable="--font-dm-sans" preload />
+		<Font cssVariable="--font-geist-mono" preload />
 
-		<!-- DM Sans (body, UI), Geist Mono (titles, data, labels). -->
-		<link
-			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Geist+Mono:wght@400;500;600&display=swap"
-			rel="stylesheet"
-		/>
-		<noscript>
-			<link
-				href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Geist+Mono:wght@400;500;600&display=swap"
-				rel="stylesheet"
-			/>
-		</noscript>
+		<ClientRouter />
+
+		<!-- Apply theme before first paint, and re-apply after client-side swaps. -->
+		<script is:inline>
+			(() => {
+				const apply = () =>
+					document.documentElement.setAttribute(
+						"data-theme",
+						localStorage.getItem("theme") || "dark",
+					);
+				apply();
+				document.addEventListener("astro:after-swap", apply);
+			})();
+		</script>
 	</head>
-	<body class="dot-grid">
-		<div class="site-wrapper">
-			<aside class="left-panel">
-				<header class="header">
-					<div class="header-top">
-						<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-							<div class="toggle-track">
-								<div class="toggle-thumb"></div>
-							</div>
-						</button>
-					</div>
-
-					<div class="hero">
-						<Picture
-							src={pfp}
-							formats={["avif", "webp"]}
-							widths={[56, 72, 96, 144, 216]}
-							sizes="96px"
-							alt="Aadit Agrawal"
-							class="hero-avatar"
-							width={96}
-							height={96}
-							loading="eager"
-							decoding="async"
-						/>
-						<h1 class="font-name">Aadit Agrawal</h1>
-						<p class="subtitle">student, infra, dev, ai stuff</p>
-					</div>
-
-					<div class="header-details">
-						<dl class="status-grid">
-							<div class="status-item">
-								<dt class="label-text">Education</dt>
-								<dd class="status-value font-mono">MIT Manipal '27</dd>
-							</div>
-							<div class="status-item">
-								<dt class="label-text">Location</dt>
-								<dd class="status-value font-mono">Bengaluru, India</dd>
-							</div>
-							<div class="status-item">
-								<dt class="label-text">Résumé</dt>
-								<dd class="status-value font-mono">
-									<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="status-resume" data-resume-open aria-label="view my resume">/resume.pdf <span aria-hidden="true">→</span></a>
-								</dd>
-							</div>
-						</dl>
-
-						<div class="contact-links font-mono">
-							<a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
-							<a href="https://blog.aadit.cc">blog.aadit.cc</a>
-							<a href="https://blog.ecitis.org">blog.ecitis.org</a>
+	<body>
+		<div class="page">
+			<header class="masthead">
+				<a href="/" class="wordmark font-mono">aadit agrawal</a>
+				<div class="masthead-right">
+					<nav class="nav font-mono" aria-label="Site">
+						{navItems.map((item) => (
+							<a
+								href={item.href}
+								class:list={["nav-link", { active: item.active }]}
+							>
+								{item.label}
+							</a>
+						))}
+						<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-link nav-link--resume" data-resume-open>resume</a>
+					</nav>
+					<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+						<div class="toggle-track">
+							<div class="toggle-thumb"></div>
 						</div>
+					</button>
+				</div>
+			</header>
 
-						<div class="socials">
-							<a href="https://github.com/aaditagrawal" class="social-link" aria-label="GitHub">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.53 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-							</a>
-							<a href="https://git.aadit.cc/aadit" class="social-link" aria-label="Git">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M13 6h3a2 2 0 0 1 2 2v7"></path><line x1="6" y1="9" x2="6" y2="21"></line></svg>
-							</a>
-							<a href="https://linkedin.com/in/aadit-agrawal" class="social-link" aria-label="LinkedIn">
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-							</a>
-						</div>
-					</div>
-				</header>
-			</aside>
+			<main class="content">
+				<slot />
+			</main>
 
-			<div class="right-panel">
-				<nav class="index font-mono" aria-label="Site index">
-					{navItems.map((item) => (
-						<a
-							href={item.href}
-							class:list={["nav-link", { active: item.active }]}
-						>
-							{item.label}
-						</a>
-					))}
-					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-link nav-link--ext" data-resume-open aria-label="view my resume">/resume.pdf</a>
+			<footer class="site-footer">
+				<nav class="footer-links font-mono" aria-label="Contact and links">
+					<a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>
+					<a href="https://github.com/aaditagrawal">github</a>
+					<a href="https://git.aadit.cc/aadit">git.aadit.cc</a>
+					<a href="https://linkedin.com/in/aadit-agrawal">linkedin</a>
+					<a href="https://blog.aadit.cc">blog.aadit.cc</a>
+					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-resume-open>resume.pdf</a>
 				</nav>
-				<main class:list={["content", { "content--home": isHome }]}>
-					<slot />
-				</main>
-			</div>
+			</footer>
 		</div>
 
 		<dialog id="resume-dialog" class="resume-dialog" aria-labelledby="resume-dialog-title">
 			<div class="resume-dialog__inner">
-				<button type="button" class="resume-dialog__close font-mono" aria-label="close" data-resume-close>[ x ]</button>
-				<div class="resume-dialog__header">
-					<span class="label-text">Résumé</span>
-					<div class="line"></div>
-				</div>
+				<button type="button" class="resume-dialog__close font-mono" aria-label="close" data-resume-close>close</button>
 				<h2 id="resume-dialog-title" class="resume-dialog__title">pick your flavor.</h2>
 				<p class="resume-dialog__subtitle">same content, tuned for the reader. agents: see <a href="/llms.txt" class="resume-dialog__link font-mono">/llms.txt</a>.</p>
 				<div class="resume-dialog__options">
-					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-option font-mono" data-resume-close>
-						<span class="resume-option__label">[ human friendly ]</span>
+					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-option" data-resume-close>
+						<span class="resume-option__label font-mono">human friendly</span>
 						<span class="resume-option__desc">typeset, designed for people.</span>
 					</a>
-					<a href="/resume-ats.pdf" target="_blank" rel="noopener noreferrer" class="resume-option font-mono" data-resume-close>
-						<span class="resume-option__label">[ agent friendly ]</span>
+					<a href="/resume-ats.pdf" target="_blank" rel="noopener noreferrer" class="resume-option" data-resume-close>
+						<span class="resume-option__label font-mono">agent friendly</span>
 						<span class="resume-option__desc">plain-text ATS, parser-ready.</span>
 					</a>
 				</div>
@@ -171,7 +114,7 @@ const navItems = [
 <style is:global>
 	:root,
 	[data-theme="dark"] {
-		--black: #0c0e0e;
+		--bg: #0c0e0e;
 		--surface: #101212;
 		--surface-raised: #16191a;
 		--border: #1c1f1f;
@@ -181,17 +124,23 @@ const navItems = [
 		--text-primary: #e3e6e3;
 		--text-display: #f5f7f4;
 
-		/* One accent, used identically everywhere (color consistency lock). */
+		/* One accent, used identically everywhere. */
 		--accent: #576BFF;
 		--accent-strong: #6e80ff;
 		--accent-subtle: rgba(87, 107, 255, 0.15);
 		--on-accent: #ffffff;
 
-		/* Fonts — titles in Geist Mono, body in DM Sans */
-		--font-sans: "DM Sans", system-ui, sans-serif;
-		--font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+		/* Fonts: display and body in DM Sans, meta and labels in Geist Mono.
+		   Self-hosted and preloaded via the Astro fonts pipeline; the variables
+		   include metric-matched local fallbacks. */
+		--font-sans: var(--font-dm-sans, system-ui, sans-serif);
+		--font-mono: var(--font-geist-mono, ui-monospace, monospace);
 
-		/* Spacing — rem-based so they scale with the fluid html font-size */
+		/* Spatial field: two dot scales (near, far) plus a faint accent glow */
+		--dot-near: rgba(245, 247, 244, 0.09);
+		--dot-far: rgba(245, 247, 244, 0.045);
+		--field-glow: rgba(87, 107, 255, 0.07);
+
 		--space-2xs: 0.125rem;
 		--space-xs: 0.25rem;
 		--space-sm: 0.5rem;
@@ -199,25 +148,20 @@ const navItems = [
 		--space-lg: 1.5rem;
 		--space-xl: 2rem;
 		--space-2xl: 3rem;
-		--space-3xl: 4rem;
-		--space-4xl: 6rem;
+		--space-3xl: 4.5rem;
 
-		/* One radius system */
 		--radius-xs: 4px;
 		--radius-sm: 8px;
 		--radius-md: 12px;
 		--radius-lg: 16px;
 
-		/* Motion — slower, smoother easing reads calmer than the old snap */
 		--dur-fast: 140ms;
 		--dur-base: 240ms;
-		--dur-slow: 520ms;
 		--ease: cubic-bezier(0.22, 1, 0.36, 1);
-		--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	[data-theme="light"] {
-		--black: #f4f5f6;
+		--bg: #f4f5f6;
 		--surface: #ffffff;
 		--surface-raised: #eef0f2;
 		--border: #e6e8ea;
@@ -227,10 +171,14 @@ const navItems = [
 		--text-primary: #1a1d21;
 		--text-display: #0a0c0f;
 
-		--accent: #576BFF;
-		--accent-strong: #4257e6;
+		--accent: #4257e6;
+		--accent-strong: #3346cc;
 		--accent-subtle: rgba(87, 107, 255, 0.12);
 		--on-accent: #ffffff;
+
+		--dot-near: rgba(10, 12, 15, 0.11);
+		--dot-far: rgba(10, 12, 15, 0.055);
+		--field-glow: rgba(66, 87, 230, 0.06);
 	}
 
 	* {
@@ -241,114 +189,109 @@ const navItems = [
 
 	html {
 		font-family: var(--font-sans);
-		background: var(--black);
+		background: var(--bg);
 		color: var(--text-primary);
 		line-height: 1.5;
 		scroll-behavior: smooth;
 		-webkit-font-smoothing: antialiased;
 		text-rendering: optimizeLegibility;
-		/* Fluid base: 14px on small, scales up to 20px on large viewports. */
-		font-size: clamp(14px, 0.45vw + 11.5px, 20px);
+		font-size: clamp(15px, 0.25vw + 14.2px, 17px);
 	}
 
+	/* No background on body: html carries it, so the fixed field layers below
+	   (negative z-index) stay visible between the canvas and the content. */
 	body {
-		min-height: 100vh;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: var(--space-xl);
+		min-height: 100dvh;
 	}
 
-	/* Dot grid background, kept faint */
-	.dot-grid {
-		background-image: radial-gradient(circle, var(--border-visible) 1px, transparent 1px);
-		background-size: 22px 22px;
-		background-position: center top;
+	/* Spatial field, layer 1: two dot lattices (near, far) drifting very slowly.
+	   Lives on html (not body) so client-side navigation, which swaps the body,
+	   never restarts the animation mid-drift. The layer is oversized by one
+	   84px tile in every direction so the loop wraps seamlessly; transform-only
+	   animation stays on the compositor, so it costs no layout or paint work. */
+	html::before {
+		content: "";
+		position: fixed;
+		inset: -84px;
+		z-index: -1;
+		pointer-events: none;
+		background-image:
+			radial-gradient(var(--dot-near) 1px, transparent 1.5px),
+			radial-gradient(var(--dot-far) 1px, transparent 1.5px);
+		background-size: 84px 84px, 21px 21px;
+		background-position: 0 0, 10.5px 10.5px;
+		will-change: transform;
 	}
 
-	/* Framed shell — editorial split */
-	.site-wrapper {
-		width: 100%;
-		min-height: calc(100vh - (var(--space-xl) * 2));
-		background: var(--black);
-		border: 1px solid var(--border-visible);
-		border-radius: var(--radius-lg);
-		position: relative;
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	@media (min-width: 1024px) {
-		.site-wrapper {
-			/* Constant identity column, content takes the rest. Fill the viewport
-			   height (no locked aspect, so tall screens never leave dead space). */
-			grid-template-columns: 360px minmax(0, 1fr);
-			width: min(100%, 1240px);
-			height: calc(100dvh - var(--space-xl) * 2);
-			min-height: 0;
+	@media (prefers-reduced-motion: no-preference) {
+		html::before {
+			animation: field-drift 120s linear infinite;
 		}
 	}
 
-	/* Corner accents */
-	.site-wrapper::before,
-	.site-wrapper::after {
-		content: '';
-		position: absolute;
-		width: 9px;
-		height: 9px;
-		border: 1.5px solid var(--accent);
-		z-index: 10;
-		opacity: 0.85;
+	/* One full 84px tile per loop: both lattices map onto themselves, so the
+	   restart is invisible. */
+	@keyframes field-drift {
+		from { transform: translate3d(0, 0, 0); }
+		to { transform: translate3d(-84px, -84px, 0); }
 	}
 
-	.site-wrapper::before {
-		top: 7px;
-		left: 7px;
-		border-right: none;
-		border-bottom: none;
-		border-top-left-radius: var(--radius-xs);
+	/* Spatial field, layer 2: static accent glow plus a fade to the page
+	   background toward the bottom, painted over the drifting dots. */
+	html::after {
+		content: "";
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background-image:
+			radial-gradient(ellipse 70% 45% at 50% -10%, var(--field-glow), transparent 70%),
+			radial-gradient(ellipse 130% 100% at 50% 0%, transparent 30%, var(--bg) 92%);
 	}
 
-	.site-wrapper::after {
-		bottom: 7px;
-		right: 7px;
-		border-left: none;
-		border-top: none;
-		border-bottom-right-radius: var(--radius-xs);
+	/* ===== Page shell: one quiet column ===== */
+	.page {
+		max-width: 44rem;
+		margin-inline: auto;
+		min-height: 100dvh;
+		display: flex;
+		flex-direction: column;
+		padding: clamp(1.75rem, 4vh, 3.5rem) 1.5rem 3rem;
 	}
 
-	/* Typography — titles in Geist Mono, body in DM Sans */
+	.content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3xl);
+	}
+
+	/* Navigation: a short, eased crossfade on the content. The masthead and
+	   footer get their own transition groups so they hold steady (or glide to
+	   their new position) instead of flashing with the page body. */
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 180ms;
+		animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	::view-transition-group(masthead),
+	::view-transition-group(site-footer) {
+		animation-duration: 220ms;
+		animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	/* ===== Typography ===== */
 	h1, h2, h3, h4, h5, h6 {
-		font-family: var(--font-mono);
+		font-family: var(--font-sans);
 		color: var(--text-display);
-		font-weight: 500;
-		letter-spacing: -0.02em;
-	}
-
-	.font-display {
-		font-family: var(--font-mono);
 		font-weight: 600;
-		letter-spacing: -0.02em;
-	}
-
-	.font-name {
-		font-family: var(--font-mono);
-		font-weight: 500;
-		letter-spacing: -0.03em;
+		letter-spacing: -0.015em;
 	}
 
 	.font-mono {
 		font-family: var(--font-mono);
 		font-weight: 500;
-	}
-
-	.label-text {
-		font-family: var(--font-mono);
-		font-weight: 500;
-		font-size: 0.6875rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--text-secondary);
 	}
 
 	a {
@@ -385,257 +328,41 @@ const navItems = [
 		color: var(--on-accent);
 	}
 
-	/* ===== Left panel (identity column) ===== */
-	.left-panel {
-		padding: var(--space-2xl) var(--space-xl);
-		border-right: 1px solid var(--border-visible);
-		position: sticky;
-		top: 0;
-		height: 100%;
-		min-width: 0;
-		overflow-y: auto;
-		display: flex;
-		flex-direction: column;
-		scrollbar-width: none;
-	}
-
-	.left-panel::-webkit-scrollbar {
-		display: none;
-	}
-
-	.right-panel {
-		overflow-y: auto;
-		height: 100%;
-		min-width: 0;
-		scrollbar-width: none;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.right-panel::-webkit-scrollbar {
-		display: none;
-	}
-
-	.header {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-	}
-
-	.header-top {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin-bottom: var(--space-2xl);
-	}
-
-	/* Theme toggle */
-	.theme-toggle {
-		background: none;
-		border: none;
-		display: flex;
-		align-items: center;
-		gap: var(--space-sm);
-		cursor: pointer;
-		padding: var(--space-xs);
-	}
-
-	.toggle-track {
-		width: 34px;
-		height: 18px;
-		background: var(--surface-raised);
-		border: 1px solid var(--border-visible);
-		border-radius: 999px;
-		position: relative;
-		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
-	}
-
-	.theme-toggle:hover .toggle-track {
-		border-color: var(--accent);
-	}
-
-	.toggle-thumb {
-		width: 11px;
-		height: 11px;
-		background: var(--text-primary);
-		border-radius: 50%;
-		position: absolute;
-		top: 2.5px;
-		left: 3px;
-		transition: transform var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
-	}
-
-	.theme-toggle:hover .toggle-thumb {
-		background: var(--accent);
-	}
-
-	.theme-toggle:active .toggle-thumb {
-		transform: scale(0.8);
-	}
-
-	html[data-theme="light"] .toggle-thumb {
-		transform: translateX(16px);
-		background: var(--accent);
-	}
-
-	html[data-theme="light"] .theme-toggle:active .toggle-thumb {
-		transform: translateX(16px) scale(0.8);
-	}
-
-	.hero {
-		margin-bottom: var(--space-2xl);
-	}
-
-	.hero-avatar {
-		width: 88px;
-		height: 88px;
-		border-radius: 50%;
-		display: block;
-		margin-bottom: var(--space-lg);
-		border: 1px solid var(--border-visible);
-		transition: transform var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
-	}
-
-	.hero-avatar:hover {
-		transform: scale(1.03) rotate(-2deg);
-		border-color: var(--accent);
-	}
-
-	h1 {
-		font-size: clamp(1.6rem, 2vw, 1.95rem);
-		line-height: 1.1;
-		margin-bottom: var(--space-sm);
-	}
-
-	.subtitle {
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		letter-spacing: 0.02em;
-		line-height: 1.5;
-		color: var(--text-secondary);
-	}
-
-	/* Stat list — borderless, editorial */
-	.status-grid {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-		margin-bottom: var(--space-xl);
-		padding-top: var(--space-lg);
-		border-top: 1px solid var(--border);
-	}
-
-	.status-item {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2xs);
-	}
-
-	.status-value {
-		font-size: 0.8125rem;
-		color: var(--text-primary);
-	}
-
-	.status-resume {
-		color: var(--text-primary);
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-xs);
-	}
-
-	.status-resume span {
-		color: var(--text-secondary);
-		transition: transform var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
-	}
-
-	.status-resume:hover span {
-		transform: translateX(3px);
-		color: var(--accent);
-	}
-
-	.contact-links {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
-		margin-bottom: var(--space-lg);
-		font-size: 0.8125rem;
-	}
-
-	.contact-links a {
-		color: var(--text-secondary);
-		width: fit-content;
-	}
-
-	.contact-links a:hover {
-		color: var(--accent);
-	}
-
-	.socials {
-		display: flex;
-		gap: var(--space-md);
-	}
-
-	.social-link {
-		color: var(--text-secondary);
-		display: inline-flex;
-		transition: color var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
-	}
-
-	.social-link:hover {
-		color: var(--accent);
-		transform: translateY(-2px);
-	}
-
-	.social-link:active {
-		transform: translateY(0) scale(0.94);
-	}
-
-	/* Continuous left-to-right blue gradient glow on /resume.pdf links */
-	.status-resume,
-	.index .nav-link--ext {
-		font-weight: 500;
-		background: linear-gradient(
-			100deg,
-			var(--accent) 0%,
-			#9fb0ff 50%,
-			var(--accent) 100%
-		);
-		background-size: 200% 100%;
-		-webkit-background-clip: text;
-		background-clip: text;
-		-webkit-text-fill-color: transparent;
-		color: transparent;
-		filter: drop-shadow(0 0 7px rgba(87, 107, 255, 0.42));
-		animation: avail-glow 3.6s linear infinite;
-	}
-
-	@keyframes avail-glow {
-		from { background-position: 200% 0; }
-		to { background-position: 0% 0; }
-	}
-
-	/* ===== Index (top nav of the content column) ===== */
-	.index {
-		position: sticky;
-		top: 0;
-		z-index: 5;
+	/* ===== Masthead ===== */
+	.masthead {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: space-between;
 		gap: var(--space-md) var(--space-lg);
-		padding: var(--space-lg) var(--space-2xl);
-		background: color-mix(in srgb, var(--black) 88%, transparent);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		border-bottom: 1px solid var(--border-visible);
+		margin-bottom: clamp(3.5rem, 9vh, 5.5rem);
+		view-transition-name: masthead;
+	}
+
+	.wordmark {
+		font-size: 0.875rem;
+		color: var(--text-display);
+		letter-spacing: -0.01em;
+	}
+
+	.masthead-right {
+		display: flex;
+		align-items: center;
+		gap: var(--space-lg);
+	}
+
+	.nav {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-sm) var(--space-md);
 	}
 
 	.nav-link {
 		position: relative;
-		font-size: 0.8125rem;
+		font-size: 0.75rem;
 		color: var(--text-secondary);
 		padding-bottom: var(--space-2xs);
-		transition: color var(--dur-fast) var(--ease);
 	}
 
 	.nav-link::after {
@@ -643,7 +370,7 @@ const navItems = [
 		position: absolute;
 		left: 0;
 		bottom: 0;
-		height: 1.5px;
+		height: 1px;
 		width: 100%;
 		background: var(--accent);
 		transform: scaleX(0);
@@ -668,236 +395,158 @@ const navItems = [
 		transform: scaleX(1);
 	}
 
-	.nav-link--ext {
-		margin-left: auto;
-		color: var(--text-disabled);
-	}
-
-	/* ===== Main content ===== */
-	.content {
-		padding: var(--space-2xl);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3xl);
-		flex: 1;
-	}
-
-	/* Home is sparse: center it as a composed page, links pinned at the bottom */
-	.content--home {
-		justify-content: center;
-		gap: var(--space-2xl);
-	}
-
-	@media (max-width: 1023px) {
-		.content--home {
-			justify-content: flex-start;
-		}
-	}
-
-	.section-header {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-		margin-bottom: var(--space-xl);
-	}
-
-	.line {
-		flex: 1;
-		height: 1px;
-		background: var(--border);
-	}
-
-	/* Scroll-reveal — restrained, opt-in via support + motion preference */
-	@media (prefers-reduced-motion: no-preference) {
-		@supports (animation-timeline: view()) {
-			.content > .section {
-				animation: section-reveal linear both;
-				animation-timeline: view();
-				animation-range: entry 0% entry 36%;
-			}
-		}
-	}
-
-	@keyframes section-reveal {
-		from { opacity: 0; transform: translateY(16px); }
-		to { opacity: 1; transform: none; }
-	}
-
-	/* Common content blocks */
-	.project-list, .exp-list, .skills-grid {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xl);
-	}
-
-	/* Project cards */
-	.project-card {
-		display: grid;
-		gap: var(--space-sm);
-	}
-
-	@media (min-width: 640px) {
-		.project-card {
-			grid-template-columns: 190px 1fr;
-			gap: var(--space-xl);
-		}
-	}
-
-	.project-meta {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-xs);
-	}
-
-	.tag {
-		font-family: var(--font-mono);
-		font-weight: 500;
-		font-size: 0.625rem;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		padding: 3px 7px;
-		border: 1px solid var(--border-visible);
-		border-radius: var(--radius-xs);
-		color: var(--text-secondary);
-		transition: border-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
-	}
-
-	.project-card:hover .tag {
-		border-color: var(--text-disabled);
-		color: var(--text-primary);
-	}
-
-	.tag-highlight {
-		border-color: var(--accent-subtle);
+	.nav-link--resume {
 		color: var(--accent);
 	}
 
-	.project-content h3 {
-		font-size: 1.125rem;
-		margin-bottom: var(--space-xs);
+	.nav-link--resume:hover {
+		color: var(--accent-strong);
 	}
 
-	.project-title {
-		position: relative;
-		display: inline-block;
-	}
-
-	.project-title::after {
-		content: '';
-		position: absolute;
-		width: 100%;
-		transform: scaleX(0);
-		height: 1px;
-		bottom: 0;
-		left: 0;
-		background-color: var(--accent);
-		transform-origin: bottom right;
-		transition: transform var(--dur-base) var(--ease);
-	}
-
-	.project-title:hover::after {
-		transform: scaleX(1);
-		transform-origin: bottom left;
-	}
-
-	.project-content p {
-		color: var(--text-secondary);
-		font-size: 0.9375rem;
-	}
-
-	/* Experience cards */
-	.exp-card {
-		padding-left: var(--space-lg);
-		border-left: 1px solid var(--border-visible);
-		position: relative;
-		transition: border-left-color var(--dur-base) var(--ease);
-	}
-
-	.exp-card:hover {
-		border-left-color: var(--accent);
-	}
-
-	.exp-card::before {
-		content: '';
-		position: absolute;
-		left: -4.5px;
-		top: 7px;
-		width: 8px;
-		height: 8px;
-		background: var(--black);
-		border: 1px solid var(--text-disabled);
-		border-radius: 50%;
-		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
-	}
-
-	.exp-card:hover::before {
-		border-color: var(--accent);
-		background: var(--accent);
-		transform: scale(1.2);
-	}
-
-	.exp-header {
+	/* Theme toggle */
+	.theme-toggle {
+		background: none;
+		border: none;
 		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: baseline;
-		margin-bottom: var(--space-xs);
-		gap: var(--space-md);
+		align-items: center;
+		padding: var(--space-xs);
 	}
 
-	.exp-header h3 {
+	.toggle-track {
+		width: 30px;
+		height: 16px;
+		background: var(--surface-raised);
+		border: 1px solid var(--border-visible);
+		border-radius: 999px;
+		position: relative;
+		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
+	}
+
+	.theme-toggle:hover .toggle-track {
+		border-color: var(--accent);
+	}
+
+	.toggle-thumb {
+		width: 10px;
+		height: 10px;
+		background: var(--text-secondary);
+		border-radius: 50%;
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		transition: transform var(--dur-base) var(--ease), background var(--dur-base) var(--ease);
+	}
+
+	.theme-toggle:hover .toggle-thumb {
+		background: var(--accent);
+	}
+
+	.theme-toggle:active .toggle-thumb {
+		transform: scale(0.8);
+	}
+
+	html[data-theme="light"] .toggle-thumb {
+		transform: translateX(14px);
+		background: var(--accent);
+	}
+
+	html[data-theme="light"] .theme-toggle:active .toggle-thumb {
+		transform: translateX(14px) scale(0.8);
+	}
+
+	/* ===== Shared section pattern ===== */
+	.section-title {
+		font-family: var(--font-mono);
+		font-weight: 500;
+		font-size: 0.75rem;
+		letter-spacing: 0.02em;
+		color: var(--text-secondary);
+		margin-bottom: var(--space-lg);
+	}
+
+	/* Dated entries (experience, research) */
+	.entry-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xl);
+	}
+
+	.entry {
+		display: grid;
+		gap: var(--space-xs) var(--space-xl);
+	}
+
+	@media (min-width: 700px) {
+		.entry {
+			grid-template-columns: 8.5rem minmax(0, 1fr);
+		}
+	}
+
+	.entry-when {
+		font-family: var(--font-mono);
+		font-weight: 500;
+		font-size: 0.75rem;
+		color: var(--text-disabled);
+		padding-top: 0.25rem;
+		white-space: nowrap;
+	}
+
+	.entry-body h3 {
 		font-size: 1rem;
+		margin-bottom: var(--space-sm);
+		line-height: 1.4;
 	}
 
-	.exp-at {
+	.entry-at {
 		color: var(--text-secondary);
 		font-weight: 400;
 	}
 
-	.exp-card p {
+	.entry-body ul {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.entry-body li,
+	.entry-body > p {
 		font-size: 0.9375rem;
+		line-height: 1.65;
 		color: var(--text-secondary);
 	}
 
-	/* Skills */
-	.skills-grid {
-		display: grid;
-		gap: var(--space-md);
+	/* ===== Footer ===== */
+	.site-footer {
+		margin-top: var(--space-3xl);
+		padding-top: var(--space-lg);
+		border-top: 1px solid var(--border);
+		view-transition-name: site-footer;
 	}
 
-	.skill-group {
-		display: grid;
-		gap: var(--space-xs);
-		padding-bottom: var(--space-sm);
-		border-bottom: 1px dotted var(--border);
+	.footer-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm) var(--space-lg);
+		font-size: 0.75rem;
 	}
 
-	@media (min-width: 640px) {
-		.skill-group {
-			grid-template-columns: 150px 1fr;
-			align-items: baseline;
-		}
+	.footer-links a {
+		color: var(--text-secondary);
 	}
 
-	.skill-items {
-		font-size: 0.8125rem;
-		color: var(--text-primary);
+	.footer-links a:hover {
+		color: var(--accent);
 	}
 
 	/* ===== Resume dialog ===== */
 	.resume-dialog {
 		padding: 0;
 		border: 1px solid var(--border-visible);
-		border-radius: var(--radius-lg);
-		background: var(--black);
+		border-radius: var(--radius-md);
+		background: var(--bg);
 		color: var(--text-primary);
-		max-width: min(440px, calc(100vw - var(--space-xl) * 2));
+		max-width: min(420px, calc(100vw - var(--space-xl) * 2));
 		width: 100%;
 		margin: auto;
 		position: fixed;
@@ -923,12 +572,11 @@ const navItems = [
 
 	.resume-dialog__close {
 		position: absolute;
-		top: var(--space-sm);
-		right: var(--space-sm);
+		top: var(--space-md);
+		right: var(--space-md);
 		background: none;
 		border: none;
 		color: var(--text-secondary);
-		cursor: pointer;
 		font-size: 0.6875rem;
 		padding: 4px 6px;
 	}
@@ -937,19 +585,10 @@ const navItems = [
 		color: var(--accent);
 	}
 
-	.resume-dialog__header {
-		display: flex;
-		align-items: center;
-		gap: var(--space-md);
-	}
-
 	.resume-dialog__title {
-		font-family: var(--font-mono);
-		font-weight: 500;
-		font-size: 1.4rem;
-		letter-spacing: -0.02em;
-		line-height: 1.1;
-		color: var(--text-display);
+		font-size: 1.25rem;
+		letter-spacing: -0.015em;
+		line-height: 1.15;
 	}
 
 	.resume-dialog__subtitle {
@@ -983,14 +622,13 @@ const navItems = [
 		border-radius: var(--radius-sm);
 		background: var(--surface);
 		color: var(--text-primary);
-		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease), color var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
+		transition: border-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
 	}
 
 	.resume-option:hover,
 	.resume-option:focus-visible {
 		border-color: var(--accent);
 		background: var(--surface-raised);
-		color: var(--text-display);
 		transform: translateY(-2px);
 	}
 
@@ -999,64 +637,21 @@ const navItems = [
 	}
 
 	.resume-option__label {
-		font-size: 0.8125rem;
-		letter-spacing: 0.04em;
+		font-size: 0.75rem;
+		letter-spacing: 0.02em;
 		color: var(--accent);
 	}
 
 	.resume-option__desc {
-		font-family: var(--font-sans);
-		font-size: 0.75rem;
+		font-size: 0.8125rem;
 		color: var(--text-secondary);
 	}
 
-	/* ===== Responsive: stack below 1024px ===== */
-	@media (max-width: 1023px) {
-		body {
-			padding: var(--space-md);
-		}
-
-		.site-wrapper {
-			min-height: calc(100vh - (var(--space-md) * 2));
-		}
-
-		.left-panel {
-			border-right: none;
-			border-bottom: 1px solid var(--border-visible);
-			position: static;
-			height: auto;
-			overflow-y: visible;
-			padding: var(--space-xl);
-		}
-
-		.right-panel {
-			height: auto;
-			overflow-y: visible;
-		}
-
-		.index {
-			position: static;
-			padding: var(--space-lg) var(--space-xl);
-		}
-
-		.content {
-			padding: var(--space-xl);
-		}
-
-		.hero-avatar {
-			width: 72px;
-			height: 72px;
-		}
-
-	}
-
-	@media (max-width: 480px) {
-		h1 {
-			font-size: 2.4rem;
-		}
-
-		.nav-link--ext {
-			margin-left: 0;
+	/* ===== Small screens ===== */
+	@media (max-width: 540px) {
+		.masthead-right {
+			width: 100%;
+			justify-content: space-between;
 		}
 	}
 
@@ -1072,40 +667,49 @@ const navItems = [
 	}
 </style>
 
-<script is:inline defer>
-	// Theme handling
-	const themeToggle = document.getElementById('theme-toggle');
-	const root = document.documentElement;
+<script is:inline>
+	(() => {
+		// Re-wire on every navigation: astro:page-load fires on initial load and
+		// after each client-side swap, when the new DOM is in place.
+		const wire = () => {
+			const root = document.documentElement;
 
-	const updateTheme = (isDark) => {
-		root.setAttribute('data-theme', isDark ? 'dark' : 'light');
-		localStorage.setItem('theme', isDark ? 'dark' : 'light');
-	};
-
-	updateTheme((localStorage.getItem('theme') || 'dark') === 'dark');
-
-	themeToggle?.addEventListener('click', () => {
-		updateTheme(root.getAttribute('data-theme') !== 'dark');
-	});
-
-	// Resume dialog — any [data-resume-open] opens the chooser; falls back to the PDF link.
-	const dialog = document.getElementById('resume-dialog');
-	if (dialog) {
-		document.querySelectorAll('[data-resume-open]').forEach((trigger) => {
-			trigger.addEventListener('click', (event) => {
-				if (typeof dialog.showModal === 'function') {
-					event.preventDefault();
-					dialog.showModal();
-				}
+			document.getElementById('theme-toggle')?.addEventListener('click', () => {
+				const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+				localStorage.setItem('theme', next);
+				root.setAttribute('data-theme', next);
 			});
-		});
 
-		dialog.addEventListener('click', (event) => {
-			if (event.target === dialog) dialog.close();
-		});
+			// Resume dialog: any [data-resume-open] opens the chooser; falls back to the PDF link.
+			const dialog = document.getElementById('resume-dialog');
+			if (!dialog) return;
 
-		dialog.querySelectorAll('[data-resume-close]').forEach((el) => {
-			el.addEventListener('click', () => setTimeout(() => dialog.close(), 0));
-		});
+			document.querySelectorAll('[data-resume-open]').forEach((trigger) => {
+				trigger.addEventListener('click', (event) => {
+					if (typeof dialog.showModal === 'function') {
+						event.preventDefault();
+						dialog.showModal();
+					}
+				});
+			});
+
+			dialog.addEventListener('click', (event) => {
+				if (event.target === dialog) dialog.close();
+			});
+
+			dialog.querySelectorAll('[data-resume-close]').forEach((el) => {
+				el.addEventListener('click', () => setTimeout(() => dialog.close(), 0));
+			});
+		};
+
+		document.addEventListener('astro:page-load', wire);
+	})();
+</script>
+
+<script is:inline define:vars={{ prod: import.meta.env.PROD }}>
+	// Offline cache and instant repeat visits; registered after load so it
+	// never competes with first-paint resources.
+	if (prod && 'serviceWorker' in navigator) {
+		addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
 	}
 </script>
