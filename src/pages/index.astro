@@ -1,5 +1,6 @@
 ---
 import { Picture } from "astro:assets";
+import HelloName from "../components/HelloName.astro";
 import Layout from "../layouts/Layout.astro";
 import pfp from "../assets/pfp.png";
 ---
@@ -21,7 +22,7 @@ import pfp from "../assets/pfp.png";
                 fetchpriority="high"
             />
             <div class="identity-text">
-                <h1>Aadit Agrawal</h1>
+                <HelloName />
                 <p class="identity-meta font-mono">mit manipal '27 · bengaluru, india</p>
             </div>
         </div>
@@ -107,10 +108,10 @@ import pfp from "../assets/pfp.png";
         border-color: var(--accent);
     }
 
-    .identity-text h1 {
-        font-size: 1.125rem;
-        line-height: 1.2;
-        margin-bottom: var(--space-2xs);
+    .identity-text {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
     }
 
     .identity-meta {

@@ -31,3 +31,6 @@ pnpm-debug.log*
 
 # interface design
 .interface-design/
+
+# font cache for signature generator
+scripts/.cache/

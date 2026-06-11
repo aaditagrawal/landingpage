@@ -1,0 +1,121 @@
+---
+import namePaths from "./name-paths.json";
+
+const { text, viewBox, letters } = namePaths;
+
+// One continuous pen stroke across the whole signature: all letters merge
+// into a single path drawn by one animation with a gentle global ease
+// (slow start, fast middle, soft landing).
+const DRAW_DURATION = 1.6;
+const START_DELAY = 0.2;
+
+const drawn = letters.filter((letter) => letter.d);
+const totalLength = drawn.reduce((sum, letter) => sum + letter.length, 0);
+const penPath = drawn.map((letter) => letter.d).join(" ");
+
+// The pen eases with easeInOutSine (cubic-bezier(0.37, 0, 0.63, 1) below).
+// Inverting it maps a letter's position along the stroke to the moment the
+// pen actually reaches it, so each letter's ink fade chases the pen tip.
+const invEase = (p: number) => Math.acos(1 - 2 * Math.min(Math.max(p, 0), 1)) / Math.PI;
+
+let run = 0;
+const inks = drawn.map((letter) => {
+	const start = invEase(run / totalLength);
+	run += letter.length;
+	const end = invEase(run / totalLength);
+	return {
+		d: letter.d,
+		delay: START_DELAY + DRAW_DURATION * (start + (end - start) * 0.3),
+		dur: Math.max(DRAW_DURATION * (end - start), 0.15),
+	};
+});
+---
+
+<h1 class="hello-name">
+	<span class="sr-only">{text}</span>
+	<svg class="hello-svg" viewBox={viewBox} aria-hidden="true">
+		{
+			inks.map(({ d, delay, dur }) => (
+				<path
+					class="ink"
+					d={d}
+					style={`--ink-delay: ${delay.toFixed(2)}s; --ink-dur: ${dur.toFixed(2)}s;`}
+				/>
+			))
+		}
+		<path
+			class="pen"
+			d={penPath}
+			pathLength="1"
+			style={`--draw-dur: ${DRAW_DURATION}s; --draw-delay: ${START_DELAY}s;`}
+		></path>
+	</svg>
+</h1>
+
+<style>
+	.hello-name {
+		line-height: 1;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.hello-svg {
+		display: block;
+		height: 2.75rem;
+		width: auto;
+		max-width: 100%;
+		color: var(--text-primary);
+		overflow: visible;
+	}
+
+	.pen {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		animation: hello-draw var(--draw-dur) cubic-bezier(0.37, 0, 0.63, 1) var(--draw-delay)
+			forwards;
+	}
+
+	.ink {
+		fill: currentColor;
+		fill-opacity: 0;
+		animation: hello-ink var(--ink-dur) ease-out var(--ink-delay) forwards;
+	}
+
+	@keyframes hello-draw {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@keyframes hello-ink {
+		to {
+			fill-opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.pen {
+			animation: none;
+			stroke-dashoffset: 0;
+		}
+
+		.ink {
+			animation: none;
+			fill-opacity: 1;
+		}
+	}
+</style>
