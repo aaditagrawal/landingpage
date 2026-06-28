@@ -212,6 +212,17 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
 		card.style.top = "-9999px";
 	};
 
+	const markerFromEvent = (event: Event): SVGGElement | null => {
+		if (!(event.target instanceof Element)) return null;
+		const marker = event.target.closest<SVGGElement>(".travel-marker");
+		return marker && root.contains(marker) ? marker : null;
+	};
+
+	const showMarkerCard = (marker: SVGGElement) => {
+		const id = marker.dataset.id;
+		if (id) showCard(id, marker);
+	};
+
 	const beginPinch = () => {
 		const arr = [...pointers.values()];
 		if (arr.length < 2) return;
@@ -342,18 +353,45 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
 
 	chart.addEventListener("mouseover", (event) => {
 		if (isIntro || isDragging) return;
-		const marker = (event.target as Element).closest?.(".travel-marker");
-		if (!marker || !root.contains(marker)) return;
-		const id = (marker as SVGGElement).dataset.id;
-		if (id) showCard(id, marker as SVGGElement);
+		const marker = markerFromEvent(event);
+		if (marker) showMarkerCard(marker);
 	});
 
 	chart.addEventListener("mouseout", (event) => {
-		const marker = (event.target as Element).closest?.(".travel-marker");
-		if (!marker || !root.contains(marker)) return;
+		const marker = markerFromEvent(event);
+		if (!marker) return;
 		const related = event.relatedTarget;
 		if (related instanceof Element && marker.contains(related)) return;
 		if (activeMarker === marker) hideCard();
+	});
+
+	chart.addEventListener("click", (event) => {
+		if (isIntro || isDragging) return;
+		const marker = markerFromEvent(event);
+		if (!marker) return;
+		showMarkerCard(marker);
+	});
+
+	chart.addEventListener("focusin", (event) => {
+		if (isIntro) return;
+		const marker = markerFromEvent(event);
+		if (marker) showMarkerCard(marker);
+	});
+
+	chart.addEventListener("focusout", (event) => {
+		const marker = markerFromEvent(event);
+		if (!marker) return;
+		const related = event.relatedTarget;
+		if (related instanceof Element && marker.contains(related)) return;
+		if (activeMarker === marker) hideCard();
+	});
+
+	chart.addEventListener("keydown", (event) => {
+		if (event.key !== "Enter" && event.key !== " ") return;
+		const marker = markerFromEvent(event);
+		if (!marker) return;
+		event.preventDefault();
+		showMarkerCard(marker);
 	});
 
 	window.addEventListener(
