@@ -27,4 +27,7 @@ export const places: Place[] = [
 	{ id: "pondicherry", name: "Pondicherry", lat: 11.9416, lng: 79.8083 },
 	{ id: "ezhimala", name: "Ezhimala", lat: 11.984, lng: 75.21 },
 	{ id: "karwar", name: "Karwar", lat: 14.8137, lng: 74.1299 },
+	{ id: "alappuzha", name: "Alappuzha", lat: 9.4981, lng: 76.3388 },
+	{ id: "thiruvananthapuram", name: "Thiruvananthapuram", lat: 8.5241, lng: 76.9366 },
+	{ id: "kanyakumari", name: "Kanyakumari", lat: 8.0883, lng: 77.5385 },
 ];
