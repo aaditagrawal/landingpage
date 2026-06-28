@@ -124,6 +124,11 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
 
 	const applyTransform = () => {
 		layer.setAttribute("transform", `translate(${transform.tx} ${transform.ty}) scale(${transform.k})`);
+		const markerScale = Math.min(1, homeTransform.k / transform.k);
+		root.querySelectorAll<SVGCircleElement>(".travel-marker circle[data-base-r]").forEach((circle) => {
+			const baseR = Number(circle.dataset.baseR);
+			if (Number.isFinite(baseR)) circle.setAttribute("r", String(baseR * markerScale));
+		});
 		if (activeMarker) positionCard(activeMarker);
 	};
 

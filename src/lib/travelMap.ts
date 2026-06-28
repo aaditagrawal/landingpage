@@ -70,7 +70,7 @@ function markerElements(markers: Array<Place & { x: number; y: number }>): strin
 			const y = place.y.toFixed(2);
 			const r = place.home ? 3.25 : 2.5;
 			const homeClass = place.home ? " travel-dot--home" : "";
-			return `<g class="travel-marker" data-id="${id}" data-name="${label}" tabindex="0" role="button" aria-label="${label}"><circle class="travel-ring" cx="${x}" cy="${y}" r="6"/><circle class="travel-hit" cx="${x}" cy="${y}" r="8"/><circle class="travel-dot${homeClass}" cx="${x}" cy="${y}" r="${r}"/></g>`;
+			return `<g class="travel-marker" data-id="${id}" data-name="${label}" tabindex="0" role="button" aria-label="${label}"><circle class="travel-ring" cx="${x}" cy="${y}" r="6" data-base-r="6"/><circle class="travel-hit" cx="${x}" cy="${y}" r="8" data-base-r="8"/><circle class="travel-dot${homeClass}" cx="${x}" cy="${y}" r="${r}" data-base-r="${r}"/></g>`;
 		})
 		.join("");
 }
