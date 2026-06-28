@@ -13,7 +13,7 @@ export const musicSections: MusicSection[] = [
 	{
 		label: "Instrumental",
 		tracks: [
-			{ title: "In the House – In a Heartbeat", artist: "John Murphy", note: "28 Days Later" },
+			{ title: "Pals", artist: "John Murphy", note: "28 Days Later" },
 			{ title: "Experiences", artist: "Ludovico Einaudi" },
 			{ title: "Time", artist: "Hans Zimmer", note: "Inception" },
 			{ title: "God - Senna Theme", artist: "Antonio Pinto", note: "Senna" },
