@@ -1,0 +1,203 @@
+---
+import { places } from "../data/places";
+import { buildWorldMapSvg } from "../lib/travelMap";
+
+const worldSvg = buildWorldMapSvg(places);
+---
+
+<section id="places" class="section section--places">
+	<h2 class="section-title">places</h2>
+
+	<div class="travel-map" data-travel-map>
+		<div class="travel-map__panel">
+			<div class="travel-map__chart" set:html={worldSvg} />
+		</div>
+		<p class="travel-map__hint font-mono">scroll to zoom · drag to pan · double-click to reset</p>
+	</div>
+</section>
+
+<div class="travel-place-card" data-place-card aria-hidden="true">
+	<p class="travel-place-card__eyebrow font-mono" data-place-eyebrow>place</p>
+	<h3 class="travel-place-card__name" data-place-name></h3>
+	<p class="travel-place-card__coords font-mono" data-place-coords></p>
+	<p class="travel-place-card__note" data-place-note hidden></p>
+</div>
+
+<style>
+	.section--places {
+		content-visibility: auto;
+		contain-intrinsic-size: 0 420px;
+	}
+
+	.travel-map__panel {
+		border: 1px solid var(--border-visible);
+		border-radius: var(--radius-md);
+		background: var(--surface);
+		overflow: hidden;
+	}
+
+	.travel-map__hint {
+		margin-top: var(--space-sm);
+		font-size: 0.6875rem;
+		letter-spacing: 0.04em;
+		color: var(--text-disabled);
+	}
+
+	.travel-map__chart :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+		touch-action: none;
+		cursor: grab;
+	}
+
+	.travel-map__chart :global(svg:active) {
+		cursor: grabbing;
+	}
+
+	.travel-map__chart :global(.travel-ocean) {
+		fill: var(--surface);
+	}
+
+	.travel-map__chart :global(.travel-graticule) {
+		fill: none;
+		stroke: var(--border-visible);
+		stroke-width: 0.5;
+		opacity: 0.45;
+		vector-effect: non-scaling-stroke;
+	}
+
+	.travel-map__chart :global(.travel-land) {
+		fill: var(--surface-raised);
+		stroke: var(--border-visible);
+		stroke-width: 0.5;
+		vector-effect: non-scaling-stroke;
+		pointer-events: none;
+	}
+
+	.travel-map__chart :global(.travel-hit) {
+		fill: transparent;
+		stroke: none;
+		pointer-events: all;
+		cursor: pointer;
+	}
+
+	.travel-map__chart :global(.travel-ring) {
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 1.25;
+		vector-effect: non-scaling-stroke;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity var(--dur-base) var(--ease);
+	}
+
+	.travel-map__chart :global(.travel-dot) {
+		fill: var(--accent);
+		stroke: var(--surface);
+		stroke-width: 1.5;
+		vector-effect: non-scaling-stroke;
+		pointer-events: none;
+		transition: fill var(--dur-base) var(--ease);
+	}
+
+	.travel-map__chart :global(.travel-dot--home) {
+		fill: var(--accent-strong);
+	}
+
+	.travel-map__chart :global(.travel-marker) {
+		outline: none;
+		transition: transform var(--dur-base) var(--ease);
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+
+	.travel-map__chart :global(.travel-marker.is-active) {
+		transform: scale(1.12);
+	}
+
+	.travel-map__chart :global(.travel-marker.is-active .travel-ring) {
+		opacity: 0.6;
+	}
+
+	.travel-map__chart :global(.travel-marker.is-active .travel-dot) {
+		fill: var(--accent-strong);
+	}
+
+	.travel-place-card {
+		position: fixed;
+		z-index: 9999;
+		width: min(14rem, calc(100vw - var(--space-xl) * 2));
+		padding: var(--space-md);
+		border: 1px solid var(--border-visible);
+		border-radius: var(--radius-sm);
+		background: var(--bg);
+		box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
+		pointer-events: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		left: -9999px;
+		top: -9999px;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity var(--dur-fast) var(--ease),
+			visibility var(--dur-fast) var(--ease),
+			transform var(--dur-fast) var(--ease);
+		transform: translate(-50%, calc(-100% - 12px)) scale(0.97);
+	}
+
+	.travel-place-card.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translate(-50%, calc(-100% - 12px)) scale(1);
+	}
+
+	.travel-place-card__eyebrow {
+		font-size: 0.6875rem;
+		letter-spacing: 0.04em;
+		color: var(--accent);
+		text-transform: lowercase;
+	}
+
+	.travel-place-card__name {
+		font-size: 1.125rem;
+		line-height: 1.15;
+		letter-spacing: -0.02em;
+		color: var(--text-display);
+	}
+
+	.travel-place-card__coords {
+		font-size: 0.6875rem;
+		letter-spacing: 0.03em;
+		color: var(--text-secondary);
+	}
+
+	.travel-place-card__note {
+		margin-top: var(--space-2xs);
+		font-size: 0.8125rem;
+		line-height: 1.5;
+		color: var(--text-secondary);
+	}
+
+	.travel-place-card__note[hidden] {
+		display: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.travel-place-card {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	import { places } from "../data/places";
+	import { initTravelMaps } from "../lib/travelMapInteraction";
+
+	const boot = () => initTravelMaps(places);
+
+	boot();
+	document.addEventListener("astro:page-load", boot);
+</script>
