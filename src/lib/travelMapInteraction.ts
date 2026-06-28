@@ -65,6 +65,14 @@ function formatCoords(lat: number, lng: number): string {
 	return `${Math.abs(lat).toFixed(2)}° ${latDir} · ${Math.abs(lng).toFixed(2)}° ${lngDir}`;
 }
 
+/** Pixel-equivalent wheel delta (line/page modes vary by browser). */
+function wheelDeltaPixels(event: WheelEvent): number {
+	let dy = event.deltaY;
+	if (event.deltaMode === 1) dy *= 16;
+	else if (event.deltaMode === 2) dy *= window.innerHeight;
+	return dy;
+}
+
 export function initTravelMaps(places: Place[]): void {
 	document.querySelectorAll<HTMLElement>("[data-travel-map]").forEach((root) => {
 		if (root.dataset.wired === "true") return;
@@ -108,6 +116,9 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
 		startTy: number;
 	} | null = null;
 	let pan: { pointerId: number; startX: number; startY: number; startTx: number; startTy: number } | null = null;
+	let wheelFrame = 0;
+	let wheelDelta = 0;
+	let wheelPoint: Point | null = null;
 
 	const clampScale = (k: number) => Math.min(maxScale, Math.max(minScale, k));
 
@@ -246,21 +257,37 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
 		hideCard();
 	};
 
+	const zoomAt = (client: Point, deltaPixels: number) => {
+		const rect = svg.getBoundingClientRect();
+		const m = clientToViewBox(client, rect, vbW, vbH);
+		const factor = Math.exp(-deltaPixels * 0.0025);
+		const nk = clampScale(transform.k * factor);
+		const scale = nk / transform.k;
+		setTransform({
+			k: nk,
+			tx: m.x - (m.x - transform.tx) * scale,
+			ty: m.y - (m.y - transform.ty) * scale,
+		});
+	};
+
+	const flushWheel = () => {
+		wheelFrame = 0;
+		if (!wheelPoint || wheelDelta === 0) return;
+		const delta = wheelDelta;
+		const point = wheelPoint;
+		wheelDelta = 0;
+		wheelPoint = null;
+		zoomAt(point, delta);
+	};
+
 	svg.addEventListener(
 		"wheel",
 		(event) => {
 			if (isIntro) return;
 			event.preventDefault();
-			const rect = svg.getBoundingClientRect();
-			const m = clientToViewBox({ x: event.clientX, y: event.clientY }, rect, vbW, vbH);
-			const factor = Math.exp(-event.deltaY * 0.0015);
-			const nk = clampScale(transform.k * factor);
-			const scale = nk / transform.k;
-			setTransform({
-				k: nk,
-				tx: m.x - (m.x - transform.tx) * scale,
-				ty: m.y - (m.y - transform.ty) * scale,
-			});
+			wheelDelta += wheelDeltaPixels(event);
+			wheelPoint = { x: event.clientX, y: event.clientY };
+			if (!wheelFrame) wheelFrame = requestAnimationFrame(flushWheel);
 		},
 		{ passive: false },
 	);
