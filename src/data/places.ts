@@ -14,6 +14,7 @@ export type Place = {
 export const places: Place[] = [
 	{ id: "delhi", name: "Delhi", lat: 28.6139, lng: 77.209 },
 	{ id: "dehradun", name: "Dehradun", lat: 30.3165, lng: 78.0322 },
+	{ id: "roorkee", name: "Roorkee", lat: 29.8543, lng: 77.888 },
 	{ id: "mussoorie", name: "Mussoorie", lat: 30.4598, lng: 78.0644 },
 	{ id: "nainital", name: "Nainital", lat: 29.391, lng: 79.454 },
 	{ id: "amritsar", name: "Amritsar", lat: 31.634, lng: 74.8723 },
