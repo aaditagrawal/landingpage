@@ -4,9 +4,13 @@ import { ClientRouter } from "astro:transitions";
 
 interface Props {
 	title: string;
+	description?: string;
 }
 
-const { title } = Astro.props;
+const siteUrl = "https://aadit.cc";
+const { title, description = "Codex Creative at OpenAI. I like figuring out tech by making things with it." } = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL("/og.png", siteUrl).href;
 
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/' || currentPath === '/index.html';
@@ -25,7 +29,20 @@ const navItems = [
 <html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Aadit Agrawal, Codex Creative at OpenAI and computer science engineer working across AI/ML, software engineering, HPC, and DevOps." />
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content="Aadit Agrawal" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#0c0e0e" media="(prefers-color-scheme: dark)" />
 		<meta name="theme-color" content="#f4f5f6" media="(prefers-color-scheme: light)" />
