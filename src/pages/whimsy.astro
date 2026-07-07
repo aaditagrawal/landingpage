@@ -2,7 +2,7 @@
 import TravelMap from "../components/TravelMap.astro";
 import Layout from "../layouts/Layout.astro";
 import { bookSections } from "../data/books";
-import { musicSections } from "../data/music";
+import { groupTracks, musicSections } from "../data/music";
 ---
 
 <Layout title="Whimsy | Aadit Agrawal">
@@ -18,39 +18,74 @@ import { musicSections } from "../data/music";
 	<section id="books" class="section">
 		<h2 class="section-title">books</h2>
 
-		{bookSections.map((section) => (
-			<div class="book-section">
-				<h3 class="book-section__label font-mono">{section.label}</h3>
-				<ul class="book-list">
-					{section.books.map((book) => (
-						<li class="book-list__item">
-							<span class="book-list__title">{book.title}</span>
-							<span class="book-list__author font-mono">{book.author}</span>
-							{book.note && <span class="book-list__note">{book.note}</span>}
-						</li>
-					))}
-				</ul>
-			</div>
-		))}
+		<div class="book-clusters">
+			{bookSections.map((section) => (
+				<div class:list={["book-cluster", { "book-cluster--wide": section.wide }]}>
+					<h3 class="book-cluster__label font-mono">{section.label}</h3>
+					{section.inline ? (
+						<p class="book-cluster__inline">
+							{section.books.map((book, index) => (
+								<>
+									{index > 0 && <span class="book-cluster__sep" aria-hidden="true">·</span>}
+									<span class="book-cluster__title">{book.title}</span>
+								</>
+							))}
+						</p>
+					) : (
+						<ul class="book-list">
+							{section.books.map((book) => (
+								<li class="book-list__item">
+									<span class="book-list__title">{book.title}</span>
+									{book.author && (
+										<span class="book-list__author font-mono">{book.author}</span>
+									)}
+									{book.note && <span class="book-list__note">{book.note}</span>}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+			))}
+		</div>
 	</section>
 
 	<section id="music" class="section">
 		<h2 class="section-title">music</h2>
 
-		{musicSections.map((section) => (
-			<div class="book-section">
-				<h3 class="book-section__label font-mono">{section.label}</h3>
-				<ul class="book-list">
-					{section.tracks.map((track) => (
-						<li class="book-list__item">
-							<span class="book-list__title">{track.title}</span>
-							<span class="book-list__author font-mono">{track.artist}</span>
-							{track.note && <span class="book-list__note">{track.note}</span>}
-						</li>
-					))}
-				</ul>
-			</div>
-		))}
+		<div class="music-sections">
+			{musicSections.map((section) => (
+				<div class="music-section">
+					<h3 class="music-section__label font-mono">{section.label}</h3>
+					<div class="music-groups">
+						{groupTracks(section.tracks).map((group) =>
+							group.kind === "album" ? (
+								<div class="music-album">
+									<h4 class="music-album__name font-mono">{group.album}</h4>
+									<ul class="music-album__tracks">
+										{group.tracks.map((track) => (
+											<li class="music-track music-track--grouped">
+												<span class="music-track__title">{track.title}</span>
+												<span class="music-track__artist font-mono">{track.artist}</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							) : (
+								<article class="music-track">
+									<h4 class="music-track__title">{group.track.title}</h4>
+									<p class="music-track__meta font-mono">
+										{group.track.artist}
+										{group.track.album && (
+											<span class="music-track__album">{group.track.album}</span>
+										)}
+									</p>
+								</article>
+							),
+						)}
+					</div>
+				</div>
+			))}
+		</div>
 	</section>
 </Layout>
 
@@ -75,23 +110,54 @@ import { musicSections } from "../data/music";
 		color: var(--text-secondary);
 	}
 
-	.book-section + .book-section {
-		margin-top: var(--space-xl);
+	.book-clusters {
+		display: grid;
+		gap: var(--space-lg);
 	}
 
-	.book-section__label {
+	@media (min-width: 640px) {
+		.book-clusters {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			column-gap: var(--space-2xl);
+			row-gap: var(--space-lg);
+		}
+
+		.book-cluster:first-child {
+			grid-column: 1 / -1;
+		}
+
+		.book-cluster--wide {
+			grid-column: 1 / -1;
+		}
+	}
+
+	.book-cluster__label {
 		font-size: 0.6875rem;
 		letter-spacing: 0.04em;
 		color: var(--text-disabled);
-		margin-bottom: var(--space-sm);
+		margin-bottom: var(--space-xs);
+	}
+
+	.book-cluster__inline {
+		font-size: 0.875rem;
+		line-height: 1.55;
+		color: var(--text-secondary);
+	}
+
+	.book-cluster__title {
+		color: var(--text-primary);
+	}
+
+	.book-cluster__sep {
+		margin-inline: 0.35em;
+		color: var(--text-disabled);
 	}
 
 	.book-list {
 		list-style: none;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-sm);
-		max-width: 56ch;
+		gap: var(--space-xs);
 	}
 
 	.book-list__item {
@@ -99,14 +165,8 @@ import { musicSections } from "../data/music";
 		grid-template-columns: minmax(0, 1fr) auto;
 		gap: var(--space-xs) var(--space-lg);
 		align-items: baseline;
-		padding: var(--space-sm) 0;
-		border-bottom: 1px solid var(--border);
-		font-size: 0.9375rem;
+		font-size: 0.875rem;
 		line-height: 1.5;
-	}
-
-	.book-list__item:last-child {
-		border-bottom: none;
 	}
 
 	.book-list__title {
@@ -126,6 +186,91 @@ import { musicSections } from "../data/music";
 		color: var(--text-disabled);
 	}
 
+	.music-sections {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+	}
+
+	.music-section__label {
+		font-size: 0.6875rem;
+		letter-spacing: 0.04em;
+		color: var(--text-disabled);
+		margin-bottom: var(--space-sm);
+	}
+
+	.music-groups {
+		display: grid;
+		gap: var(--space-md);
+	}
+
+	@media (min-width: 640px) {
+		.music-groups {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			column-gap: var(--space-2xl);
+			row-gap: var(--space-md);
+		}
+	}
+
+	.music-track {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xs);
+		min-width: 0;
+	}
+
+	.music-track__title {
+		font-size: 0.875rem;
+		line-height: 1.4;
+		color: var(--text-primary);
+		font-weight: 600;
+	}
+
+	.music-track--grouped .music-track__title {
+		font-weight: 400;
+	}
+
+	.music-track__meta,
+	.music-track__artist {
+		font-size: 0.6875rem;
+		letter-spacing: 0.03em;
+		line-height: 1.45;
+		color: var(--text-secondary);
+	}
+
+	.music-track__album::before {
+		content: "·";
+		margin-inline: 0.35em;
+		color: var(--text-disabled);
+	}
+
+	.music-album {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		min-width: 0;
+	}
+
+	.music-album__name {
+		font-size: 0.6875rem;
+		letter-spacing: 0.04em;
+		color: var(--text-disabled);
+	}
+
+	.music-album__tracks {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.music-track--grouped {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--space-xs) var(--space-md);
+		align-items: baseline;
+	}
+
 	@media (max-width: 540px) {
 		.book-list__item {
 			grid-template-columns: 1fr;
@@ -134,6 +279,11 @@ import { musicSections } from "../data/music";
 
 		.book-list__author {
 			white-space: normal;
+		}
+
+		.music-track--grouped {
+			grid-template-columns: 1fr;
+			gap: var(--space-2xs);
 		}
 	}
 </style>

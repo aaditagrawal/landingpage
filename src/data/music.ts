@@ -1,7 +1,7 @@
 export type Track = {
 	title: string;
 	artist: string;
-	note?: string;
+	album?: string;
 };
 
 export type MusicSection = {
@@ -9,47 +9,83 @@ export type MusicSection = {
 	tracks: Track[];
 };
 
+export type TrackGroup =
+	| { kind: "album"; album: string; tracks: Track[] }
+	| { kind: "track"; track: Track };
+
+/** Group tracks that share an album; singles stay as standalone cards. */
+export function groupTracks(tracks: Track[]): TrackGroup[] {
+	const albumMap = new Map<string, Track[]>();
+
+	for (const track of tracks) {
+		if (!track.album) continue;
+		const list = albumMap.get(track.album) ?? [];
+		list.push(track);
+		albumMap.set(track.album, list);
+	}
+
+	const groups: TrackGroup[] = [];
+	const emittedAlbums = new Set<string>();
+
+	for (const track of tracks) {
+		if (!track.album) {
+			groups.push({ kind: "track", track });
+			continue;
+		}
+
+		if (emittedAlbums.has(track.album)) continue;
+		emittedAlbums.add(track.album);
+
+		const batch = albumMap.get(track.album)!;
+		if (batch.length >= 2) {
+			groups.push({ kind: "album", album: track.album, tracks: batch });
+		} else {
+			groups.push({ kind: "track", track: batch[0] });
+		}
+	}
+
+	return groups;
+}
+
 export const musicSections: MusicSection[] = [
 	{
 		label: "Instrumental",
 		tracks: [
-			{ title: "Pals", artist: "John Murphy", note: "28 Days Later" },
+			{ title: "Pals", artist: "John Murphy", album: "28 Days Later" },
 			{ title: "Experiences", artist: "Ludovico Einaudi" },
-			{ title: "Time", artist: "Hans Zimmer", note: "Inception" },
-			{ title: "God - Senna Theme", artist: "Antonio Pinto", note: "Senna" },
-			{ title: "Can You Hear The Music", artist: "Ludwig Goransson", note: "Oppenheimer" },
-			{ title: "Purpose Is Glorious", artist: "Natalie Holt", note: "Loki" },
-			{ title: "Going The Distance", artist: "Bill Conti", note: "Rocky" },
-			{ title: "Spring 1", artist: "Max Richter", note: "Vivaldi" },
-			{ title: "Who You Really Are", artist: "David Arnold", note: "Sherlock" },
-			{ title: "Darkstar", artist: "Harold Faltermeyer", note: "Top Gun: Maverick" },
+			{ title: "Time", artist: "Hans Zimmer", album: "Inception" },
+			{ title: "God - Senna Theme", artist: "Antonio Pinto", album: "Senna" },
+			{ title: "Can You Hear The Music", artist: "Ludwig Goransson", album: "Oppenheimer" },
+			{ title: "Purpose Is Glorious", artist: "Natalie Holt", album: "Loki" },
+			{ title: "Going The Distance", artist: "Bill Conti", album: "Rocky" },
+			{ title: "Spring 1", artist: "Max Richter", album: "Vivaldi" },
+			{ title: "Who You Really Are", artist: "David Arnold", album: "Sherlock" },
+			{ title: "Darkstar", artist: "Harold Faltermeyer", album: "Top Gun: Maverick" },
 			{
 				title: "Main Titles (You've Been Called Back to Top Gun)",
 				artist: "Harold Faltermeyer",
-				note: "Top Gun: Maverick",
+				album: "Top Gun: Maverick",
 			},
-			{ title: "MIA23 (1:2)", artist: "Charles Leclerc", note: "Accelerando" },
+			{ title: "MIA23 (1:2)", artist: "Charles Leclerc", album: "Accelerando" },
 			{ title: "In the Hall Of The Mountain King", artist: "Edvard Grieg" },
 			{ title: "Mission: Impossible Theme", artist: "Michael Giacchino" },
-			{ title: "Brother Mine", artist: "David Arnold", note: "Sherlock" },
-			{ title: "Special Ops Main Theme", artist: "Advait Nemlekar", note: "Special Ops" },
+			{ title: "Brother Mine", artist: "David Arnold", album: "Sherlock" },
+			{ title: "Special Ops Main Theme", artist: "Advait Nemlekar", album: "Special Ops" },
 		],
 	},
 	{
 		label: "English",
-		tracks: [
-			{ title: "Lonely Together", artist: "Avicii, Rita Ora" },
-		],
+		tracks: [{ title: "Lonely Together", artist: "Avicii, Rita Ora" }],
 	},
 	{
 		label: "Hindi",
 		tracks: [
-			{ title: "Banda (From \"Sam Bahadur\")", artist: "Shankar-Ehsaan-Loy", note: "Sam Bahadur" },
+			{ title: "Banda", artist: "Shankar-Ehsaan-Loy", album: "Sam Bahadur" },
 			{ title: "Bhaag Milkha Bhaag", artist: "Shankar Ehsaan Loy" },
 			{ title: "Zinda", artist: "Shankar Ehsaan Loy" },
-			{ title: "Besabriyaan", artist: "Armaan Malik", note: "M.S.Dhoni - The Untold Story" },
+			{ title: "Besabriyaan", artist: "Armaan Malik", album: "M.S.Dhoni - The Untold Story" },
 			{ title: "Jiyo Re Bahubali", artist: "Daler Mehndi, Ramya Behra, Sanjeev Chimmalgi" },
-			{ title: "Bolo Na", artist: "Shaan", note: "12th Fail" },
+			{ title: "Bolo Na", artist: "Shaan", album: "12th Fail" },
 		],
 	},
 ];
