@@ -2,6 +2,7 @@
 import TravelMap from "../components/TravelMap.astro";
 import Layout from "../layouts/Layout.astro";
 import { bookSections } from "../data/books";
+import { mediaSections } from "../data/movies";
 import { groupTracks, musicSections } from "../data/music";
 ---
 
@@ -9,7 +10,7 @@ import { groupTracks, musicSections } from "../data/music";
 	<section id="whimsy" class="intro">
 		<h2 class="statement">Off-clock things I keep coming back to.</h2>
 		<p class="intro-body">
-			Places I've been, books that stuck, music on repeat, and other bits that don't fit a résumé.
+			Places I've been, books that stuck, scores on repeat, films I admire for the craft, and other bits that don't fit a résumé.
 		</p>
 	</section>
 
@@ -44,6 +45,31 @@ import { groupTracks, musicSections } from "../data/music";
 							))}
 						</ul>
 					)}
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section id="films" class="section">
+		<h2 class="section-title">films &amp; series</h2>
+		<p class="media-disclaimer">
+			Not everything I've watched. Just some films and series I've seen and liked.
+		</p>
+
+		<div class="media-grid">
+			{mediaSections.map((section) => (
+				<div class="media-block">
+					<h3 class="media-block__label font-mono">{section.label}</h3>
+					<ul class="media-list">
+						{section.items.map((item) => (
+							<li class="media-list__item">
+								<span class="media-list__title">{item.title}</span>
+								{item.year && (
+									<span class="media-list__year font-mono">{item.year}</span>
+								)}
+							</li>
+						))}
+					</ul>
 				</div>
 			))}
 		</div>
@@ -190,6 +216,60 @@ import { groupTracks, musicSections } from "../data/music";
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xl);
+	}
+
+	.media-grid {
+		display: grid;
+		gap: var(--space-xl);
+	}
+
+	.media-disclaimer {
+		font-size: 0.9375rem;
+		line-height: 1.65;
+		color: var(--text-secondary);
+		max-width: 52ch;
+		margin-bottom: var(--space-lg);
+	}
+
+	@media (min-width: 640px) {
+		.media-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			column-gap: var(--space-2xl);
+		}
+	}
+
+	.media-block__label {
+		font-size: 0.6875rem;
+		letter-spacing: 0.04em;
+		color: var(--text-disabled);
+		margin-bottom: var(--space-sm);
+	}
+
+	.media-list {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.media-list__item {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--space-xs) var(--space-md);
+		align-items: baseline;
+		font-size: 0.875rem;
+		line-height: 1.45;
+	}
+
+	.media-list__title {
+		color: var(--text-primary);
+	}
+
+	.media-list__year {
+		font-size: 0.6875rem;
+		letter-spacing: 0.03em;
+		color: var(--text-disabled);
+		white-space: nowrap;
 	}
 
 	.music-section__label {
