@@ -13,21 +13,20 @@ import { svgPathProperties } from "svg-path-properties";
 
 const TEXT = "Aadit Agrawal";
 const FONT_SIZE = 100;
-const FONT_URL =
-	"https://github.com/google/fonts/raw/main/ofl/sacramento/Sacramento-Regular.ttf";
+const FONT_URL = "https://github.com/google/fonts/raw/main/ofl/sacramento/Sacramento-Regular.ttf";
 const FONT_CACHE = join(import.meta.dirname, ".cache", "Sacramento-Regular.ttf");
 const OUT_FILE = join(import.meta.dirname, "..", "src", "components", "name-paths.json");
 
 async function loadFont(): Promise<opentype.Font> {
-	if (!existsSync(FONT_CACHE)) {
-		console.log(`Downloading Sacramento from ${FONT_URL}`);
-		const res = await fetch(FONT_URL);
-		if (!res.ok) throw new Error(`Font download failed: ${res.status}`);
-		await mkdir(dirname(FONT_CACHE), { recursive: true });
-		await writeFile(FONT_CACHE, new Uint8Array(await res.arrayBuffer()));
-	}
-	const buf = await readFile(FONT_CACHE);
-	return opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
+  if (!existsSync(FONT_CACHE)) {
+    console.log(`Downloading Sacramento from ${FONT_URL}`);
+    const res = await fetch(FONT_URL);
+    if (!res.ok) throw new Error(`Font download failed: ${res.status}`);
+    await mkdir(dirname(FONT_CACHE), { recursive: true });
+    await writeFile(FONT_CACHE, new Uint8Array(await res.arrayBuffer()));
+  }
+  const buf = await readFile(FONT_CACHE);
+  return opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
 }
 
 const font = await loadFont();
@@ -41,32 +40,32 @@ let maxX = -Infinity;
 let maxY = -Infinity;
 
 paths.forEach((path, i) => {
-	const d = path.toPathData(2);
-	const char = TEXT[i];
-	if (!d) {
-		// Space — no geometry, but keep it as a pacing marker (pen lift).
-		letters.push({ char, d: "", length: 0 });
-		return;
-	}
-	const box = path.getBoundingBox();
-	minX = Math.min(minX, box.x1);
-	minY = Math.min(minY, box.y1);
-	maxX = Math.max(maxX, box.x2);
-	maxY = Math.max(maxY, box.y2);
-	letters.push({
-		char,
-		d,
-		length: Math.round(new svgPathProperties(d).getTotalLength()),
-	});
+  const d = path.toPathData(2);
+  const char = TEXT[i];
+  if (!d) {
+    // Space — no geometry, but keep it as a pacing marker (pen lift).
+    letters.push({ char, d: "", length: 0 });
+    return;
+  }
+  const box = path.getBoundingBox();
+  minX = Math.min(minX, box.x1);
+  minY = Math.min(minY, box.y1);
+  maxX = Math.max(maxX, box.x2);
+  maxY = Math.max(maxY, box.y2);
+  letters.push({
+    char,
+    d,
+    length: Math.round(new svgPathProperties(d).getTotalLength()),
+  });
 });
 
 // A little breathing room so round terminals aren't clipped.
 const PAD = 2;
 const viewBox = [
-	(minX - PAD).toFixed(1),
-	(minY - PAD).toFixed(1),
-	(maxX - minX + PAD * 2).toFixed(1),
-	(maxY - minY + PAD * 2).toFixed(1),
+  (minX - PAD).toFixed(1),
+  (minY - PAD).toFixed(1),
+  (maxX - minX + PAD * 2).toFixed(1),
+  (maxY - minY + PAD * 2).toFixed(1),
 ].join(" ");
 
 await writeFile(OUT_FILE, JSON.stringify({ text: TEXT, viewBox, letters }, null, "\t") + "\n");

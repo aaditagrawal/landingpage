@@ -39,9 +39,9 @@ const pfpLeft = offsetX + TEXT_WIDTH + GAP;
 const pfpTop = Math.round(offsetY + pfpTopRel);
 
 export async function generateOgImage(pfpPath: string): Promise<Buffer> {
-	const pfp = await roundIcon(pfpPath, PFP_SIZE);
+  const pfp = await roundIcon(pfpPath, PFP_SIZE);
 
-	const bgSvg = `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  const bgSvg = `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
 		<defs>
 			<radialGradient id="glow" cx="50%" cy="0%" r="75%">
 				<stop offset="0%" stop-color="#576BFF" stop-opacity="0.14"/>
@@ -60,17 +60,17 @@ export async function generateOgImage(pfpPath: string): Promise<Buffer> {
 		<rect width="100%" height="100%" fill="url(#glow)"/>
 	</svg>`;
 
-	const textSvg = `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  const textSvg = `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
 		<text x="${textX}" y="${nameY}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="${NAME_SIZE}" font-weight="600" fill="#f5f7f4" letter-spacing="-1.2">Aadit Agrawal</text>
 		<text x="${textX}" y="${line2Y}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="${BODY_SIZE}" fill="#e3e6e3">Codex Creative at OpenAI.</text>
 		<text x="${textX}" y="${line3Y}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="${BODY_SIZE}" fill="#949a97">I like figuring out tech by making things with it.</text>
 	</svg>`;
 
-	return sharp(Buffer.from(bgSvg))
-		.composite([
-			{ input: Buffer.from(textSvg), left: 0, top: 0 },
-			{ input: pfp, left: pfpLeft, top: pfpTop },
-		])
-		.png()
-		.toBuffer();
+  return sharp(Buffer.from(bgSvg))
+    .composite([
+      { input: Buffer.from(textSvg), left: 0, top: 0 },
+      { input: pfp, left: pfpLeft, top: pfpTop },
+    ])
+    .png()
+    .toBuffer();
 }

@@ -26,23 +26,23 @@ export default defineConfig({
   // Self-hosted, subset, preloaded fonts with metric-matched local fallbacks
   // (no layout shift while the webfont loads).
   fonts: [
-      {
-        provider: fontProviders.fontsource(),
-        name: "DM Sans",
-        cssVariable: "--font-dm-sans",
-        weights: [400, 600],
-        styles: ["normal"],
-        subsets: ["latin"],
-        fallbacks: ["system-ui", "sans-serif"],
-      },
-      {
-        provider: fontProviders.fontsource(),
-        name: "Geist Mono",
-        cssVariable: "--font-geist-mono",
-        weights: [400, 500],
-        styles: ["normal"],
-        subsets: ["latin"],
-        fallbacks: ["ui-monospace", "monospace"],
-      },
+    {
+      provider: fontProviders.fontsource(),
+      name: "DM Sans",
+      cssVariable: "--font-dm-sans",
+      weights: [400, 600],
+      styles: ["normal"],
+      subsets: ["latin"],
+      fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Geist Mono",
+      cssVariable: "--font-geist-mono",
+      weights: [400, 500],
+      styles: ["normal"],
+      subsets: ["latin"],
+      fallbacks: ["ui-monospace", "monospace"],
+    },
   ],
 });

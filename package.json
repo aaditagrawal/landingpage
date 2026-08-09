@@ -19,20 +19,20 @@
     "build:map-data": "bun run scripts/build-india-states.ts"
   },
   "dependencies": {
-    "astro": "^6.4.8",
+    "astro": "^7.2.0",
     "d3-geo": "^3.1.1",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@turf/simplify": "^7.3.5",
-    "@types/d3-geo": "^3.1.0",
-    "@types/node": "^25.9.4",
+    "@astrojs/check": "^0.9.10",
+    "@turf/simplify": "^7.4.0",
+    "@types/d3-geo": "^3.1.1",
+    "@types/node": "^26.2.0",
     "@types/opentype.js": "^1.3.10",
     "opentype.js": "^2.0.0",
-    "oxfmt": "^0.43.0",
-    "oxlint": "^1.72.0",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
     "svg-path-properties": "^2.0.2",
-    "typescript": "7.0.1-rc"
+    "typescript": "6.0.3"
   }
 }
