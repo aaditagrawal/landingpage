@@ -16,7 +16,8 @@
     "format": "oxfmt --write \"**/*.{js,mjs,cjs,ts,tsx,jsx}\" --ignore-path .gitignore --no-error-on-unmatched-pattern",
     "format:check": "oxfmt --check \"**/*.{js,mjs,cjs,ts,tsx,jsx}\" --ignore-path .gitignore --no-error-on-unmatched-pattern",
     "check": "astro check",
-    "build:map-data": "bun run scripts/build-india-states.ts"
+    "build:map-data": "bun run scripts/build-india-states.ts",
+    "typecheck": "astro check"
   },
   "dependencies": {
     "astro": "^7.2.0",
@@ -34,5 +35,6 @@
     "oxlint": "^1.77.0",
     "svg-path-properties": "^2.0.2",
     "typescript": "6.0.3"
-  }
+  },
+  "packageManager": "bun@1.3.14"
 }
