@@ -4,7 +4,7 @@
  */
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import simplify from "@turf/simplify";
+import { simplify } from "@turf/simplify";
 import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 
 const SOURCE =

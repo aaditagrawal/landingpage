@@ -8,7 +8,7 @@
 import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import opentype from "opentype.js";
+import * as opentype from "opentype.js";
 import { svgPathProperties } from "svg-path-properties";
 
 const TEXT = "Aadit Agrawal";
