@@ -2,6 +2,9 @@ import type { Place } from "../data/places";
 
 type Transform = { k: number; tx: number; ty: number };
 
+/** The world-view and India-inset zoom/pan pair that TravelMap.astro serialises onto the SVG. */
+type MapTransforms = { global: Transform; home: Transform };
+
 const TAP_SLOP_PX = 6;
 const INTRO_MS = 1100;
 
@@ -11,12 +14,15 @@ function easeOutCubic(t: number): number {
   return 1 - (1 - t) ** 3;
 }
 
-function parseTransforms(svg: SVGSVGElement): { global: Transform; home: Transform } {
-  const fallback = { global: { k: 1, tx: 0, ty: 0 }, home: { k: 1, tx: 0, ty: 0 } };
+function parseTransforms(svg: SVGSVGElement): MapTransforms {
+  const fallback: MapTransforms = { global: { k: 1, tx: 0, ty: 0 }, home: { k: 1, tx: 0, ty: 0 } };
   const raw = svg.dataset.mapTransforms;
   if (!raw) return fallback;
   try {
-    return JSON.parse(raw) as { global: Transform; home: Transform };
+    // SAFETY: data-map-transforms is written by TravelMap.astro in the same build from
+    // computeIndiaTransform()'s MapTransform values, so this is our own JSON round-trip rather
+    // than third-party input. A malformed attribute throws and falls back to the identity pair.
+    return JSON.parse(raw) as MapTransforms;
   } catch {
     return fallback;
   }

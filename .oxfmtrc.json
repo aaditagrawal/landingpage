@@ -4,5 +4,22 @@
   "semi": true,
   "singleQuote": false,
   "sortPackageJson": false,
-  "ignorePatterns": ["dist/**", ".astro/**", "public/**", "node_modules/**"]
+  "ignorePatterns": [
+    "dist/**",
+    ".astro/**",
+    "public/**",
+    "node_modules/**",
+    ".agent/**",
+    ".agents/**",
+    ".claude/**",
+    ".codex/**",
+    ".continue/**",
+    ".cursor/**",
+    ".gemini/**",
+    ".opencode/**",
+    ".pi/**",
+    ".roo/**",
+    ".windsurf/**",
+    "tools/oxlint/anti-slop/**"
+  ]
 }
