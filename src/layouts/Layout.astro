@@ -698,16 +698,16 @@ const navItems = [
 				root.setAttribute('data-theme', next);
 			});
 
-			// Resume dialog: any [data-resume-open] opens the chooser; falls back to the PDF link.
+			// Resume dialog: any [data-resume-open] opens the chooser. Where <dialog> is unsupported
+			// the constructor is absent, so we wire nothing and the triggers stay plain PDF links.
+			const dialogCtor = window.HTMLDialogElement;
 			const dialog = document.getElementById('resume-dialog');
-			if (!dialog) return;
+			if (!dialogCtor || !(dialog instanceof dialogCtor)) return;
 
 			document.querySelectorAll('[data-resume-open]').forEach((trigger) => {
 				trigger.addEventListener('click', (event) => {
-					if (typeof dialog.showModal === 'function') {
-						event.preventDefault();
-						dialog.showModal();
-					}
+					event.preventDefault();
+					dialog.showModal();
 				});
 			});
 

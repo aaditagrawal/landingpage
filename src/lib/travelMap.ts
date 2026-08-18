@@ -1,20 +1,21 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { geoBounds, geoEqualEarth, geoGraticule, geoPath } from "d3-geo";
-import type { Feature, FeatureCollection, MultiPoint, MultiPolygon, Polygon } from "geojson";
+import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Place } from "../data/places";
 
 export const WORLD_VB = { w: 960, h: 520 };
 const IN_ID = "356";
 const FIT_PAD = 20;
 
+// SAFETY: src/data/world.json is committed to this repo, not fetched at runtime. It is a
+// Natural Earth countries export whose features are all Polygon/MultiPolygon, and `astro build`
+// fails loudly here if that ever stops holding.
 const world = JSON.parse(
   readFileSync(resolve(process.cwd(), "src/data/world.json"), "utf8"),
 ) as FeatureCollection<Polygon | MultiPolygon>;
 
-const indiaFeature = world.features.find((f) => String(f.id) === IN_ID) as
-  | Feature<Polygon | MultiPolygon>
-  | undefined;
+const indiaFeature = world.features.find((f) => String(f.id) === IN_ID);
 
 function escapeAttr(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -39,28 +40,23 @@ function expandIndiaBounds(
   ];
 }
 
-function indiaFitTarget(): MultiPoint {
+/** The four lon/lat corners the India inset must frame. */
+function indiaFitTarget(): Array<[number, number]> {
   if (!indiaFeature) {
-    return {
-      type: "MultiPoint",
-      coordinates: [
-        [68, 6],
-        [98, 6],
-        [98, 37],
-        [68, 37],
-      ],
-    };
+    return [
+      [68, 6],
+      [98, 6],
+      [98, 37],
+      [68, 37],
+    ];
   }
   const [[x0, y0], [x1, y1]] = expandIndiaBounds(geoBounds(indiaFeature));
-  return {
-    type: "MultiPoint",
-    coordinates: [
-      [x0, y0],
-      [x1, y0],
-      [x1, y1],
-      [x0, y1],
-    ],
-  };
+  return [
+    [x0, y0],
+    [x1, y0],
+    [x1, y1],
+    [x0, y1],
+  ];
 }
 
 function markerElements(markers: Array<Place & { x: number; y: number }>): string {
@@ -94,14 +90,14 @@ export type MapTransform = { k: number; tx: number; ty: number };
 
 /** Zoom/pan that frames India within the world-projected map. */
 export function computeIndiaTransform(projection: ReturnType<typeof geoEqualEarth>): MapTransform {
-  const corners = indiaFitTarget().coordinates;
+  const corners = indiaFitTarget();
   let px0 = Infinity;
   let py0 = Infinity;
   let px1 = -Infinity;
   let py1 = -Infinity;
 
   for (const coord of corners) {
-    const pt = projection(coord as [number, number]);
+    const pt = projection(coord);
     if (!pt) continue;
     px0 = Math.min(px0, pt[0]);
     py0 = Math.min(py0, pt[1]);

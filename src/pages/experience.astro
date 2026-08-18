@@ -76,11 +76,9 @@ async function fetchWithTimeout(url: string): Promise<Response> {
     }
 }
 
-type ActivityCache = { githubSvg: string; giteaSvg: string; at: number };
 const ACTIVITY_TTL_MS = 30 * 60 * 1000;
-const cacheHost = globalThis as unknown as { __activityCharts?: ActivityCache };
 
-let activity = cacheHost.__activityCharts;
+let activity = globalThis.__activityCharts;
 if (!activity || Date.now() - activity.at > ACTIVITY_TTL_MS) {
 const [githubSvg, giteaSvg] = await Promise.all([
     (async () => {
@@ -101,6 +99,10 @@ const [githubSvg, giteaSvg] = await Promise.all([
         try {
             const res = await fetchWithTimeout("https://git.aadit.cc/api/v1/users/aadit/heatmap");
             if (!res.ok) return "";
+            // SAFETY: the Gitea heatmap endpoint documents this response as an array of
+            // {timestamp, contributions} rows. Nothing downstream trusts the values blindly —
+            // buildGiteaSvg only feeds them to Date/arithmetic and defaults missing days to 0 —
+            // and a shape change simply renders an empty chart rather than corrupting the page.
             const data = (await res.json()) as HeatmapPoint[];
             return buildGiteaSvg(data);
         } catch {
@@ -110,7 +112,7 @@ const [githubSvg, giteaSvg] = await Promise.all([
     })(),
 ]);
     activity = { githubSvg, giteaSvg, at: Date.now() };
-    cacheHost.__activityCharts = activity;
+    globalThis.__activityCharts = activity;
 }
 const { githubSvg, giteaSvg } = activity;
 ---
