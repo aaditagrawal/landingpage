@@ -1,11 +1,20 @@
 ---
-import { Picture } from "astro:assets";
+import { getImage, Picture } from "astro:assets";
 import HelloName from "../components/HelloName.astro";
 import Layout from "../layouts/Layout.astro";
 import pfp from "../assets/pfp.png";
+
+const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
 ---
 
 <Layout title="Aadit Agrawal">
+	<link
+		slot="head"
+		rel="preload"
+		as="image"
+		href={avatarPreload.src}
+		type="image/avif"
+	/>
     <section id="about" class="intro">
         <div class="identity">
             <Picture

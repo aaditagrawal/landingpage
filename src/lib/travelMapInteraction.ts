@@ -1,14 +1,25 @@
-import type { Place } from "../data/places";
-
 type Transform = { k: number; tx: number; ty: number };
 
-/** The world-view and India-inset zoom/pan pair that TravelMap.astro serialises onto the SVG. */
+/** The world-view and India-inset zoom/pan pair serialised onto the prebuilt SVG. */
 type MapTransforms = { global: Transform; home: Transform };
 
 const TAP_SLOP_PX = 6;
 const INTRO_MS = 1100;
 
 type Point = { x: number; y: number };
+
+type PlaceMeta = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  note?: string;
+  home?: boolean;
+};
+
+type MapCleanup = () => void;
+
+const cleanups = new WeakMap<HTMLElement, MapCleanup>();
 
 function easeOutCubic(t: number): number {
   return 1 - (1 - t) ** 3;
@@ -19,13 +30,27 @@ function parseTransforms(svg: SVGSVGElement): MapTransforms {
   const raw = svg.dataset.mapTransforms;
   if (!raw) return fallback;
   try {
-    // SAFETY: data-map-transforms is written by TravelMap.astro in the same build from
-    // computeIndiaTransform()'s MapTransform values, so this is our own JSON round-trip rather
-    // than third-party input. A malformed attribute throws and falls back to the identity pair.
+    // SAFETY: data-map-transforms is written by buildWorldMapSvg() in the same build (via
+    // scripts/build-travel-map.ts) from computeIndiaTransform()'s MapTransform values, so this is
+    // our own JSON round-trip rather than third-party input. A malformed attribute throws and
+    // falls back to the identity pair below.
     return JSON.parse(raw) as MapTransforms;
   } catch {
     return fallback;
   }
+}
+
+function placeFromMarker(marker: SVGGElement): PlaceMeta | null {
+  const { id, name, lat, lng, note, home } = marker.dataset;
+  if (!id || !name || !lat || !lng) return null;
+  return {
+    id,
+    name,
+    lat: Number(lat),
+    lng: Number(lng),
+    note: note || undefined,
+    home: home === "true",
+  };
 }
 
 function animateTransform(
@@ -79,15 +104,17 @@ function wheelDeltaPixels(event: WheelEvent): number {
   return dy;
 }
 
-export function initTravelMaps(places: Place[]): void {
+export function initTravelMaps(): void {
   document.querySelectorAll<HTMLElement>("[data-travel-map]").forEach((root) => {
     if (root.dataset.wired === "true") return;
+    const svg = root.querySelector<SVGSVGElement>(".travel-map__chart svg");
+    if (!svg) return;
     root.dataset.wired = "true";
-    wireTravelMap(root, places);
+    cleanups.set(root, wireTravelMap(root));
   });
 }
 
-function wireTravelMap(root: HTMLElement, places: Place[]): void {
+function wireTravelMap(root: HTMLElement): MapCleanup {
   const svg = root.querySelector<SVGSVGElement>(".travel-map__chart svg");
   const layer = svg?.querySelector<SVGGElement>(".travel-zoom-layer");
   const chart = root.querySelector<HTMLElement>(".travel-map__chart");
@@ -97,7 +124,9 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
   const coordsEl = document.querySelector<HTMLElement>("[data-place-coords]");
   const noteEl = document.querySelector<HTMLElement>("[data-place-note]");
 
-  if (!svg || !layer || !chart || !card || !eyebrow || !nameEl || !coordsEl || !noteEl) return;
+  if (!svg || !layer || !chart || !card || !eyebrow || !nameEl || !coordsEl || !noteEl) {
+    return () => {};
+  }
 
   if (card.parentElement !== document.body) document.body.appendChild(card);
 
@@ -107,11 +136,14 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
   const minScale = homeTransform.k;
   const maxScale = homeTransform.k * 24;
 
-  const placeById = new Map(places.map((place) => [place.id, place]));
   let transform: Transform = { ...globalTransform };
   let activeMarker: SVGGElement | null = null;
   let isDragging = false;
   let isIntro = true;
+
+  const markerCircles = [
+    ...root.querySelectorAll<SVGCircleElement>(".travel-marker circle[data-base-r]"),
+  ];
 
   const pointers = new Map<number, Point>();
   let pinch: {
@@ -131,6 +163,7 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
   let wheelFrame = 0;
   let wheelDelta = 0;
   let wheelPoint: Point | null = null;
+  let scrollRaf = 0;
 
   const clampScale = (k: number) => Math.min(maxScale, Math.max(minScale, k));
 
@@ -151,12 +184,10 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
       `translate(${transform.tx} ${transform.ty}) scale(${transform.k})`,
     );
     const markerScale = Math.min(1, homeTransform.k / transform.k);
-    root
-      .querySelectorAll<SVGCircleElement>(".travel-marker circle[data-base-r]")
-      .forEach((circle) => {
-        const baseR = Number(circle.dataset.baseR);
-        if (Number.isFinite(baseR)) circle.setAttribute("r", String(baseR * markerScale));
-      });
+    for (const circle of markerCircles) {
+      const baseR = Number(circle.dataset.baseR);
+      if (Number.isFinite(baseR)) circle.setAttribute("r", String(baseR * markerScale));
+    }
     if (activeMarker) positionCard(activeMarker);
   };
 
@@ -165,9 +196,11 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
     applyTransform();
   };
 
+  const skipIntro = sessionStorage.getItem("travel-map-seen") === "1";
+
   const runIntro = () => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
+    if (reduced || skipIntro) {
       setTransform({ ...homeTransform });
       isIntro = false;
       return;
@@ -183,6 +216,7 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
         () => {
           setTransform({ ...homeTransform });
           isIntro = false;
+          sessionStorage.setItem("travel-map-seen", "1");
         },
       );
     }, 120);
@@ -214,9 +248,9 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
     card.style.top = `${top}px`;
   };
 
-  const showCard = (id: string, marker: SVGGElement) => {
+  const showCard = (marker: SVGGElement) => {
     if (isDragging) return;
-    const place = placeById.get(id);
+    const place = placeFromMarker(marker);
     if (!place) return;
 
     setActiveMarker(marker);
@@ -252,8 +286,7 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
   };
 
   const showMarkerCard = (marker: SVGGElement) => {
-    const id = marker.dataset.id;
-    if (id) showCard(id, marker);
+    showCard(marker);
   };
 
   const beginPinch = () => {
@@ -297,19 +330,15 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
     zoomAt(point, delta);
   };
 
-  svg.addEventListener(
-    "wheel",
-    (event) => {
-      if (isIntro) return;
-      event.preventDefault();
-      wheelDelta += wheelDeltaPixels(event);
-      wheelPoint = { x: event.clientX, y: event.clientY };
-      if (!wheelFrame) wheelFrame = requestAnimationFrame(flushWheel);
-    },
-    { passive: false },
-  );
+  const onWheel = (event: WheelEvent) => {
+    if (isIntro) return;
+    event.preventDefault();
+    wheelDelta += wheelDeltaPixels(event);
+    wheelPoint = { x: event.clientX, y: event.clientY };
+    if (!wheelFrame) wheelFrame = requestAnimationFrame(flushWheel);
+  };
 
-  svg.addEventListener("pointerdown", (event) => {
+  const onPointerDown = (event: PointerEvent) => {
     if (isIntro) return;
     if (event.target instanceof Element && event.target.closest(".travel-marker")) return;
     if (event.button !== 0 && event.pointerType === "mouse") return;
@@ -330,9 +359,9 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
     } else if (pointers.size === 2) {
       beginPinch();
     }
-  });
+  };
 
-  svg.addEventListener("pointermove", (event) => {
+  const onPointerMove = (event: PointerEvent) => {
     if (!pointers.has(event.pointerId)) return;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     const rect = svg.getBoundingClientRect();
@@ -373,7 +402,7 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
         ty: pan.startTy + dy * scaleY,
       });
     }
-  });
+  };
 
   const endPointer = (event: PointerEvent) => {
     pointers.delete(event.pointerId);
@@ -391,75 +420,107 @@ function wireTravelMap(root: HTMLElement, places: Place[]): void {
     }
   };
 
-  svg.addEventListener("pointerup", endPointer);
-  svg.addEventListener("pointercancel", endPointer);
-
-  svg.addEventListener("dblclick", (event) => {
+  const onDblClick = (event: MouseEvent) => {
     event.preventDefault();
     setTransform({ ...homeTransform });
     hideCard();
-  });
+  };
 
-  chart.addEventListener("mouseover", (event) => {
+  const onMouseOver = (event: Event) => {
     if (isIntro || isDragging) return;
     const marker = markerFromEvent(event);
     if (marker) showMarkerCard(marker);
-  });
+  };
 
-  chart.addEventListener("mouseout", (event) => {
+  const onMouseOut = (event: MouseEvent) => {
     const marker = markerFromEvent(event);
     if (!marker) return;
     const related = event.relatedTarget;
     if (related instanceof Element && marker.contains(related)) return;
     if (activeMarker === marker) hideCard();
-  });
+  };
 
-  chart.addEventListener("click", (event) => {
+  const onClick = (event: Event) => {
     if (isIntro || isDragging) return;
     const marker = markerFromEvent(event);
     if (!marker) return;
     showMarkerCard(marker);
-  });
+  };
 
-  chart.addEventListener("focusin", (event) => {
+  const onFocusIn = (event: Event) => {
     if (isIntro) return;
     const marker = markerFromEvent(event);
     if (marker) showMarkerCard(marker);
-  });
+  };
 
-  chart.addEventListener("focusout", (event) => {
+  const onFocusOut = (event: FocusEvent) => {
     const marker = markerFromEvent(event);
     if (!marker) return;
     const related = event.relatedTarget;
     if (related instanceof Element && marker.contains(related)) return;
     if (activeMarker === marker) hideCard();
-  });
+  };
 
-  chart.addEventListener("keydown", (event) => {
+  const onKeyDown = (event: KeyboardEvent) => {
     if (event.key !== "Enter" && event.key !== " ") return;
     const marker = markerFromEvent(event);
     if (!marker) return;
     event.preventDefault();
     showMarkerCard(marker);
-  });
+  };
 
-  window.addEventListener(
-    "scroll",
-    () => {
+  const onScroll = () => {
+    if (!activeMarker) return;
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0;
       if (activeMarker) positionCard(activeMarker);
-    },
-    { passive: true },
-  );
+    });
+  };
+
+  svg.addEventListener("wheel", onWheel, { passive: false });
+  svg.addEventListener("pointerdown", onPointerDown);
+  svg.addEventListener("pointermove", onPointerMove);
+  svg.addEventListener("pointerup", endPointer);
+  svg.addEventListener("pointercancel", endPointer);
+  svg.addEventListener("dblclick", onDblClick);
+  chart.addEventListener("mouseover", onMouseOver);
+  chart.addEventListener("mouseout", onMouseOut);
+  chart.addEventListener("click", onClick);
+  chart.addEventListener("focusin", onFocusIn);
+  chart.addEventListener("focusout", onFocusOut);
+  chart.addEventListener("keydown", onKeyDown);
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   applyTransform();
   runIntro();
+
+  return () => {
+    svg.removeEventListener("wheel", onWheel);
+    svg.removeEventListener("pointerdown", onPointerDown);
+    svg.removeEventListener("pointermove", onPointerMove);
+    svg.removeEventListener("pointerup", endPointer);
+    svg.removeEventListener("pointercancel", endPointer);
+    svg.removeEventListener("dblclick", onDblClick);
+    chart.removeEventListener("mouseover", onMouseOver);
+    chart.removeEventListener("mouseout", onMouseOut);
+    chart.removeEventListener("click", onClick);
+    chart.removeEventListener("focusin", onFocusIn);
+    chart.removeEventListener("focusout", onFocusOut);
+    chart.removeEventListener("keydown", onKeyDown);
+    window.removeEventListener("scroll", onScroll);
+    hideCard();
+  };
 }
 
 document.addEventListener("astro:before-swap", () => {
   const card = document.querySelector("[data-place-card]");
   card?.classList.remove("is-visible");
   card?.setAttribute("aria-hidden", "true");
+
   document.querySelectorAll<HTMLElement>("[data-travel-map]").forEach((root) => {
+    cleanups.get(root)?.();
+    cleanups.delete(root);
     delete root.dataset.wired;
   });
 });

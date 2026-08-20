@@ -12,16 +12,9 @@ export default defineConfig({
   },
   compressHTML: true,
   prefetch: {
-    // Site is 6 pages — prefetch every internal link at page load so subsequent
-    // navigations come from cache. Uses <link rel="prefetch"> at low priority,
-    // so it doesn't block fonts or critical CSS on first paint.
-    prefetchAll: true,
-    defaultStrategy: "load",
-  },
-  experimental: {
-    // Upgrade prefetch to full prerender via the Speculation Rules API where
-    // supported (Chromium): the next page is fully rendered before the click.
-    clientPrerender: true,
+    // Prefetch on hover keeps first load lean while still making nav feel instant.
+    prefetchAll: false,
+    defaultStrategy: "hover",
   },
   // Self-hosted, subset, preloaded fonts with metric-matched local fallbacks
   // (no layout shift while the webfont loads).

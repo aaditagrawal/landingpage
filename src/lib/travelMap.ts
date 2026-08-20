@@ -8,12 +8,29 @@ export const WORLD_VB = { w: 960, h: 520 };
 const IN_ID = "356";
 const FIT_PAD = 20;
 
-// SAFETY: src/data/world.json is committed to this repo, not fetched at runtime. It is a
-// Natural Earth countries export whose features are all Polygon/MultiPolygon, and `astro build`
-// fails loudly here if that ever stops holding.
+// SAFETY: src/data/world.json is committed to this repo and read from disk at module load, never
+// fetched at runtime. It is a Natural Earth countries export whose features are all
+// Polygon/MultiPolygon; a missing or malformed file throws right here during the `prebuild`
+// map generation rather than shipping a broken map.
 const world = JSON.parse(
   readFileSync(resolve(process.cwd(), "src/data/world.json"), "utf8"),
 ) as FeatureCollection<Polygon | MultiPolygon>;
+
+/** Countries used when no simplified collection is passed (build script). */
+export function regionFilteredWorld(
+  source: FeatureCollection<Polygon | MultiPolygon> = world,
+): FeatureCollection<Polygon | MultiPolygon> {
+  const REGION = { minLat: 0, maxLat: 42, minLng: 55, maxLng: 105 };
+  return {
+    type: "FeatureCollection",
+    features: source.features.filter((feature) => {
+      const [[x0, y0], [x1, y1]] = geoBounds(feature);
+      return (
+        x1 >= REGION.minLng && x0 <= REGION.maxLng && y1 >= REGION.minLat && y0 <= REGION.maxLat
+      );
+    }),
+  };
+}
 
 const indiaFeature = world.features.find((f) => String(f.id) === IN_ID);
 
@@ -64,11 +81,14 @@ function markerElements(markers: Array<Place & { x: number; y: number }>): strin
     .map((place) => {
       const label = escapeAttr(place.name);
       const id = escapeAttr(place.id);
+      const note = place.note ? escapeAttr(place.note) : "";
       const x = place.x.toFixed(2);
       const y = place.y.toFixed(2);
       const r = place.home ? 3.25 : 2.5;
       const homeClass = place.home ? " travel-dot--home" : "";
-      return `<g class="travel-marker" data-id="${id}" data-name="${label}" tabindex="0" role="button" aria-label="${label}"><circle class="travel-ring" cx="${x}" cy="${y}" r="6" data-base-r="6"/><circle class="travel-hit" cx="${x}" cy="${y}" r="8" data-base-r="8"/><circle class="travel-dot${homeClass}" cx="${x}" cy="${y}" r="${r}" data-base-r="${r}"/></g>`;
+      const homeAttr = place.home ? ' data-home="true"' : "";
+      const noteAttr = note ? ` data-note="${note}"` : "";
+      return `<g class="travel-marker" data-id="${id}" data-name="${label}" data-lat="${place.lat}" data-lng="${place.lng}"${homeAttr}${noteAttr} tabindex="0" role="button" aria-label="${label}"><circle class="travel-ring" cx="${x}" cy="${y}" r="6" data-base-r="6"/><circle class="travel-hit" cx="${x}" cy="${y}" r="8" data-base-r="8"/><circle class="travel-dot${homeClass}" cx="${x}" cy="${y}" r="${r}" data-base-r="${r}"/></g>`;
     })
     .join("");
 }
@@ -118,13 +138,16 @@ export function computeIndiaTransform(projection: ReturnType<typeof geoEqualEart
   };
 }
 
-export function buildWorldMapSvg(places: Place[]): string {
+export function buildWorldMapSvg(
+  places: Place[],
+  land: FeatureCollection<Polygon | MultiPolygon> = world,
+): string {
   const projection = geoEqualEarth().fitSize([WORLD_VB.w, WORLD_VB.h], world);
   const homeTransform = computeIndiaTransform(projection);
   const globalTransform: MapTransform = { k: 1, tx: 0, ty: 0 };
   const path = geoPath(projection);
   const graticule = path(geoGraticule().step([15, 15])()) ?? "";
-  const countries = world.features
+  const countries = land.features
     .map((feature) => {
       const d = path(feature);
       if (!d) return "";

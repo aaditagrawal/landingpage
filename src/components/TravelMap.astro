@@ -1,8 +1,4 @@
 ---
-import { places } from "../data/places";
-import { buildWorldMapSvg } from "../lib/travelMap";
-
-const worldSvg = buildWorldMapSvg(places);
 ---
 
 <section id="places" class="section section--places">
@@ -10,7 +6,9 @@ const worldSvg = buildWorldMapSvg(places);
 
 	<div class="travel-map" data-travel-map>
 		<div class="travel-map__panel">
-			<div class="travel-map__chart" set:html={worldSvg} />
+			<div class="travel-map__chart" data-travel-chart aria-busy="true" aria-label="Loading map">
+				<div class="travel-map__skeleton" aria-hidden="true"></div>
+			</div>
 		</div>
 		<p class="travel-map__hint font-mono">scroll to zoom · drag to pan · double-click to reset</p>
 	</div>
@@ -41,6 +39,32 @@ const worldSvg = buildWorldMapSvg(places);
 		font-size: 0.6875rem;
 		letter-spacing: 0.04em;
 		color: var(--text-disabled);
+	}
+
+	.travel-map__chart {
+		min-height: 280px;
+	}
+
+	.travel-map__skeleton {
+		width: 100%;
+		aspect-ratio: 960 / 520;
+		background: linear-gradient(
+			90deg,
+			var(--surface) 0%,
+			var(--surface-raised) 50%,
+			var(--surface) 100%
+		);
+		background-size: 200% 100%;
+		animation: map-shimmer 1.4s ease-in-out infinite;
+	}
+
+	@keyframes map-shimmer {
+		from {
+			background-position: 200% 0;
+		}
+		to {
+			background-position: -200% 0;
+		}
 	}
 
 	.travel-map__chart :global(svg) {
@@ -186,6 +210,10 @@ const worldSvg = buildWorldMapSvg(places);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.travel-map__skeleton {
+			animation: none;
+		}
+
 		.travel-place-card {
 			transition: none;
 		}
@@ -193,10 +221,58 @@ const worldSvg = buildWorldMapSvg(places);
 </style>
 
 <script>
-	import { places } from "../data/places";
 	import { initTravelMaps } from "../lib/travelMapInteraction";
 
-	const boot = () => initTravelMaps(places);
+	const MAP_URL = "/travel-map.svg";
+	let mapPromise: Promise<string> | null = null;
+
+	const fetchMap = () => {
+		if (!mapPromise) {
+			mapPromise = fetch(MAP_URL, { priority: "low" }).then((res) => {
+				if (!res.ok) throw new Error(`map fetch failed (${res.status})`);
+				return res.text();
+			});
+		}
+		return mapPromise;
+	};
+
+	const loadMap = async (chart: HTMLElement) => {
+		if (chart.querySelector("svg")) return;
+
+		try {
+			const svg = await fetchMap();
+			chart.innerHTML = svg;
+			chart.removeAttribute("aria-busy");
+			chart.removeAttribute("aria-label");
+			initTravelMaps();
+		} catch {
+			chart.innerHTML = '<p class="travel-map__error">Map failed to load.</p>';
+			chart.removeAttribute("aria-busy");
+		}
+	};
+
+	const boot = () => {
+		document.querySelectorAll<HTMLElement>("[data-travel-chart]").forEach((chart) => {
+			if (chart.querySelector("svg")) return;
+
+			const root = chart.closest("[data-travel-map]");
+			if (!root) return;
+
+			if ("IntersectionObserver" in window) {
+				const observer = new IntersectionObserver(
+					(entries) => {
+						if (!entries.some((entry) => entry.isIntersecting)) return;
+						observer.disconnect();
+						void loadMap(chart);
+					},
+					{ rootMargin: "200px" },
+				);
+				observer.observe(root);
+			} else {
+				void loadMap(chart);
+			}
+		});
+	};
 
 	boot();
 	document.addEventListener("astro:page-load", boot);
