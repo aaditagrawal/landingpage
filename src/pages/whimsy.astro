@@ -6,17 +6,17 @@ import { mediaSections } from "../data/movies";
 import { groupTracks, musicSections } from "../data/music";
 ---
 
-<Layout title="Whimsy | Aadit Agrawal">
-	<section id="whimsy" class="intro">
+<Layout title="Whimsy | Aadit Agrawal" wide>
+	<div class="whimsy-layout">
+		<div class="whimsy-content">
+			<section id="whimsy" class="intro">
 		<h2 class="statement">Off-clock things I keep coming back to.</h2>
 		<p class="intro-body">
 			Places I've been, books that stuck, scores on repeat, films I admire for the craft, and other bits that don't fit a résumé.
 		</p>
-	</section>
+			</section>
 
-	<TravelMap />
-
-	<section id="books" class="section">
+			<section id="books" class="section">
 		<h2 class="section-title">books</h2>
 
 		<div class="book-clusters">
@@ -48,9 +48,9 @@ import { groupTracks, musicSections } from "../data/music";
 				</div>
 			))}
 		</div>
-	</section>
+			</section>
 
-	<section id="films" class="section">
+			<section id="films" class="section">
 		<h2 class="section-title">films &amp; series</h2>
 		<p class="media-disclaimer">
 			Not everything I've watched. Just some films and series I've seen and liked.
@@ -73,9 +73,9 @@ import { groupTracks, musicSections } from "../data/music";
 				</div>
 			))}
 		</div>
-	</section>
+			</section>
 
-	<section id="music" class="section">
+			<section id="music" class="section">
 		<h2 class="section-title">music</h2>
 
 		<div class="music-sections">
@@ -112,10 +112,76 @@ import { groupTracks, musicSections } from "../data/music";
 				</div>
 			))}
 		</div>
-	</section>
+			</section>
+		</div>
+
+		<aside class="whimsy-planet" aria-label="Places I have visited">
+			<TravelMap />
+		</aside>
+	</div>
 </Layout>
 
 <style>
+	.whimsy-layout {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2.5rem, 5vw, 5.5rem);
+		align-items: start;
+	}
+
+	:global(.masthead) {
+		position: relative;
+		z-index: 30;
+	}
+
+	.whimsy-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3xl);
+		min-width: 0;
+		max-width: 42rem;
+	}
+
+	.whimsy-planet {
+		position: sticky;
+		top: clamp(1.75rem, 4vh, 3.5rem);
+		display: grid;
+		align-items: center;
+		min-width: 0;
+		height: calc(100dvh - 2 * clamp(1.75rem, 4vh, 3.5rem));
+		margin-top: calc(-1 * (clamp(3.5rem, 9vh, 5.5rem) + 1.5rem));
+	}
+
+	@media (min-width: 961px) {
+		.whimsy-planet :global(.section--places) {
+			position: relative;
+			display: grid;
+			place-items: center;
+			width: 100%;
+			height: 100%;
+			content-visibility: visible;
+			contain-intrinsic-size: none;
+		}
+
+		.whimsy-planet :global(.section-title) {
+			position: absolute;
+			top: calc(clamp(3.5rem, 9vh, 5.5rem) + 1.5rem);
+			left: 0;
+			margin: 0;
+		}
+
+		.whimsy-planet :global(.travel-globe) {
+			width: 100%;
+		}
+
+		.whimsy-planet :global(.travel-globe__hint) {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			margin: 0;
+		}
+	}
+
 	.intro {
 		display: flex;
 		flex-direction: column;
@@ -364,6 +430,19 @@ import { groupTracks, musicSections } from "../data/music";
 		.music-track--grouped {
 			grid-template-columns: 1fr;
 			gap: var(--space-2xs);
+		}
+	}
+
+	@media (max-width: 960px) {
+		.whimsy-layout {
+			grid-template-columns: 1fr;
+			gap: var(--space-3xl);
+		}
+
+		.whimsy-planet {
+			position: static;
+			height: auto;
+			margin-top: 0;
 		}
 	}
 </style>

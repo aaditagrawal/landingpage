@@ -1,53 +1,210 @@
 ---
+import { places } from "../data/places";
 ---
 
 <section id="places" class="section section--places">
 	<h2 class="section-title">places</h2>
 
-	<div class="travel-map" data-travel-map>
-		<div class="travel-map__panel">
-			<div class="travel-map__chart" data-travel-chart aria-busy="true" aria-label="Loading map">
-				<div class="travel-map__skeleton" aria-hidden="true"></div>
+	<div class="travel-globe" data-travel-globe>
+		<div class="travel-globe__panel">
+			<div class="travel-globe__stage">
+				<div class="travel-globe__chart" data-globe-chart aria-busy="true" aria-label="Loading globe">
+					<div class="travel-globe__skeleton" aria-hidden="true"></div>
+				</div>
+			</div>
+			<div class="travel-globe__controls font-mono" aria-label="Globe controls">
+				<button type="button" data-globe-zoom-out aria-label="Zoom out">−</button>
+				<button type="button" data-globe-zoom-in aria-label="Zoom in">+</button>
+				<button
+					type="button"
+					class="travel-globe__reset"
+					data-globe-reset
+					aria-label="Reset globe size and return to India"
+				>reset</button>
 			</div>
 		</div>
-		<p class="travel-map__hint font-mono">scroll to zoom · drag to pan · double-click to reset</p>
+		<p id="travel-globe-hint" class="travel-globe__hint font-mono">
+			drag to rotate · scroll or use +/− to zoom
+		</p>
+		<ul class="travel-globe__list">
+			{places.map((place) => <li>{place.name}</li>)}
+		</ul>
 	</div>
 </section>
 
-<div class="travel-place-card" data-place-card aria-hidden="true">
-	<p class="travel-place-card__eyebrow font-mono" data-place-eyebrow>place</p>
-	<h3 class="travel-place-card__name" data-place-name></h3>
-	<p class="travel-place-card__coords font-mono" data-place-coords></p>
-	<p class="travel-place-card__note" data-place-note hidden></p>
-</div>
-
 <style>
 	.section--places {
-		content-visibility: auto;
-		contain-intrinsic-size: 0 420px;
+		position: relative;
 	}
 
-	.travel-map__panel {
-		border: 1px solid var(--border-visible);
-		border-radius: var(--radius-md);
-		background: var(--surface);
-		overflow: hidden;
+	.travel-globe__panel {
+		position: relative;
+		display: flex;
+		justify-content: center;
 	}
 
-	.travel-map__hint {
-		margin-top: var(--space-sm);
-		font-size: 0.6875rem;
-		letter-spacing: 0.04em;
-		color: var(--text-disabled);
+	.travel-globe__stage {
+		position: relative;
+		width: min(38rem, 100%);
+		transform-origin: right center;
+		will-change: transform;
+		transition: transform 420ms var(--ease);
 	}
 
-	.travel-map__chart {
-		min-height: 280px;
+	.travel-globe.is-zoomed {
+		position: relative;
+		z-index: 20;
 	}
 
-	.travel-map__skeleton {
+	.travel-globe__chart {
+		position: relative;
 		width: 100%;
-		aspect-ratio: 960 / 520;
+		aspect-ratio: 1;
+	}
+
+	.travel-globe__chart :global(canvas) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		cursor: grab;
+		/* Horizontal drags rotate the globe; leave vertical for page scroll. */
+		touch-action: pan-y;
+	}
+
+	.travel-globe__chart :global(canvas:active) {
+		cursor: grabbing;
+	}
+
+	.travel-globe__chart :global(canvas.has-marker-hover) {
+		cursor: pointer;
+	}
+
+	.travel-globe__chart :global(canvas:focus-visible) {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+		border-radius: 50%;
+	}
+
+	.travel-globe__controls {
+		position: absolute;
+		z-index: 2;
+		right: var(--space-sm);
+		bottom: var(--space-sm);
+		display: flex;
+		gap: var(--space-xs);
+		opacity: 0.72;
+		transition: opacity var(--dur-fast) var(--ease);
+	}
+
+	.travel-globe__panel:hover .travel-globe__controls,
+	.travel-globe__panel:focus-within .travel-globe__controls {
+		opacity: 1;
+	}
+
+	.travel-globe__controls button {
+		display: inline-grid;
+		place-items: center;
+		min-width: 2rem;
+		height: 2rem;
+		padding: 0 var(--space-sm);
+		border: 1px solid var(--border-visible);
+		border-radius: var(--radius-sm);
+		background: var(--surface);
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+		color: var(--text-secondary);
+		font: inherit;
+		font-size: 0.8125rem;
+		line-height: 1;
+		cursor: pointer;
+		transition:
+			background-color var(--dur-fast) var(--ease),
+			border-color var(--dur-fast) var(--ease),
+			color var(--dur-fast) var(--ease),
+			transform var(--dur-fast) var(--ease);
+	}
+
+	.travel-globe__controls button:hover {
+		border-color: var(--accent);
+		background: var(--surface-raised);
+		color: var(--text-primary);
+	}
+
+	.travel-globe__controls button:active {
+		transform: scale(0.94);
+	}
+
+	.travel-globe__controls button:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.travel-globe__controls button:disabled {
+		cursor: default;
+		opacity: 0.38;
+		transform: none;
+	}
+
+	.travel-globe__controls .travel-globe__reset {
+		padding-inline: var(--space-md);
+		font-size: 0.6875rem;
+	}
+
+	:global(.travel-globe__tooltip) {
+		position: absolute;
+		z-index: 1;
+		left: -9999px;
+		top: -9999px;
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-sm);
+		max-width: calc(100% - var(--space-md) * 2);
+		padding: var(--space-sm) var(--space-md);
+		border: 1px solid var(--border-visible);
+		border-radius: var(--radius-sm);
+		background: var(--bg);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+		color: var(--text-primary);
+		pointer-events: none;
+		opacity: 0;
+		visibility: hidden;
+		white-space: nowrap;
+		transform: translate(-50%, calc(-100% - 10px)) scale(0.97);
+		transition:
+			opacity var(--dur-fast) var(--ease),
+			transform var(--dur-fast) var(--ease),
+			visibility var(--dur-fast) var(--ease);
+	}
+
+	:global(.travel-globe__tooltip[data-side="bottom"]) {
+		transform: translate(-50%, 10px) scale(0.97);
+	}
+
+	:global(.travel-globe__tooltip.is-visible) {
+		opacity: 1;
+		visibility: visible;
+		transform: translate(-50%, calc(-100% - 10px)) scale(1);
+	}
+
+	:global(.travel-globe__tooltip.is-visible[data-side="bottom"]) {
+		transform: translate(-50%, 10px) scale(1);
+	}
+
+	:global(.travel-globe__tooltip-name) {
+		font-size: 0.8125rem;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	:global(.travel-globe__tooltip-note) {
+		font-size: 0.625rem;
+		letter-spacing: 0.04em;
+		color: var(--accent-strong);
+	}
+
+	.travel-globe__skeleton {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
 		background: linear-gradient(
 			90deg,
 			var(--surface) 0%,
@@ -55,10 +212,10 @@
 			var(--surface) 100%
 		);
 		background-size: 200% 100%;
-		animation: map-shimmer 1.4s ease-in-out infinite;
+		animation: globe-shimmer 1.4s ease-in-out infinite;
 	}
 
-	@keyframes map-shimmer {
+	@keyframes globe-shimmer {
 		from {
 			background-position: 200% 0;
 		}
@@ -67,213 +224,521 @@
 		}
 	}
 
-	.travel-map__chart :global(svg) {
-		display: block;
-		width: 100%;
-		height: auto;
-		touch-action: none;
-		cursor: grab;
-	}
-
-	.travel-map__chart :global(svg:active) {
-		cursor: grabbing;
-	}
-
-	.travel-map__chart :global(.travel-ocean) {
-		fill: var(--surface);
-	}
-
-	.travel-map__chart :global(.travel-graticule) {
-		fill: none;
-		stroke: var(--border-visible);
-		stroke-width: 0.5;
-		opacity: 0.45;
-		vector-effect: non-scaling-stroke;
-	}
-
-	.travel-map__chart :global(.travel-land) {
-		fill: var(--surface-raised);
-		stroke: var(--border-visible);
-		stroke-width: 0.5;
-		vector-effect: non-scaling-stroke;
-		pointer-events: none;
-	}
-
-	.travel-map__chart :global(.travel-hit) {
-		fill: transparent;
-		stroke: none;
-		pointer-events: all;
-		cursor: pointer;
-	}
-
-	.travel-map__chart :global(.travel-ring) {
-		fill: none;
-		stroke: var(--accent);
-		stroke-width: 1.25;
-		vector-effect: non-scaling-stroke;
-		opacity: 0;
-		pointer-events: none;
-		transition: opacity var(--dur-base) var(--ease);
-	}
-
-	.travel-map__chart :global(.travel-dot) {
-		fill: var(--accent);
-		stroke: var(--surface);
-		stroke-width: 1.5;
-		vector-effect: non-scaling-stroke;
-		pointer-events: none;
-		transition: fill var(--dur-base) var(--ease);
-	}
-
-	.travel-map__chart :global(.travel-dot--home) {
-		fill: var(--accent-strong);
-	}
-
-	.travel-map__chart :global(.travel-marker) {
-		outline: none;
-		transition: transform var(--dur-base) var(--ease);
-		transform-box: fill-box;
-		transform-origin: center;
-	}
-
-	.travel-map__chart :global(.travel-marker.is-active) {
-		transform: scale(1.12);
-	}
-
-	.travel-map__chart :global(.travel-marker.is-active .travel-ring) {
-		opacity: 0.6;
-	}
-
-	.travel-map__chart :global(.travel-marker.is-active .travel-dot) {
-		fill: var(--accent-strong);
-	}
-
-	.travel-place-card {
-		position: fixed;
-		z-index: 9999;
-		width: min(14rem, calc(100vw - var(--space-xl) * 2));
-		padding: var(--space-md);
-		border: 1px solid var(--border-visible);
-		border-radius: var(--radius-sm);
-		background: var(--bg);
-		box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
-		pointer-events: none;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xs);
-		left: -9999px;
-		top: -9999px;
-		opacity: 0;
-		visibility: hidden;
-		transition:
-			opacity var(--dur-fast) var(--ease),
-			visibility var(--dur-fast) var(--ease),
-			transform var(--dur-fast) var(--ease);
-		transform: translate(-50%, calc(-100% - 12px)) scale(0.97);
-	}
-
-	.travel-place-card.is-visible {
-		opacity: 1;
-		visibility: visible;
-		transform: translate(-50%, calc(-100% - 12px)) scale(1);
-	}
-
-	.travel-place-card__eyebrow {
+	.travel-globe__hint {
+		margin-top: var(--space-sm);
 		font-size: 0.6875rem;
 		letter-spacing: 0.04em;
-		color: var(--accent);
-		text-transform: lowercase;
+		color: var(--text-disabled);
 	}
 
-	.travel-place-card__name {
-		font-size: 1.125rem;
-		line-height: 1.15;
-		letter-spacing: -0.02em;
-		color: var(--text-display);
+	.travel-globe__list {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
 
-	.travel-place-card__coords {
-		font-size: 0.6875rem;
-		letter-spacing: 0.03em;
-		color: var(--text-secondary);
-	}
-
-	.travel-place-card__note {
-		margin-top: var(--space-2xs);
+	:global(.travel-globe__error) {
+		padding: var(--space-lg);
 		font-size: 0.8125rem;
-		line-height: 1.5;
 		color: var(--text-secondary);
-	}
-
-	.travel-place-card__note[hidden] {
-		display: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.travel-map__skeleton {
+		.travel-globe__skeleton {
 			animation: none;
 		}
 
-		.travel-place-card {
+		:global(.travel-globe__tooltip) {
+			transition: none;
+		}
+
+		.travel-globe__controls,
+		.travel-globe__controls button {
 			transition: none;
 		}
 	}
 </style>
 
 <script>
-	import { initTravelMaps } from "../lib/travelMapInteraction";
+	import type { COBEOptions, Marker } from "cobe";
+	import { places } from "../data/places";
 
-	const MAP_URL = "/travel-map.svg";
-	let mapPromise: Promise<string> | null = null;
+	type Cleanup = () => void;
+	const cleanups = new WeakMap<HTMLElement, Cleanup>();
 
-	const fetchMap = () => {
-		if (!mapPromise) {
-			mapPromise = fetch(MAP_URL, { priority: "low" }).then((res) => {
-				if (!res.ok) throw new Error(`map fetch failed (${res.status})`);
-				return res.text();
-			});
-		}
-		return mapPromise;
+	type Rgb = [number, number, number];
+
+	const cssColor = (name: string): Rgb => {
+		const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+		const hex = raw.startsWith("#") ? raw.slice(1) : raw;
+		const full =
+			hex.length === 3
+				? hex
+						.split("")
+						.map((c) => c + c)
+						.join("")
+				: hex;
+		const n = Number.parseInt(full, 16);
+		if (!Number.isFinite(n)) return [0.5, 0.5, 0.5];
+		return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
 	};
 
-	const loadMap = async (chart: HTMLElement) => {
-		if (chart.querySelector("svg")) return;
+	/** Rotation that puts a lat/lng at the centre of the visible hemisphere. */
+	const locationToAngles = (lat: number, lng: number): [number, number] => {
+		return [Math.PI - ((lng * Math.PI) / 180 - Math.PI / 2), (lat * Math.PI) / 180];
+	};
 
+	const INDIA_CENTER = { lat: 20.6, lng: 78.9 };
+	const [INDIA_PHI, INDIA_THETA] = locationToAngles(INDIA_CENTER.lat, INDIA_CENTER.lng);
+	const RENDER_GLOBE_SCALE = 1.18;
+	const COBE_GLOBE_RADIUS = 0.8;
+	const MARKER_ELEVATION = 0.012;
+	const MARKER_PROJECTION_SCALE = RENDER_GLOBE_SCALE * (COBE_GLOBE_RADIUS + MARKER_ELEVATION);
+	const DEFAULT_ZOOM = 1;
+	const MIN_ZOOM = 0.82;
+	const MAX_ZOOM = 2.25;
+	const HOME_MARKER_SIZE = 0.018;
+	const PLACE_MARKER_SIZE = 0.0095;
+
+	const markerState = (activeId: string | null): Marker[] => {
+		const haloColor = cssColor("--bg");
+		const markerColor = cssColor("--accent");
+		const activeColor = cssColor("--accent-strong");
+
+		return places.flatMap((place) => {
+			const size = place.home ? HOME_MARKER_SIZE : PLACE_MARKER_SIZE;
+			const active = place.id === activeId;
+			return [
+				{
+					location: [place.lat, place.lng],
+					size: size * (place.home ? 1.55 : 1.75),
+					color: haloColor,
+				},
+				{
+					id: place.id,
+					location: [place.lat, place.lng],
+					size: size * (active ? 1.25 : 1),
+					color: active ? activeColor : markerColor,
+				},
+			];
+		});
+	};
+
+	const DRAG_SENSITIVITY = 0.008;
+	const KEY_ROTATION_STEP = 0.14;
+	const MARKER_HIT_RADIUS = 16;
+	const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+
+	type ProjectedPoint = { x: number; y: number; visible: boolean };
+
+	const projectLocation = (
+		lat: number,
+		lng: number,
+		phi: number,
+		theta: number,
+		scale: number,
+		width: number,
+		height: number,
+	): ProjectedPoint => {
+		const latRad = (lat * Math.PI) / 180;
+		const lngRad = (lng * Math.PI) / 180;
+		const cosLat = Math.cos(latRad);
+		const pointX = cosLat * Math.cos(lngRad);
+		const pointY = Math.sin(latRad);
+		const pointZ = -cosLat * Math.sin(lngRad);
+		const cosPhi = Math.cos(phi);
+		const sinPhi = Math.sin(phi);
+		const cosTheta = Math.cos(theta);
+		const sinTheta = Math.sin(theta);
+		const rotatedX = cosPhi * pointX + sinPhi * pointZ;
+		const rotatedY =
+			sinPhi * sinTheta * pointX +
+			cosTheta * pointY -
+			cosPhi * sinTheta * pointZ;
+		const rotatedZ =
+			-sinPhi * cosTheta * pointX +
+			sinTheta * pointY +
+			cosPhi * cosTheta * pointZ;
+
+		return {
+			x: width * ((rotatedX * scale + 1) / 2),
+			y: height * ((-rotatedY * scale + 1) / 2),
+			visible: rotatedZ >= 0,
+		};
+	};
+
+	type ThemeOptions = Pick<
+		COBEOptions,
+		"dark" | "mapBrightness" | "baseColor" | "markerColor" | "glowColor"
+	>;
+
+	const themeOptions = (): ThemeOptions => {
+		const dark = document.documentElement.dataset.theme !== "light";
+		const baseColor: Rgb = dark ? [0.3, 0.32, 0.31] : [0.93, 0.94, 0.95];
+		return {
+			dark: dark ? 0.82 : 0,
+			mapBrightness: dark ? 8.25 : 2.65,
+			baseColor,
+			markerColor: cssColor("--accent"),
+			glowColor: cssColor("--surface-raised"),
+		};
+	};
+
+	const initGlobe = async (chart: HTMLElement, root: HTMLElement) => {
+		const { default: createGlobe } = await import("cobe");
+		const stage = chart.closest<HTMLElement>(".travel-globe__stage");
+		if (!stage) return;
+
+		// Keep the WebGL surface crisp on standard-density screens as well as Retina.
+		const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 2), 3);
+
+		const canvas = document.createElement("canvas");
+		canvas.setAttribute(
+			"aria-label",
+			`Interactive globe centered on India, marking ${places.length} places I have visited. Use arrow keys to rotate and plus or minus to zoom.`,
+		);
+		canvas.setAttribute("role", "img");
+		canvas.setAttribute("tabindex", "0");
+		canvas.setAttribute("aria-describedby", "travel-globe-hint");
+		chart.replaceChildren(canvas);
+
+		const tooltip = document.createElement("div");
+		tooltip.className = "travel-globe__tooltip";
+		tooltip.setAttribute("role", "tooltip");
+		tooltip.setAttribute("aria-hidden", "true");
+		const tooltipName = document.createElement("span");
+		tooltipName.className = "travel-globe__tooltip-name";
+		const tooltipNote = document.createElement("span");
+		tooltipNote.className = "travel-globe__tooltip-note font-mono";
+		tooltip.append(tooltipName, tooltipNote);
+		chart.append(tooltip);
+
+		let size = Math.max(1, chart.clientWidth);
+		let markers = markerState(null);
+
+		let globe: ReturnType<typeof createGlobe>;
 		try {
-			const svg = await fetchMap();
-			chart.innerHTML = svg;
-			chart.removeAttribute("aria-busy");
-			chart.removeAttribute("aria-label");
-			initTravelMaps();
+			globe = createGlobe(canvas, {
+				devicePixelRatio: dpr,
+				width: size,
+				height: size,
+				phi: INDIA_PHI,
+				theta: INDIA_THETA,
+				diffuse: 1.2,
+				scale: RENDER_GLOBE_SCALE,
+				offset: [0, 0],
+				mapSamples: 32000,
+				markerElevation: MARKER_ELEVATION,
+				context: {
+					alpha: true,
+					antialias: true,
+					premultipliedAlpha: true,
+				},
+				markers,
+				...themeOptions(),
+			});
 		} catch {
-			chart.innerHTML = '<p class="travel-map__error">Map failed to load.</p>';
+			chart.innerHTML = '<p class="travel-globe__error">Globe failed to load.</p>';
 			chart.removeAttribute("aria-busy");
+			return;
 		}
+
+		chart.removeAttribute("aria-busy");
+		chart.removeAttribute("aria-label");
+
+		let rotationCurrent = { phi: 0, theta: 0 };
+		let rotationTarget = { phi: 0, theta: 0 };
+		let zoomTarget = DEFAULT_ZOOM;
+		let pointerStart: {
+			x: number;
+			y: number;
+			phi: number;
+			theta: number;
+		} | null = null;
+		let pointerPosition: { x: number; y: number } | null = null;
+		let hoveredPlaceId: string | null = null;
+		const zoomOutButton = root.querySelector<HTMLButtonElement>("[data-globe-zoom-out]");
+		const zoomInButton = root.querySelector<HTMLButtonElement>("[data-globe-zoom-in]");
+		const resetButton = root.querySelector<HTMLButtonElement>("[data-globe-reset]");
+
+		const hideTooltip = () => {
+			if (hoveredPlaceId !== null) {
+				hoveredPlaceId = null;
+				markers = markerState(null);
+				globe.update({ markers });
+			}
+			tooltip.classList.remove("is-visible");
+			tooltip.setAttribute("aria-hidden", "true");
+			canvas.classList.remove("has-marker-hover");
+		};
+
+		const updateHover = (clientX: number, clientY: number) => {
+			if (pointerStart !== null) {
+				hideTooltip();
+				return;
+			}
+
+			const rect = chart.getBoundingClientRect();
+			const localX = clientX - rect.left;
+			const localY = clientY - rect.top;
+			const phi = INDIA_PHI + rotationCurrent.phi;
+			const theta = INDIA_THETA + rotationCurrent.theta;
+			let closest: (typeof places)[number] | null = null;
+			let closestPoint: ProjectedPoint | null = null;
+			let closestDistance = MARKER_HIT_RADIUS;
+
+			for (const place of places) {
+				const point = projectLocation(
+					place.lat,
+					place.lng,
+					phi,
+					theta,
+					MARKER_PROJECTION_SCALE,
+					rect.width,
+					rect.height,
+				);
+				if (!point.visible) continue;
+				const distance = Math.hypot(point.x - localX, point.y - localY);
+				if (distance >= closestDistance) continue;
+				closest = place;
+				closestPoint = point;
+				closestDistance = distance;
+			}
+
+			if (!closest || !closestPoint) {
+				hideTooltip();
+				return;
+			}
+
+			if (hoveredPlaceId !== closest.id) {
+				hoveredPlaceId = closest.id;
+				markers = markerState(closest.id);
+				globe.update({ markers });
+			}
+
+			tooltipName.textContent = closest.name;
+			tooltipNote.textContent = closest.note ?? (closest.home ? "home" : "");
+			tooltipNote.hidden = tooltipNote.textContent.length === 0;
+			tooltip.classList.add("is-visible");
+			tooltip.setAttribute("aria-hidden", "false");
+			canvas.classList.add("has-marker-hover");
+
+			const tooltipWidth = tooltip.offsetWidth;
+			const tooltipHeight = tooltip.offsetHeight;
+			const visualZoom = rect.width / Math.max(1, chart.clientWidth);
+			const localPoint = {
+				x: closestPoint.x / visualZoom,
+				y: closestPoint.y / visualZoom,
+			};
+			const localWidth = rect.width / visualZoom;
+			const margin = 8;
+			const left = Math.min(
+				Math.max(localPoint.x, margin + tooltipWidth / 2),
+				localWidth - margin - tooltipWidth / 2,
+			);
+			const fitsAbove = localPoint.y > tooltipHeight + 18;
+			tooltip.dataset.side = fitsAbove ? "top" : "bottom";
+			tooltip.style.left = `${left}px`;
+			tooltip.style.top = `${localPoint.y}px`;
+		};
+
+		const updateControlState = () => {
+			if (zoomOutButton) zoomOutButton.disabled = zoomTarget <= MIN_ZOOM + 0.001;
+			if (zoomInButton) zoomInButton.disabled = zoomTarget >= MAX_ZOOM - 0.001;
+		};
+
+		const setZoom = (next: number) => {
+			zoomTarget = clamp(next, MIN_ZOOM, MAX_ZOOM);
+			stage.style.transform = `scale(${zoomTarget})`;
+			root.classList.toggle("is-zoomed", zoomTarget > 1.01);
+			hideTooltip();
+			updateControlState();
+		};
+
+		const zoomBy = (factor: number) => setZoom(zoomTarget * factor);
+
+		const resetView = () => {
+			rotationTarget = { phi: 0, theta: 0 };
+			setZoom(DEFAULT_ZOOM);
+		};
+
+		zoomOutButton?.addEventListener("click", () => zoomBy(1 / 1.22));
+		zoomInButton?.addEventListener("click", () => zoomBy(1.22));
+		resetButton?.addEventListener("click", resetView);
+		updateControlState();
+
+		canvas.addEventListener("pointerdown", (event) => {
+			pointerStart = {
+				x: event.clientX,
+				y: event.clientY,
+				phi: rotationTarget.phi,
+				theta: rotationTarget.theta,
+			};
+			pointerPosition = { x: event.clientX, y: event.clientY };
+			hideTooltip();
+			canvas.setPointerCapture(event.pointerId);
+		});
+		canvas.addEventListener("pointermove", (event) => {
+			pointerPosition = { x: event.clientX, y: event.clientY };
+			if (pointerStart === null) {
+				updateHover(event.clientX, event.clientY);
+				return;
+			}
+			rotationTarget.phi =
+				pointerStart.phi + (event.clientX - pointerStart.x) * DRAG_SENSITIVITY;
+			const absoluteTheta = clamp(
+				INDIA_THETA +
+					pointerStart.theta +
+					(event.clientY - pointerStart.y) * DRAG_SENSITIVITY,
+				-Math.PI / 2 + 0.08,
+				Math.PI / 2 - 0.08,
+			);
+			rotationTarget.theta = absoluteTheta - INDIA_THETA;
+		});
+		const endDrag = () => {
+			pointerStart = null;
+			if (pointerPosition) updateHover(pointerPosition.x, pointerPosition.y);
+		};
+		canvas.addEventListener("pointerup", endDrag);
+		canvas.addEventListener("pointercancel", endDrag);
+		canvas.addEventListener("pointerleave", () => {
+			pointerPosition = null;
+			hideTooltip();
+		});
+		canvas.addEventListener(
+			"wheel",
+			(event) => {
+				const modeScale = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+				const next = zoomTarget * Math.exp(-event.deltaY * modeScale * 0.0015);
+				const clamped = clamp(next, MIN_ZOOM, MAX_ZOOM);
+				if (Math.abs(clamped - zoomTarget) < 0.0001) return;
+				event.preventDefault();
+				setZoom(clamped);
+			},
+			{ passive: false },
+		);
+		canvas.addEventListener("dblclick", (event) => {
+			event.preventDefault();
+			zoomBy(1.28);
+		});
+		canvas.addEventListener("keydown", (event) => {
+			let handled = true;
+			switch (event.key) {
+				case "+":
+				case "=":
+					zoomBy(1.22);
+					break;
+				case "-":
+				case "_":
+					zoomBy(1 / 1.22);
+					break;
+				case "ArrowLeft":
+					rotationTarget.phi -= KEY_ROTATION_STEP;
+					break;
+				case "ArrowRight":
+					rotationTarget.phi += KEY_ROTATION_STEP;
+					break;
+				case "ArrowUp":
+					rotationTarget.theta = clamp(
+						rotationTarget.theta - KEY_ROTATION_STEP,
+						-Math.PI / 2 + 0.08 - INDIA_THETA,
+						Math.PI / 2 - 0.08 - INDIA_THETA,
+					);
+					break;
+				case "ArrowDown":
+					rotationTarget.theta = clamp(
+						rotationTarget.theta + KEY_ROTATION_STEP,
+						-Math.PI / 2 + 0.08 - INDIA_THETA,
+						Math.PI / 2 - 0.08 - INDIA_THETA,
+					);
+					break;
+				case "0":
+				case "Home":
+					resetView();
+					break;
+				default:
+					handled = false;
+			}
+			if (!handled) return;
+			event.preventDefault();
+			hideTooltip();
+		});
+
+		let raf = 0;
+		let warmupFrames = 12;
+		const frame = () => {
+			raf = requestAnimationFrame(frame);
+			const rotationSettling =
+				Math.abs(rotationTarget.phi - rotationCurrent.phi) > 0.0004 ||
+				Math.abs(rotationTarget.theta - rotationCurrent.theta) > 0.0004;
+			if (!rotationSettling && warmupFrames === 0) return;
+			if (warmupFrames > 0) warmupFrames -= 1;
+			if (rotationSettling) {
+				rotationCurrent.phi += (rotationTarget.phi - rotationCurrent.phi) * 0.12;
+				rotationCurrent.theta += (rotationTarget.theta - rotationCurrent.theta) * 0.12;
+			}
+			globe.update({
+				phi: INDIA_PHI + rotationCurrent.phi,
+				theta: INDIA_THETA + rotationCurrent.theta,
+			});
+			if (pointerPosition && pointerStart === null) {
+				updateHover(pointerPosition.x, pointerPosition.y);
+			}
+		};
+		raf = requestAnimationFrame(frame);
+
+		const themeObserver = new MutationObserver(() => {
+			markers = markerState(hoveredPlaceId);
+			globe.update({ ...themeOptions(), markers });
+		});
+		themeObserver.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["data-theme"],
+		});
+
+		const resizeObserver = new ResizeObserver(() => {
+			const next = Math.max(1, chart.clientWidth);
+			if (next === size) return;
+			size = next;
+			globe.update({
+				width: size,
+				height: size,
+			});
+		});
+		resizeObserver.observe(chart);
+
+		cleanups.set(root, () => {
+			cancelAnimationFrame(raf);
+			themeObserver.disconnect();
+			resizeObserver.disconnect();
+			globe.destroy();
+		});
 	};
 
 	const boot = () => {
-		document.querySelectorAll<HTMLElement>("[data-travel-chart]").forEach((chart) => {
-			if (chart.querySelector("svg")) return;
+		document.querySelectorAll<HTMLElement>("[data-travel-globe]").forEach((root) => {
+			if (root.dataset.wired === "true") return;
+			const chart = root.querySelector<HTMLElement>("[data-globe-chart]");
+			if (!chart) return;
+			root.dataset.wired = "true";
 
-			const root = chart.closest("[data-travel-map]");
-			if (!root) return;
-
-			if ("IntersectionObserver" in window) {
-				const observer = new IntersectionObserver(
-					(entries) => {
-						if (!entries.some((entry) => entry.isIntersecting)) return;
-						observer.disconnect();
-						void loadMap(chart);
-					},
-					{ rootMargin: "200px" },
-				);
-				observer.observe(root);
-			} else {
-				void loadMap(chart);
-			}
+			void initGlobe(chart, root);
 		});
 	};
 
 	boot();
 	document.addEventListener("astro:page-load", boot);
+
+	document.addEventListener("astro:before-swap", () => {
+		document.querySelectorAll<HTMLElement>("[data-travel-globe]").forEach((root) => {
+			cleanups.get(root)?.();
+			cleanups.delete(root);
+			delete root.dataset.wired;
+		});
+	});
 </script>
