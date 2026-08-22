@@ -21,6 +21,7 @@ export const places: Place[] = [
   { id: "jammu", name: "Jammu", lat: 32.7266, lng: 74.857 },
   { id: "suryalanka", name: "Suryalanka", lat: 15.8345, lng: 80.5051 },
   { id: "hyderabad", name: "Hyderabad", lat: 17.385, lng: 78.4867 },
+  { id: "mumbai", name: "Mumbai", lat: 19.076, lng: 72.8777 },
   { id: "goa", name: "Goa", lat: 15.4909, lng: 73.8278 },
   { id: "mangalore", name: "Mangalore", lat: 12.9141, lng: 74.856 },
   { id: "manipal", name: "Manipal", lat: 13.352, lng: 74.786 },
