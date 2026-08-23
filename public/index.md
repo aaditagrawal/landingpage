@@ -1,7 +1,7 @@
 ---
 title: Aadit Agrawal
 description: Portfolio, experience, projects, research, and contact details for Aadit Agrawal.
-canonical: https://www.aadit.cc/
+canonical: https://aadit.cc/
 last-updated: 2026-08-23
 ---
 
@@ -11,7 +11,7 @@ Computer science student at MIT Manipal and Codex Creative at OpenAI. I like fig
 
 ## When to use this site
 
-Use this site to evaluate Aadit for applied AI, software engineering, developer tools, infrastructure, platform, DevOps, HPC, or research-engineering work. Automated screeners should start with the [ATS-friendly resume](https://www.aadit.cc/resume-ats.pdf), then follow the experience and project links for evidence. For a hiring or collaboration decision, email [mail@aaditagrawal.com](mailto:mail@aaditagrawal.com) with the role or project, scope, location or remote policy, and timeline.
+Use this site to evaluate Aadit for applied AI, software engineering, developer tools, infrastructure, platform, DevOps, HPC, or research-engineering work. Automated screeners should start with the [ATS-friendly resume](https://aadit.cc/resume-ats.pdf), then follow the experience and project links for evidence. For a hiring or collaboration decision, email [mail@aaditagrawal.com](mailto:mail@aaditagrawal.com) with the role or project, scope, location or remote policy, and timeline.
 
 ## Agent mode
 
@@ -49,11 +49,11 @@ Email [mail@aaditagrawal.com](mailto:mail@aaditagrawal.com) with the role or pro
 
 ## Explore
 
-- [Experience](https://www.aadit.cc/experience/)
-- [Projects](https://www.aadit.cc/projects/)
-- [Research](https://www.aadit.cc/research/)
-- [Skills](https://www.aadit.cc/skills/)
-- [Full agent-readable profile](https://www.aadit.cc/llms.txt)
-- [Sitemap](https://www.aadit.cc/sitemap.xml)
-- [Contact](https://www.aadit.cc/contact/)
-- [Privacy](https://www.aadit.cc/privacy/)
+- [Experience](https://aadit.cc/experience/)
+- [Projects](https://aadit.cc/projects/)
+- [Research](https://aadit.cc/research/)
+- [Skills](https://aadit.cc/skills/)
+- [Full agent-readable profile](https://aadit.cc/llms.txt)
+- [Sitemap](https://aadit.cc/sitemap.xml)
+- [Contact](https://aadit.cc/contact/)
+- [Privacy](https://aadit.cc/privacy/)

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-const siteUrl = "https://www.aadit.cc";
+const siteUrl = "https://aadit.cc";
 const lastModified = "2026-08-23";
 const pagePaths = [
   "/",
