@@ -1,0 +1,63 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "routes": [
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Vary": "Accept, Accept-Encoding",
+        "Link": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\""
+      },
+      "dest": "/index.md"
+    },
+    {
+      "src": "/",
+      "headers": {
+        "Vary": "Accept, Accept-Encoding",
+        "Link": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\""
+      },
+      "dest": "/index.html"
+    },
+    {
+      "src": "/index\\.md",
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*text/markdown.*"
+        }
+      ],
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Vary": "Accept, Accept-Encoding"
+      },
+      "status": 404,
+      "dest": "/404.md"
+    },
+    {
+      "src": "/.*",
+      "headers": {
+        "Vary": "Accept, Accept-Encoding"
+      },
+      "status": 404,
+      "dest": "/404.html"
+    }
+  ]
+}

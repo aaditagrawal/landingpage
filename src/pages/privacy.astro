@@ -1,0 +1,112 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+	title="Privacy | Aadit Agrawal"
+	description="A plain-language account of the limited data used by aadit.cc."
+>
+	<article class="text-page">
+		<header class="text-page__intro">
+			<p class="text-page__eyebrow font-mono">privacy</p>
+			<h1>A small site with a small data footprint.</h1>
+			<p class="text-page__lede">
+				This is a personal portfolio. It has no accounts, contact form, advertising,
+				newsletter tracker, or first-party analytics. The page does not ask you for
+				personal information.
+			</p>
+			<p class="text-page__updated font-mono">last updated: 23 august 2026</p>
+		</header>
+
+		<section aria-labelledby="browser-storage">
+			<h2 id="browser-storage">Data kept in your browser</h2>
+			<p>
+				The theme switch stores your light or dark preference in local storage. The
+				handwritten-name animation records in session storage whether it has already
+				played during the current browser session. A service worker may cache public
+				files so repeat visits load faster. This data stays in your browser, is not used
+				to identify you, and can be removed through your browser's site-data controls.
+			</p>
+		</section>
+
+		<section aria-labelledby="hosting">
+			<h2 id="hosting">Hosting and routine request logs</h2>
+			<p>
+				Vercel hosts the public site. Like other web hosts, it may process routine
+				request information needed to deliver and protect the service, such as an IP
+				address, user agent, requested path, response status, and request time. I do not
+				combine those logs with an advertising profile or sell information about site
+				visitors.
+			</p>
+		</section>
+
+		<section aria-labelledby="outside-links">
+			<h2 id="outside-links">Email and outside links</h2>
+			<p>
+				If you email me, your message and address are handled by the mail services used
+				to send and receive that conversation. Links to GitHub, LinkedIn, my blog, and
+				other projects take you to services with their own privacy practices. Questions
+				about this page can be sent to
+				<a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>.
+			</p>
+		</section>
+	</article>
+</Layout>
+
+<style>
+	.text-page {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xl);
+		max-width: 58ch;
+	}
+
+	.text-page__intro {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		padding-bottom: var(--space-xl);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.text-page__eyebrow {
+		color: var(--accent);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+	}
+
+	.text-page h1 {
+		font-size: clamp(2rem, 6vw, 3rem);
+		line-height: 1.08;
+		letter-spacing: -0.04em;
+		max-width: 18ch;
+	}
+
+	.text-page__lede {
+		font-size: 1.05rem;
+		color: var(--text-secondary);
+		line-height: 1.7;
+	}
+
+	.text-page__updated {
+		color: var(--text-disabled);
+		font-size: 0.6875rem;
+	}
+
+	.text-page section {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.text-page h2 {
+		font-size: 1rem;
+		line-height: 1.4;
+	}
+
+	.text-page section p {
+		color: var(--text-secondary);
+		font-size: 0.9375rem;
+		line-height: 1.75;
+	}
+</style>

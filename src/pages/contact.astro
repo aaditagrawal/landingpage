@@ -1,0 +1,101 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+	title="Contact | Aadit Agrawal"
+	description="How to contact Aadit Agrawal about engineering roles, applied AI work, research, and technical collaborations."
+>
+	<article class="text-page">
+		<header class="text-page__intro">
+			<p class="text-page__eyebrow font-mono">contact</p>
+			<h1>Say hello.</h1>
+			<p class="text-page__lede">
+				Email is the best way to reach me. I read messages sent to
+				<a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a>.
+			</p>
+		</header>
+
+		<section aria-labelledby="useful-message">
+			<h2 id="useful-message">What makes a useful message</h2>
+			<p>
+				Tell me what you are building, the problem you want help with, and what you
+				would like me to do. For a role, include the team, location or remote policy,
+				timeline, and a link to the job description. For a technical collaboration,
+				include the current state of the work and the decision you are trying to make.
+			</p>
+		</section>
+
+		<section aria-labelledby="good-reasons">
+			<h2 id="good-reasons">Good reasons to write</h2>
+			<p>
+				I am open to selective internships, new-grad roles, applied research work,
+				developer-tool projects, and conversations about AI infrastructure, HPC,
+				platform engineering, or useful software. I also welcome clear bug reports
+				about public projects listed on this site.
+			</p>
+		</section>
+
+		<section aria-labelledby="security">
+			<h2 id="security">Security reports</h2>
+			<p>
+				For a security issue involving this site or one of my projects, use the subject
+				line "security report" and identify the affected URL or repository. Do not send
+				credentials, private user data, or destructive proof-of-concept material in the
+				first message. I will reply with a safer way to exchange anything sensitive.
+			</p>
+		</section>
+	</article>
+</Layout>
+
+<style>
+	.text-page {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xl);
+		max-width: 58ch;
+	}
+
+	.text-page__intro {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		padding-bottom: var(--space-xl);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.text-page__eyebrow {
+		color: var(--accent);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+	}
+
+	.text-page h1 {
+		font-size: clamp(2rem, 6vw, 3rem);
+		line-height: 1.05;
+		letter-spacing: -0.04em;
+	}
+
+	.text-page__lede {
+		font-size: 1.05rem;
+		color: var(--text-secondary);
+		line-height: 1.7;
+	}
+
+	.text-page section {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.text-page h2 {
+		font-size: 1rem;
+		line-height: 1.4;
+	}
+
+	.text-page section p {
+		color: var(--text-secondary);
+		font-size: 0.9375rem;
+		line-height: 1.75;
+	}
+</style>

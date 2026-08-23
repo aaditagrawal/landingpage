@@ -8,7 +8,7 @@ interface Props {
 	wide?: boolean;
 }
 
-const siteUrl = "https://aadit.cc";
+const siteUrl = "https://www.aadit.cc";
 const {
 	title,
 	description = "Codex Creative at OpenAI. I like figuring out tech by making things with it.",
@@ -28,6 +28,32 @@ const navItems = [
 	{ href: "/skills/", label: "skills", active: currentPath.startsWith('/skills') },
 	{ href: "/whimsy/", label: "whimsy", active: currentPath.startsWith('/whimsy') },
 ];
+
+const personSchema = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	"@id": `${siteUrl}/#aadit-agrawal`,
+	name: "Aadit Agrawal",
+	description:
+		"Codex Creative at OpenAI and computer science engineer working across applied AI, software engineering, HPC, infrastructure, and developer tools.",
+	url: `${siteUrl}/`,
+	image: `${siteUrl}/og.png`,
+	email: "mailto:mail@aaditagrawal.com",
+	jobTitle: "Codex Creative",
+	sameAs: [
+		"https://github.com/aaditagrawal",
+		"https://linkedin.com/in/aadit-agrawal",
+		"https://blog.aadit.cc",
+		"https://git.aadit.cc/aadit",
+	],
+	knowsAbout: [
+		"Artificial intelligence",
+		"Software engineering",
+		"High-performance computing",
+		"Developer tools",
+		"DevOps",
+	],
+};
 ---
 
 <!doctype html>
@@ -36,6 +62,8 @@ const navItems = [
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalUrl} />
+		<link rel="sitemap" href="/sitemap.xml" />
+		{isHome && <link rel="alternate" type="text/markdown" href="/index.md" />}
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:site_name" content="Aadit Agrawal" />
@@ -54,6 +82,9 @@ const navItems = [
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
+		{isHome && (
+			<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
+		)}
 		<title>{title}</title>
 
 		<Font cssVariable="--font-dm-sans" preload />
@@ -112,6 +143,9 @@ const navItems = [
 					<a href="https://git.aadit.cc/aadit">git.aadit.cc</a>
 					<a href="https://linkedin.com/in/aadit-agrawal">linkedin</a>
 					<a href="https://blog.aadit.cc">blog.aadit.cc</a>
+					<a href="/contact/">contact</a>
+					<a href="/privacy/">privacy</a>
+					<a href="/llms.txt">llms.txt</a>
 					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-resume-open data-astro-prefetch="false">resume.pdf</a>
 				</nav>
 			</footer>

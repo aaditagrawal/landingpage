@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Page not found | Aadit Agrawal" description="The requested page could not be found.">
+	<meta slot="head" name="robots" content="noindex" />
+	<section class="not-found">
+		<p class="not-found__code font-mono">404</p>
+		<h1>Wrong turn.</h1>
+		<p>
+			That address does not map to a page on this site. Start again from the
+			<a href="/">homepage</a>, browse the <a href="/sitemap.xml">sitemap</a>, or use
+			the <a href="/llms.txt">agent-readable site guide</a>.
+		</p>
+	</section>
+</Layout>
+
+<style>
+	.not-found {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		max-width: 48ch;
+		padding-block: var(--space-xl) var(--space-2xl);
+	}
+
+	.not-found__code {
+		color: var(--accent);
+		font-size: 0.75rem;
+		letter-spacing: 0.08em;
+	}
+
+	.not-found h1 {
+		font-size: clamp(2rem, 7vw, 3.5rem);
+		line-height: 1;
+		letter-spacing: -0.04em;
+	}
+
+	.not-found p:last-child {
+		color: var(--text-secondary);
+		line-height: 1.75;
+	}
+</style>
