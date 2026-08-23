@@ -1,3 +1,10 @@
+---
+title: Aadit Agrawal
+description: Portfolio, experience, projects, research, and contact details for Aadit Agrawal.
+canonical: https://www.aadit.cc/
+last-updated: 2026-08-23
+---
+
 # Aadit Agrawal
 
 Computer science student at MIT Manipal and Codex Creative at OpenAI. I like figuring out technology by making useful things with it.

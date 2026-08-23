@@ -29,29 +29,110 @@ const navItems = [
 	{ href: "/whimsy/", label: "whimsy", active: currentPath.startsWith('/whimsy') },
 ];
 
-const personSchema = {
+const personId = `${siteUrl}/#aadit-agrawal`;
+const organizationId = `${siteUrl}/#organization`;
+const websiteId = `${siteUrl}/#website`;
+
+const structuredData = {
 	"@context": "https://schema.org",
-	"@type": "Person",
-	"@id": `${siteUrl}/#aadit-agrawal`,
-	name: "Aadit Agrawal",
-	description:
-		"Codex Creative at OpenAI and computer science engineer working across applied AI, software engineering, HPC, infrastructure, and developer tools.",
-	url: `${siteUrl}/`,
-	image: `${siteUrl}/og.png`,
-	email: "mailto:mail@aaditagrawal.com",
-	jobTitle: "Codex Creative",
-	sameAs: [
-		"https://github.com/aaditagrawal",
-		"https://linkedin.com/in/aadit-agrawal",
-		"https://blog.aadit.cc",
-		"https://git.aadit.cc/aadit",
-	],
-	knowsAbout: [
-		"Artificial intelligence",
-		"Software engineering",
-		"High-performance computing",
-		"Developer tools",
-		"DevOps",
+	"@graph": [
+		{
+			"@type": "Person",
+			"@id": personId,
+			name: "Aadit Agrawal",
+			description:
+				"Codex Creative at OpenAI and computer science engineer working across applied AI, software engineering, HPC, infrastructure, and developer tools.",
+			url: `${siteUrl}/`,
+			image: `${siteUrl}/og.png`,
+			email: "mailto:mail@aaditagrawal.com",
+			jobTitle: "Codex Creative",
+			worksFor: {
+				"@type": "Organization",
+				name: "OpenAI",
+				url: "https://openai.com/",
+			},
+			sameAs: [
+				"https://github.com/aaditagrawal",
+				"https://linkedin.com/in/aadit-agrawal",
+				"https://blog.aadit.cc",
+				"https://git.aadit.cc/aadit",
+			],
+			knowsAbout: [
+				"Artificial intelligence",
+				"Software engineering",
+				"High-performance computing",
+				"Developer tools",
+				"DevOps",
+			],
+		},
+		{
+			"@type": "Organization",
+			"@id": organizationId,
+			name: "Aadit Agrawal",
+			description: "Aadit Agrawal's independent professional practice and portfolio.",
+			url: `${siteUrl}/`,
+			logo: `${siteUrl}/og.png`,
+			founder: { "@id": personId },
+			contactPoint: {
+				"@type": "ContactPoint",
+				contactType: "professional inquiries",
+				email: "mail@aaditagrawal.com",
+				availableLanguage: "English",
+			},
+			address: {
+				"@type": "PostalAddress",
+				addressLocality: "Bengaluru",
+				addressRegion: "Karnataka",
+				addressCountry: "IN",
+			},
+			sameAs: [
+				"https://github.com/aaditagrawal",
+				"https://linkedin.com/in/aadit-agrawal",
+			],
+		},
+		{
+			"@type": "WebSite",
+			"@id": websiteId,
+			name: "Aadit Agrawal",
+			url: `${siteUrl}/`,
+			inLanguage: "en",
+			publisher: { "@id": organizationId },
+		},
+		{
+			"@type": "ProfilePage",
+			"@id": `${siteUrl}/#profile-page`,
+			name: "Aadit Agrawal",
+			url: `${siteUrl}/`,
+			isPartOf: { "@id": websiteId },
+			mainEntity: { "@id": personId },
+			about: { "@id": personId },
+			dateModified: "2026-08-23",
+		},
+		{
+			"@type": "ItemList",
+			"@id": `${siteUrl}/#selected-work`,
+			name: "Selected work",
+			itemListElement: [
+				{
+					"@type": "CreativeWork",
+					position: 1,
+					name: "The TIK Menu and Campus Suite",
+					url: "https://fc2.coolstuff.work/",
+				},
+				{
+					"@type": "CreativeWork",
+					position: 2,
+					name: "Homelab infrastructure",
+					url: "https://cloud.aadit.cc/",
+				},
+				{
+					"@type": "CreativeWork",
+					position: 3,
+					name: "coolstuff.work",
+					url: "https://coolstuff.work/",
+				},
+			],
+		},
 	],
 };
 ---
@@ -83,7 +164,7 @@ const personSchema = {
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
 		{isHome && (
-			<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
+			<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
 		)}
 		<title>{title}</title>
 

@@ -5,6 +5,38 @@
       "src": "/",
       "has": [
         {
+          "type": "query",
+          "key": "mode",
+          "value": "agent"
+        }
+      ],
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Vary": "Accept, Accept-Encoding",
+        "Link": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\""
+      },
+      "dest": "/index.md"
+    },
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot).*"
+        }
+      ],
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Vary": "User-Agent, Accept, Accept-Encoding",
+        "Link": "</sitemap.xml>; rel=\"sitemap\", </index.md>; rel=\"alternate\"; type=\"text/markdown\""
+      },
+      "dest": "/index.md"
+    },
+    {
+      "src": "/",
+      "has": [
+        {
           "type": "header",
           "key": "accept",
           "value": ".*text/markdown.*"
