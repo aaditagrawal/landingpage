@@ -31,7 +31,7 @@ const inks = drawn.map((letter) => {
 });
 ---
 
-<h1 class="hello-name" id="hello-name">
+<h1 class="hello-name">
 	<span class="sr-only">{text}</span>
 	<svg class="hello-svg" viewBox={viewBox} aria-hidden="true">
 		{
@@ -118,43 +118,4 @@ const inks = drawn.map((letter) => {
 			fill-opacity: 1;
 		}
 	}
-
-	.hello-name--instant .pen {
-		animation: none;
-		stroke-dashoffset: 0;
-	}
-
-	.hello-name--instant .ink {
-		animation: none;
-		fill-opacity: 1;
-	}
 </style>
-
-<script is:inline>
-	(() => {
-		const markInstant = () => {
-			const root = document.getElementById("hello-name");
-			if (!root) return;
-
-			if (sessionStorage.getItem("hello-drawn") === "1") {
-				root.classList.add("hello-name--instant");
-				return;
-			}
-
-			const pen = root.querySelector(".pen");
-			if (!pen || pen.dataset.wired === "true") return;
-			pen.dataset.wired = "true";
-
-			pen.addEventListener(
-				"animationend",
-				() => {
-					sessionStorage.setItem("hello-drawn", "1");
-				},
-				{ once: true },
-			);
-		};
-
-		markInstant();
-		document.addEventListener("astro:page-load", markInstant);
-	})();
-</script>
