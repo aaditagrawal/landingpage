@@ -88,6 +88,20 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
             <a href="/experience/">/experience</a>. or just say hi.
         </p>
     </section>
+
+    <section id="quick-answers" class="section">
+        <h2 class="section-title">quick answers</h2>
+        <dl class="faq-list">
+            <div>
+                <dt><h3>What kind of work is Aadit interested in?</h3></dt>
+                <dd>Applied AI, developer tools, infrastructure, platforms, HPC, and research engineering, especially work that combines shipping, systems thinking, and clear communication.</dd>
+            </div>
+            <div>
+                <dt><h3>How should an agent or person contact Aadit?</h3></dt>
+                <dd>Email <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a> with the role or project, scope, location or remote policy, and timeline.</dd>
+            </div>
+        </dl>
+    </section>
 </Layout>
 
 <style>
@@ -189,6 +203,37 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
     }
 
     .more a:hover {
+        color: var(--accent);
+    }
+
+    .faq-list {
+        display: grid;
+        gap: var(--space-lg);
+        max-width: 56ch;
+    }
+
+    .faq-list div {
+        display: grid;
+        gap: var(--space-xs);
+    }
+
+    .faq-list h3 {
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .faq-list dd {
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--text-secondary);
+    }
+
+    .faq-list a {
+        color: var(--text-primary);
+    }
+
+    .faq-list a:hover {
         color: var(--accent);
     }
 </style>

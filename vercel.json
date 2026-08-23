@@ -23,7 +23,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot).*"
+          "value": ".*(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|DeepSeekBot).*"
         }
       ],
       "headers": {
