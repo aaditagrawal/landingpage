@@ -272,6 +272,8 @@ import { places } from "../data/places";
 	const cleanups = new WeakMap<HTMLElement, Cleanup>();
 
 	type Rgb = [number, number, number];
+	const HOME_MARKER_COLOR: Rgb = [1, 212 / 255, 59 / 255]; // #FFD43B
+	const ACTIVE_HOME_MARKER_COLOR: Rgb = [1, 229 / 255, 128 / 255];
 
 	const cssColor = (name: string): Rgb => {
 		const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -302,28 +304,30 @@ import { places } from "../data/places";
 	const DEFAULT_ZOOM = 1;
 	const MIN_ZOOM = 0.82;
 	const MAX_ZOOM = 2.25;
-	const HOME_MARKER_SIZE = 0.018;
+	const HOME_MARKER_SIZE = 0.015;
 	const PLACE_MARKER_SIZE = 0.0095;
 
 	const markerState = (activeId: string | null): Marker[] => {
 		const haloColor = cssColor("--bg");
 		const markerColor = cssColor("--accent");
-		const activeColor = cssColor("--accent-strong");
+		const activeMarkerColor = cssColor("--accent-strong");
 
 		return places.flatMap((place) => {
 			const size = place.home ? HOME_MARKER_SIZE : PLACE_MARKER_SIZE;
 			const active = place.id === activeId;
+			const color = place.home ? HOME_MARKER_COLOR : markerColor;
+			const activeColor = place.home ? ACTIVE_HOME_MARKER_COLOR : activeMarkerColor;
 			return [
 				{
 					location: [place.lat, place.lng],
-					size: size * (place.home ? 1.55 : 1.75),
+					size: size * (active ? 1.25 : 1) + 0.003,
 					color: haloColor,
 				},
 				{
 					id: place.id,
 					location: [place.lat, place.lng],
 					size: size * (active ? 1.25 : 1),
-					color: active ? activeColor : markerColor,
+					color: active ? activeColor : color,
 				},
 			];
 		});
@@ -382,7 +386,7 @@ import { places } from "../data/places";
 		const baseColor: Rgb = dark ? [0.3, 0.32, 0.31] : [0.93, 0.94, 0.95];
 		return {
 			dark: dark ? 0.82 : 0,
-			mapBrightness: dark ? 8.25 : 2.65,
+			mapBrightness: dark ? 3.4 : 1.6,
 			baseColor,
 			markerColor: cssColor("--accent"),
 			glowColor: cssColor("--surface-raised"),
