@@ -214,7 +214,12 @@ const structuredData = {
 	<body>
 		<div class:list={["page", { "page--wide": wide }]}>
 			<header class="masthead">
-				<a href="/" class="wordmark font-mono">aadit agrawal</a>
+				<a
+					href="/"
+					class:list={["wordmark", "font-mono", { "wordmark--hidden": isHome }]}
+					aria-hidden={isHome ? "true" : undefined}
+					tabindex={isHome ? -1 : undefined}
+				>aadit agrawal</a>
 				<div class="masthead-right">
 					<nav class="nav font-mono" aria-label="Site">
 						{navItems.map((item) => (
@@ -510,6 +515,10 @@ const structuredData = {
 		font-size: 0.875rem;
 		color: var(--text-display);
 		letter-spacing: -0.01em;
+	}
+
+	.wordmark--hidden {
+		visibility: hidden;
 	}
 
 	.masthead-right {
