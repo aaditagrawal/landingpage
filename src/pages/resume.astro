@@ -53,9 +53,10 @@ import Layout from "../layouts/Layout.astro";
         }
 
         // Short delay so the user / agent can read/see context before redirect.
-        setTimeout(() => {
-            window.location.replace(target);
+        const redirect = setTimeout(() => {
+            if (root.isConnected) window.location.replace(target);
         }, isAgent ? 120 : 900);
+        document.addEventListener('astro:before-swap', () => clearTimeout(redirect), { once: true });
     })();
 </script>
 

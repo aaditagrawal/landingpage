@@ -27,33 +27,24 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Content-hashed build assets never change: cache-first.
-  if (url.pathname.startsWith("/assets/")) {
-    event.respondWith(
-      (async () => {
-        const cache = await caches.open(CACHE);
-        const hit = await cache.match(request);
-        if (hit) return hit;
-        const response = await fetch(request);
-        if (response.ok) cache.put(request, response.clone());
-        return response;
-      })(),
-    );
-    return;
-  }
-
-  // Pages, icons, PDFs: stale-while-revalidate.
-  event.respondWith(
-    (async () => {
-      const cache = await caches.open(CACHE);
-      const hit = await cache.match(request);
-      const refresh = fetch(request)
-        .then((response) => {
-          if (response.ok) cache.put(request, response.clone());
-          return response;
-        })
-        .catch(() => hit);
-      return hit || refresh;
-    })(),
-  );
+  const response = (async () => {
+    const cache = await caches.open(CACHE);
+    const hit = await cache.match(request);
+    // Immutable assets need no refresh once cached.
+    if (hit && url.pathname.startsWith("/assets/")) return hit;
+    const refresh = fetch(request).then(async (fresh) => {
+      if (fresh.ok) await cache.put(request, fresh.clone());
+      return fresh;
+    });
+    // Return stale data immediately while protecting the refresh lifetime.
+    refresh.catch(() => {});
+    if (hit) {
+      awaitRefresh = refresh.catch(() => {});
+      return hit;
+    }
+    return refresh;
+  })();
+  let awaitRefresh;
+  event.respondWith(response);
+  event.waitUntil(response.then(() => awaitRefresh).catch(() => {}));
 });

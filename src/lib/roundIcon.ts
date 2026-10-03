@@ -12,7 +12,3 @@ export async function roundIcon(input: string | Buffer, size: number): Promise<B
     .png()
     .toBuffer();
 }
-
-export function iconDataUrl(buffer: Buffer): string {
-  return `data:image/png;base64,${buffer.toString("base64")}`;
-}

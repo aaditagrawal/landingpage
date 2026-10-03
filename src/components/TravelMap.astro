@@ -395,6 +395,7 @@ import { places } from "../data/places";
 
 	const initGlobe = async (chart: HTMLElement, root: HTMLElement) => {
 		const { default: createGlobe } = await import("cobe");
+		if (!root.isConnected || !chart.isConnected) return;
 		const stage = chart.closest<HTMLElement>(".travel-globe__stage");
 		if (!stage) return;
 
