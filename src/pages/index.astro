@@ -40,23 +40,13 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
 
         <div class="intro-body">
             <p>
-                I'm a CS student at MIT Manipal and Codex Creative at OpenAI.
+                I'm a CS student at MIT Manipal and <strong>Creative at OpenAI India</strong>.
             </p>
             <p>
                 I grew up on science fiction. Asimov, Sagan, Andy Weir.
                 Science, and optimism about it.
             </p>
         </div>
-    </section>
-
-    <section id="now" class="section">
-        <h2 class="section-title">currently</h2>
-        <ul class="plain-list">
-            <li>
-                <h3><a href="/experience/">Codex Creative at OpenAI</a></h3>
-                <p>driving Codex adoption for dev and knowledge work in India.</p>
-            </li>
-        </ul>
     </section>
 
     <div class="disclosures">
@@ -158,6 +148,11 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
         font-size: 1rem;
         line-height: 1.7;
         color: var(--text-secondary);
+    }
+
+    .intro-body strong {
+        color: var(--text-primary);
+        font-weight: 600;
     }
 
     .plain-list {
