@@ -50,7 +50,7 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
     </section>
 
     <div class="disclosures">
-        <details id="work">
+        <details id="work" name="homepage-disclosures">
             <summary>
                 <h2 class="disclosure-title">selected work<span class="disclosure-icon" aria-hidden="true"></span></h2>
             </summary>
@@ -76,7 +76,7 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
             </div>
         </details>
 
-        <details id="quick-answers">
+        <details id="quick-answers" name="homepage-disclosures">
             <summary>
                 <h2 class="disclosure-title">quick answers<span class="disclosure-icon" aria-hidden="true"></span></h2>
             </summary>
@@ -93,6 +93,40 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
         </details>
     </div>
 </Layout>
+
+<script>
+    let observer: ResizeObserver | undefined;
+
+    function measureCollapsedHome() {
+        observer?.disconnect();
+
+        const main = document.querySelector<HTMLElement>(".content--home");
+        const page = main?.parentElement;
+        const intro = main?.querySelector(".intro");
+        const disclosures = main?.querySelector(".disclosures");
+        const masthead = page?.querySelector(".masthead");
+        const footer = page?.querySelector(".site-footer");
+        if (!main || !page || !intro || !disclosures || !masthead || !footer) return;
+
+        const summaries = Array.from(disclosures.querySelectorAll("summary"));
+        observer = new ResizeObserver(() => {
+            const surroundingHeight = page.getBoundingClientRect().height - main.getBoundingClientRect().height;
+            const summaryHeight = summaries.reduce((height, summary) => height + summary.getBoundingClientRect().height, 0);
+            const gaps = parseFloat(getComputedStyle(main).rowGap) +
+                parseFloat(getComputedStyle(disclosures).rowGap) * (summaries.length - 1);
+            const collapsedHeight = surroundingHeight + intro.getBoundingClientRect().height + summaryHeight + gaps;
+
+            // Keep the same top inset when the disclosure content adds height.
+            main.style.setProperty("--collapsed-home-height", `${collapsedHeight}px`);
+            main.dataset.centering = "measured";
+        });
+
+        for (const element of [intro, masthead, footer, ...summaries]) observer.observe(element);
+        observer.observe(document.documentElement, { box: "border-box" });
+    }
+
+    document.addEventListener("astro:page-load", measureCollapsedHome);
+</script>
 
 <style>
     .intro {

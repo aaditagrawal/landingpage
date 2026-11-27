@@ -439,6 +439,11 @@ const structuredData = {
 		justify-content: center;
 	}
 
+	.content--home[data-centering="measured"] {
+		justify-content: start;
+		padding-block-start: max(0px, calc((100dvh - var(--collapsed-home-height)) / 2));
+	}
+
 	/* Navigation: a short, eased crossfade on the content. The masthead and
 	   footer get their own transition groups so they hold steady (or glide to
 	   their new position) instead of flashing with the page body. */
