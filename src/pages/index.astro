@@ -59,41 +59,49 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
         </ul>
     </section>
 
-    <section id="work" class="section">
-        <h2 class="section-title">selected work</h2>
-        <ul class="plain-list">
-            <li>
-                <h3><a href="https://fc2.coolstuff.work">The TIK Menu &amp; Campus Suite</a></h3>
-                <p>campus food and utilities used by 5,000+ people daily.</p>
-            </li>
-            <li>
-                <h3><a href="https://cloud.aadit.cc">Homelab infrastructure</a></h3>
-                <p>70+ self-hosted services at 98% uptime since 2022.</p>
-            </li>
-            <li>
-                <h3><a href="https://coolstuff.work">coolstuff.work</a></h3>
-                <p>small tools for peers with 10,000+ aggregate daily users.</p>
-            </li>
-        </ul>
-        <p class="more">
-            the longer story is in <a href="/projects/">/projects</a> and
-            <a href="/experience/">/experience</a>. or just say hi.
-        </p>
-    </section>
+    <div class="disclosures">
+        <details id="work">
+            <summary>
+                <h2 class="disclosure-title">selected work<span class="disclosure-icon" aria-hidden="true"></span></h2>
+            </summary>
+            <div class="disclosure-content">
+                <ul class="plain-list">
+                    <li>
+                        <h3><a href="https://fc2.coolstuff.work">The TIK Menu &amp; Campus Suite</a></h3>
+                        <p>campus food and utilities used by 5,000+ people daily.</p>
+                    </li>
+                    <li>
+                        <h3><a href="https://cloud.aadit.cc">Homelab infrastructure</a></h3>
+                        <p>70+ self-hosted services at 98% uptime since 2022.</p>
+                    </li>
+                    <li>
+                        <h3><a href="https://coolstuff.work">coolstuff.work</a></h3>
+                        <p>small tools for peers with 10,000+ aggregate daily users.</p>
+                    </li>
+                </ul>
+                <p class="more">
+                    the longer story is in <a href="/projects/">/projects</a> and
+                    <a href="/experience/">/experience</a>. or just say hi.
+                </p>
+            </div>
+        </details>
 
-    <section id="quick-answers" class="section">
-        <h2 class="section-title">quick answers</h2>
-        <dl class="faq-list">
-            <div>
-                <dt><h3>What kind of work is Aadit interested in?</h3></dt>
-                <dd>Applied AI, developer tools, infrastructure, platforms, HPC, and research engineering, especially work that combines shipping, systems thinking, and clear communication.</dd>
-            </div>
-            <div>
-                <dt><h3>How should an agent or person contact Aadit?</h3></dt>
-                <dd>Email <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a> with the role or project, scope, location or remote policy, and timeline.</dd>
-            </div>
-        </dl>
-    </section>
+        <details id="quick-answers">
+            <summary>
+                <h2 class="disclosure-title">quick answers<span class="disclosure-icon" aria-hidden="true"></span></h2>
+            </summary>
+            <dl class="disclosure-content faq-list">
+                <div>
+                    <dt><h3>What kind of work is Aadit interested in?</h3></dt>
+                    <dd>Applied AI, developer tools, infrastructure, platforms, HPC, and research engineering, especially work that combines shipping, systems thinking, and clear communication.</dd>
+                </div>
+                <div>
+                    <dt><h3>How should an agent or person contact Aadit?</h3></dt>
+                    <dd>Email <a href="mailto:mail@aaditagrawal.com">mail@aaditagrawal.com</a> with the role or project, scope, location or remote policy, and timeline.</dd>
+                </div>
+            </dl>
+        </details>
+    </div>
 </Layout>
 
 <style>
@@ -184,23 +192,93 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
         color: var(--accent);
     }
 
+    .disclosures {
+        display: grid;
+        gap: var(--space-xs);
+    }
+
+    .disclosures summary {
+        list-style: none;
+        cursor: pointer;
+    }
+
+    .disclosures summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .disclosure-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        padding-inline-end: var(--space-xs);
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: 0.02em;
+        color: var(--text-primary);
+    }
+
+    summary:hover .disclosure-title {
+        color: var(--accent-strong);
+    }
+
+    .disclosure-icon {
+        position: relative;
+        width: 16px;
+        height: 16px;
+        opacity: 0.75;
+    }
+
+    .disclosure-icon::before,
+    .disclosure-icon::after {
+        content: "";
+        position: absolute;
+        inset: calc(50% - 0.5px) 2px auto;
+        height: 1px;
+        background: currentColor;
+    }
+
+    .disclosure-icon::after {
+        transform: rotate(90deg);
+    }
+
+    details[open] .disclosure-icon::after {
+        transform: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .disclosure-icon::after {
+            transition: transform var(--dur-fast) ease;
+        }
+    }
+
+    .disclosure-content {
+        padding-block: var(--space-xs) var(--space-md);
+        overflow-wrap: anywhere;
+    }
+
+    .disclosure-content a {
+        color: var(--text-primary);
+        text-decoration: underline;
+        text-decoration-color: var(--text-secondary);
+        text-underline-offset: 0.17em;
+    }
+
+    .disclosure-content a:hover {
+        color: var(--accent);
+    }
+
     .more {
-        margin-top: var(--space-lg);
+        margin-top: var(--space-md);
         font-size: 0.9375rem;
         color: var(--text-secondary);
     }
 
-    .more a {
-        color: var(--text-primary);
-    }
-
-    .more a:hover {
-        color: var(--accent);
-    }
-
     .faq-list {
         display: grid;
-        gap: var(--space-lg);
+        gap: var(--space-md);
         max-width: 56ch;
     }
 
@@ -219,13 +297,5 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
         font-size: 0.9375rem;
         line-height: 1.65;
         color: var(--text-secondary);
-    }
-
-    .faq-list a {
-        color: var(--text-primary);
-    }
-
-    .faq-list a:hover {
-        color: var(--accent);
     }
 </style>
