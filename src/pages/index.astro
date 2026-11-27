@@ -40,7 +40,7 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
 
         <div class="intro-body">
             <p>
-                I'm a CS student at MIT Manipal and <strong>Creative at OpenAI India</strong>.
+                <strong>Creative at OpenAI India</strong>
             </p>
             <p>
                 I grew up on science fiction. Asimov, Sagan, Andy Weir.
@@ -98,7 +98,9 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
     .intro {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: var(--space-xl);
+        text-align: center;
     }
 
     .identity {
@@ -125,6 +127,7 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
         display: flex;
         flex-direction: column;
         gap: var(--space-2xs);
+        text-align: left;
     }
 
     .identity-meta {
@@ -190,6 +193,9 @@ const avatarPreload = await getImage({ src: pfp, width: 56, format: "avif" });
     .disclosures {
         display: grid;
         gap: var(--space-xs);
+        width: 100%;
+        max-width: 56ch;
+        margin-inline: auto;
     }
 
     .disclosures summary {
