@@ -241,7 +241,7 @@ const structuredData = {
 				</div>
 			</header>
 
-			<main class="content">
+			<main class:list={["content", { "content--home": isHome }]}>
 				<slot />
 			</main>
 
@@ -433,6 +433,10 @@ const structuredData = {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-3xl);
+	}
+
+	.content--home {
+		justify-content: center;
 	}
 
 	/* Navigation: a short, eased crossfade on the content. The masthead and
